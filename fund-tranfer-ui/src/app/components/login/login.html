@@ -1,11 +1,51 @@
 <div class="login-container">
+
   <div class="login-card">
-    <h2>Fund Transfer System</h2>
 
-    <input type="text" placeholder="Username">
+    <h1>Fund Transfer System</h1>
 
-    <input type="password" placeholder="Password">
+    <div class="role-selection">
+      <label>
+        <input type="radio" name="role" checked>
+        User
+      </label>
 
-    <button (click)="onLogin()">Login</button>
+      <label>
+        <input type="radio" name="role">
+        Admin
+      </label>
+    </div>
+
+    <input
+      type="text"
+      placeholder="Email / Mobile Number">
+
+    <input
+      type="password"
+      placeholder="Password">
+
+    <div class="captcha">
+      CAPTCHA: 1234
+    </div>
+
+    <input
+      type="text"
+      placeholder="Enter CAPTCHA">
+
+    <button>
+      Login
+    </button>
+
+    <div class="links">
+      <a routerLink="/signup">
+        Sign Up
+      </a>
+
+      <a routerLink="/forgot-password">
+        Forgot Password?
+      </a>
+    </div>
+
   </div>
+
 </div>
