@@ -1,33 +1,39 @@
-<div class="page">
+<div class="beneficiary-container">
 
-  <h2>Add Beneficiary</h2>
+  <div class="beneficiary-card">
 
-  <form>
+    <h2>Add Beneficiary</h2>
 
-    <input
-      type="text"
-      placeholder="Beneficiary Name">
+    <form>
 
-    <input
-      type="text"
-      placeholder="Account Number">
+      <input
+        type="text"
+        placeholder="Beneficiary Name">
 
-    <input
-      type="text"
-      placeholder="Confirm Account Number">
+      <input
+        type="text"
+        placeholder="Account Number">
 
-    <input
-      type="text"
-      placeholder="IFSC Code">
+      <input
+        type="text"
+        placeholder="Confirm Account Number">
 
-    <input
-      type="text"
-      placeholder="Branch Name">
+      <input
+        type="text"
+        placeholder="IFSC Code">
 
-    <button type="submit">
-      Add Beneficiary
-    </button>
+      <input
+        type="text"
+        placeholder="Branch Name">
 
-  </form>
+      <button
+        type="button"
+        (click)="addBeneficiary()">
+        Add Beneficiary
+      </button>
+
+    </form>
+
+  </div>
 
 </div>

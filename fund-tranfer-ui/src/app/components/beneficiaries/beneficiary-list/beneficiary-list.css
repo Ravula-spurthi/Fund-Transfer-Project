@@ -1,19 +1,23 @@
-.page{
-  padding:40px;
+.container{
+  width:80%;
+  margin:auto;
+  padding:20px;
 }
 
 table{
   width:100%;
   border-collapse:collapse;
+  margin-top:20px;
 }
 
-th{
-  background:#2196f3;
-  color:white;
-  padding:12px;
-}
-
-td{
-  padding:12px;
+th,td{
   border:1px solid #ddd;
+  padding:12px;
+  text-align:left;
+}
+
+button{
+  margin-top:20px;
+  padding:10px 20px;
+  cursor:pointer;
 }
