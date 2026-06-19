@@ -13,7 +13,7 @@ export class Login {
 
   constructor(private router: Router) {}
 
-  onLogin() {
+  onlogin() {
     this.router.navigate(['/dashboard']);
   }
 
