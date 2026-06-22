@@ -59,6 +59,20 @@ export const routes: Routes = [
   },
 
   {
+  path: 'profile',
+  loadComponent: () =>
+    import('./components/profile/profile-details/profile-details')
+      .then(m => m.ProfileDetails)
+  },
+
+  {
+  path: 'statement',
+  loadComponent: () =>
+    import('./components/statements/account-statement/account-statement')
+      .then(m => m.AccountStatement)
+  },
+
+  {
     path: 'otp-verification',
     loadComponent: () =>
       import('./components/transfer/otp-verification/otp-verification')

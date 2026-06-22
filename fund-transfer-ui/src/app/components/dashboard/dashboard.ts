@@ -22,4 +22,10 @@ export class Dashboard {
   goToTransactions(){
     this.router.navigate(['/transactions']);
   }
+  goToProfile() {
+  this.router.navigate(['/profile']);
+  }
+  goToStatement() {
+  this.router.navigate(['/statement']);
+  }
 }
