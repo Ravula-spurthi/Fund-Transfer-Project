@@ -22,12 +22,11 @@
   </div>
 
   <div class="actions">
-    <button routerLink="/add-beneficiary">
-  Add Beneficiary
-</button>
+    <button (click)="goToBeneficiary()">Add Beneficiary</button>
     <button (click)="goToTransfer()">Fund Transfer</button>
-    <button>Transactions</button>
-    <button>Profile</button>
+    <button (click)="goToTransactions()">Transactions</button>
+    <button (click)="goToProfile()">Profile</button>
+    <button (click)="goToStatement()">Statement</button>
   </div>
 
 </div>

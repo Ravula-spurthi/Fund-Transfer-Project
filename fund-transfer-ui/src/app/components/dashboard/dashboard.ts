@@ -19,4 +19,13 @@ export class Dashboard {
   goToBeneficiary() {
     this.router.navigate(['/add-beneficiary']);
   }
+  goToTransactions(){
+    this.router.navigate(['/transactions']);
+  }
+  goToProfile() {
+  this.router.navigate(['/profile']);
+  }
+  goToStatement() {
+  this.router.navigate(['/statement']);
+  }
 }
