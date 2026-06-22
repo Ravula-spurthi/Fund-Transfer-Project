@@ -80,8 +80,10 @@ export const routes: Routes = [
   },
 
   {
-    path: '**',
-    redirectTo: ''
+  path: '**',
+  loadComponent: () =>
+    import('./components/not-found/not-found')
+      .then(m => m.NotFound)
   }
 
 ];

@@ -28,4 +28,7 @@ export class Dashboard {
   goToStatement() {
   this.router.navigate(['/statement']);
   }
+  logout() {
+  this.router.navigate(['/']);
+  }
 }
