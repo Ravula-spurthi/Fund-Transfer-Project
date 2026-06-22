@@ -1,0 +1,29 @@
+.page{
+  padding:40px;
+}
+
+h2{
+  margin-bottom:20px;
+}
+
+form{
+  width:400px;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border:1px solid #ccc;
+  border-radius:5px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  background:#2196f3;
+  color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
