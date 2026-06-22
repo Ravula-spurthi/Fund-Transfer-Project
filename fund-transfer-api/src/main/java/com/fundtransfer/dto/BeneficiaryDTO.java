@@ -1,34 +1,14 @@
-package com.fundtransfer.entity;
+package com.fundtransfer.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "beneficiaries")
-public class Beneficiary {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class BeneficiaryDTO {
 
     private String beneficiaryName;
     private String accountNumber;
-    private String ifscCode;
     private String bankName;
+    private String ifscCode;
     private Long userId;
 
-    public Beneficiary() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public BeneficiaryDTO() {
     }
 
     public String getBeneficiaryName() {
@@ -47,20 +27,20 @@ public class Beneficiary {
         this.accountNumber = accountNumber;
     }
 
-    public String getIfscCode() {
-        return ifscCode;
-    }
-
-    public void setIfscCode(String ifscCode) {
-        this.ifscCode = ifscCode;
-    }
-
     public String getBankName() {
         return bankName;
     }
 
     public void setBankName(String bankName) {
         this.bankName = bankName;
+    }
+
+    public String getIfscCode() {
+        return ifscCode;
+    }
+
+    public void setIfscCode(String ifscCode) {
+        this.ifscCode = ifscCode;
     }
 
     public Long getUserId() {
