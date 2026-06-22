@@ -1,0 +1,6 @@
+fund-transfer-ui/node_modules/
+fund-transfer-ui/.angular/
+fund-transfer-ui/dist/
+ 
+fund-transfer-api/target/
+fund-transfer-api/.mvn/wrapper/maven-wrapper.jar
