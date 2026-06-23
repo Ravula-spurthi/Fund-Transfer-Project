@@ -11,11 +11,15 @@ export class BeneficiaryService {
 
   constructor(private http: HttpClient) {}
 
-  getBeneficiaries(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  getBeneficiaries(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
   }
 
   addBeneficiary(data: any): Observable<any> {
     return this.http.post(this.apiUrl, data);
+  }
+
+  deleteBeneficiary(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

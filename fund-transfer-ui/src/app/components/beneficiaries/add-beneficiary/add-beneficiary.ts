@@ -1,20 +1,51 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { BeneficiaryService } from '../../../core/services/beneficiary.service';
 
 @Component({
   selector: 'app-add-beneficiary',
   standalone: true,
-  imports: [RouterModule],
+  imports: [FormsModule],
   templateUrl: './add-beneficiary.html',
   styleUrl: './add-beneficiary.css'
 })
 export class AddBeneficiary {
 
-  constructor(private router: Router) {}
+  beneficiary = {
+    beneficiaryName: '',
+    accountNumber: '',
+    bankName: '',
+    ifscCode: '',
+    userId: 1
+  };
+
+  constructor(
+    private beneficiaryService: BeneficiaryService,
+    private router: Router
+  ) {}
 
   addBeneficiary() {
-    alert('Beneficiary Added Successfully');
-    this.router.navigate(['/beneficiary-list']);
-  }
 
+    this.beneficiaryService
+      .addBeneficiary(this.beneficiary)
+      .subscribe({
+
+        next: () => {
+          alert('Beneficiary Added Successfully');
+          this.router.navigate(['/beneficiary-list']);
+        },
+
+        error: (err) => {
+          console.log('ERROR =>', err);
+
+           alert(
+          'Status: ' +
+           err.status +
+          '\nMessage: ' +
+           err.message
+       );
+      }
+      });
+  }
 }

@@ -1,39 +1,29 @@
-<div class="beneficiary-container">
+<div class="container">
 
-  <div class="beneficiary-card">
+  <h2>Add Beneficiary</h2>
 
-    <h2>Add Beneficiary</h2>
+  <input
+    type="text"
+    placeholder="Beneficiary Name"
+    [(ngModel)]="beneficiary.beneficiaryName">
 
-    <form>
+  <input
+    type="text"
+    placeholder="Account Number"
+    [(ngModel)]="beneficiary.accountNumber">
 
-      <input
-        type="text"
-        placeholder="Beneficiary Name">
+  <input
+    type="text"
+    placeholder="Bank Name"
+    [(ngModel)]="beneficiary.bankName">
 
-      <input
-        type="text"
-        placeholder="Account Number">
+  <input
+    type="text"
+    placeholder="IFSC Code"
+    [(ngModel)]="beneficiary.ifscCode">
 
-      <input
-        type="text"
-        placeholder="Confirm Account Number">
-
-      <input
-        type="text"
-        placeholder="IFSC Code">
-
-      <input
-        type="text"
-        placeholder="Branch Name">
-
-      <button
-        type="button"
-        (click)="addBeneficiary()">
-        Add Beneficiary
-      </button>
-
-    </form>
-
-  </div>
+  <button (click)="addBeneficiary()">
+    Add Beneficiary
+  </button>
 
 </div>
