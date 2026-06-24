@@ -2,15 +2,24 @@ package com.fundtransfer.dto;
 
 public class FundTransferDTO {
 
-    private String beneficiaryName;
+    private Long senderId;
+    private Long beneficiaryId;
     private Double amount;
 
-    public String getBeneficiaryName() {
-        return beneficiaryName;
+    public Long getSenderId() {
+        return senderId;
     }
 
-    public void setBeneficiaryName(String beneficiaryName) {
-        this.beneficiaryName = beneficiaryName;
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
+    }
+
+    public Long getBeneficiaryId() {
+        return beneficiaryId;
+    }
+
+    public void setBeneficiaryId(Long beneficiaryId) {
+        this.beneficiaryId = beneficiaryId;
     }
 
     public Double getAmount() {

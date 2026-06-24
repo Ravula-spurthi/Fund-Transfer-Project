@@ -26,6 +26,13 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    public Double getBalance(Long id) {
+    User user = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+
+    return user.getBalance();
+    }
+
     public User updateUser(Long id, User user) {
 
         User existing = userRepository.findById(id).orElse(null);

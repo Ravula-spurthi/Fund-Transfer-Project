@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.fundtransfer.dto.FundTransferDTO;
 import com.fundtransfer.entity.Transaction;
+import com.fundtransfer.entity.User;
 import com.fundtransfer.repository.TransactionRepository;
+import com.fundtransfer.repository.UserRepository;
 
 @Service
 public class FundTransferService {
@@ -15,20 +17,39 @@ public class FundTransferService {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public String transferFunds(FundTransferDTO dto) {
 
-        if (dto.getAmount() <= 0) {
-            return "Invalid amount";
-        }
+    User sender = userRepository.findById(dto.getSenderId())
+            .orElseThrow(() -> new RuntimeException("Sender not found"));
 
-        Transaction transaction = new Transaction();
-        transaction.setBeneficiaryName(dto.getBeneficiaryName());
-        transaction.setAmount(dto.getAmount());
-        transaction.setStatus("SUCCESS");
-        transaction.setTransactionDate(LocalDate.now());
+    User beneficiary = userRepository.findById(dto.getBeneficiaryId())
+            .orElseThrow(() -> new RuntimeException("Beneficiary not found"));
 
-        transactionRepository.save(transaction);
+    if (dto.getAmount() <= 0) {
+    throw new RuntimeException("Amount must be greater than 0");
+    }
 
-        return "Fund Transfer Successful";
+    if (sender.getBalance() < dto.getAmount()) {
+    throw new RuntimeException("Insufficient balance");
+    }
+
+    sender.setBalance(sender.getBalance() - dto.getAmount());
+    beneficiary.setBalance(beneficiary.getBalance() + dto.getAmount());
+
+    userRepository.save(sender);
+    userRepository.save(beneficiary);
+
+    Transaction transaction = new Transaction();
+    transaction.setBeneficiaryName(beneficiary.getName());
+    transaction.setAmount(dto.getAmount());
+    transaction.setStatus("SUCCESS");
+    transaction.setTransactionDate(LocalDate.now());
+
+transactionRepository.save(transaction);
+
+    return "Fund Transfer Successful";
     }
 }
