@@ -1,21 +1,45 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { TransferService } from '../../../core/services/transfer';
 
 @Component({
   selector: 'app-transfer-money',
   standalone: true,
+  imports: [FormsModule],
   templateUrl: './transfer-money.html',
   styleUrl: './transfer-money.css'
 })
 export class TransferMoney {
 
-  constructor(private router: Router) {}
+  transferData = {
+  beneficiaryName: '',
+  amount: 0
+};
+
+  constructor(private transferService: TransferService) {}
 
   transfer() {
-    this.router.navigate(['/otp-verification']);
-  }
+
+  this.transferService
+      .transferMoney(this.transferData)
+      .subscribe({
+
+        next: (response) => {
+          alert(response);
+        },
+
+        error: (error) => {
+  console.log('FULL ERROR:', error);
+  alert(JSON.stringify(error));
+      }
+
+      });
+}
 
   resetForm() {
-    location.reload();
-  }
+  this.transferData = {
+    beneficiaryName: '',
+    amount: 0
+  };
+}
 }

@@ -1,30 +1,29 @@
-<div class="transfer-container">
+<h2>Fund Transfer</h2>
 
-  <h2>Fund Transfer</h2>
+<form (ngSubmit)="transfer()">
 
-  <input type="text" placeholder="From Account Number" value="1234567890">
+  <input
+      type="text"
+      placeholder="Beneficiary Name"
+      [(ngModel)]="transferData.beneficiaryName"
+      name="beneficiaryName">
 
-  <select>
-    <option>Select Beneficiary</option>
-    <option>Ramesh Kumar</option>
-    <option>Suresh Reddy</option>
-  </select>
+  <br><br>
 
-  <select>
-    <option>IMPS</option>
-    <option>NEFT</option>
-    <option>RTGS</option>
-  </select>
+  <input
+      type="number"
+      placeholder="Amount"
+      [(ngModel)]="transferData.amount"
+      name="amount">
 
-  <input type="number" placeholder="Amount">
+  <br><br>
 
-  <input type="text" placeholder="Remarks">
+  <button type="submit">
+      Transfer
+  </button>
 
-  <input type="date">
+  <button type="button" (click)="resetForm()">
+      Reset
+  </button>
 
-  <div class="buttons">
-    <button (click)="transfer()">Transfer</button>
-    <button (click)="resetForm()">Reset</button>
-  </div>
-
-</div>
+</form>

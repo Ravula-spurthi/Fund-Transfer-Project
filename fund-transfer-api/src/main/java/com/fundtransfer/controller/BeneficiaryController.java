@@ -34,6 +34,6 @@ public class BeneficiaryController {
 
     @DeleteMapping("/beneficiaries/{id}")
     public void deleteBeneficiary(@PathVariable Long id) {
-        beneficiaryService.deleteBeneficiary(id); 
+        beneficiaryService.deleteBeneficiary(id);
     }
 }
