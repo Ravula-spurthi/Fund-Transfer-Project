@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "beneficiaries")
@@ -14,10 +15,21 @@ public class Beneficiary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Beneficiary Name is required")
     private String beneficiaryName;
+
+    @NotBlank(message = "Account Number is required")
     private String accountNumber;
+
+    @NotBlank(message = "IFSC Code is required")
     private String ifscCode;
+
+    @NotBlank(message = "Bank Name is required")
     private String bankName;
+
+    @NotBlank(message = "Branch cannot be empty")
+    private String branch;
+
     private Long userId;
 
     public Beneficiary() {
@@ -61,6 +73,14 @@ public class Beneficiary {
 
     public void setBankName(String bankName) {
         this.bankName = bankName;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
     }
 
     public Long getUserId() {

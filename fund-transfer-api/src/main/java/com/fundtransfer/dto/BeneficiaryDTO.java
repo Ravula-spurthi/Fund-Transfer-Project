@@ -6,6 +6,7 @@ public class BeneficiaryDTO {
     private String accountNumber;
     private String bankName;
     private String ifscCode;
+    private String branch;
     private Long userId;
 
     public BeneficiaryDTO() {
@@ -42,6 +43,14 @@ public class BeneficiaryDTO {
     public void setIfscCode(String ifscCode) {
         this.ifscCode = ifscCode;
     }
+
+    public String getBranch() {
+    return branch;
+}
+
+public void setBranch(String branch) {
+    this.branch = branch;
+}
 
     public Long getUserId() {
         return userId;

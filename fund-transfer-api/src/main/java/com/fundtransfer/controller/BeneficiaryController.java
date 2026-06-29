@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fundtransfer.dto.BeneficiaryDTO;
@@ -26,6 +27,11 @@ public class BeneficiaryController {
     public List<Beneficiary> getAllBeneficiaries() {
         return beneficiaryService.getBeneficiaries(1L);
     }
+
+    @GetMapping("/beneficiaries/search")
+public List<Beneficiary> searchBeneficiary(@RequestParam String name) {
+    return beneficiaryService.searchBeneficiary(name);
+}
 
     @PostMapping("/beneficiaries")
     public Beneficiary addBeneficiary(@RequestBody BeneficiaryDTO dto) {
