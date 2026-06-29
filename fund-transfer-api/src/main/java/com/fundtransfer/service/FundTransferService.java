@@ -27,10 +27,17 @@ public class FundTransferService {
 
     User beneficiary = userRepository.findById(dto.getBeneficiaryId())
             .orElseThrow(() -> new RuntimeException("Beneficiary not found"));
+    if (sender.getId().equals(beneficiary.getId())) {
+    throw new RuntimeException("Cannot transfer to the same account");
+}
 
     if (dto.getAmount() <= 0) {
     throw new RuntimeException("Amount must be greater than 0");
     }
+
+    if (dto.getAmount() > 50000) {
+    throw new RuntimeException("Daily transfer limit exceeded");
+}
 
     if (sender.getBalance() < dto.getAmount()) {
     throw new RuntimeException("Insufficient balance");
