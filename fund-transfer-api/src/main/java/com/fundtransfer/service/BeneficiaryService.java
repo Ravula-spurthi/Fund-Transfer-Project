@@ -41,6 +41,18 @@ throw new RuntimeException("Branch cannot be empty");
 
 }
 
+if(dto.getAccountNumber() == null ||
+   dto.getAccountNumber().length() < 10){
+
+    throw new RuntimeException("Invalid Account Number");
+}
+
+if(dto.getBankName() == null ||
+   dto.getBankName().trim().isEmpty()){
+
+    throw new RuntimeException("Bank Name cannot be empty");
+}
+
         Beneficiary beneficiary = new Beneficiary();
 
         beneficiary.setBeneficiaryName(dto.getBeneficiaryName());

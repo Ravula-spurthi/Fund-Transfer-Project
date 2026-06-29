@@ -1,5 +1,6 @@
 package com.fundtransfer.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,4 +31,9 @@ public class TransactionService {
     public List<Transaction> getTransactionsByUser(Long userId) {
         return transactionRepository.findByUserId(userId);
     }
+
+    public List<Transaction> getStatement(LocalDate fromDate, LocalDate toDate)
+     {
+         return transactionRepository.findByTransactionDateBetween(fromDate, toDate);
+     }
 }

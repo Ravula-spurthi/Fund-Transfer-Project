@@ -1,12 +1,15 @@
 package com.fundtransfer.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fundtransfer.entity.Transaction;
@@ -31,6 +34,21 @@ public Transaction getTransactionById(@PathVariable Long id) {
 public List<Transaction> getTransactionsByUser(@PathVariable Long id) {
     return transactionService.getTransactionsByUser(id);
 }
+
+@GetMapping("/statement")
+public List<Transaction> getStatement(
+
+        @RequestParam
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        LocalDate fromDate,
+
+        @RequestParam
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        LocalDate toDate) {
+
+    return transactionService.getStatement(fromDate, toDate);
+}
+
     @PostMapping("/transactions")
     public Transaction saveTransaction(@RequestBody Transaction transaction) {
         return transactionService.saveTransaction(transaction);
