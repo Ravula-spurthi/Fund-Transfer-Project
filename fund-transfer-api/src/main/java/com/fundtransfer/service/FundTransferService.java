@@ -50,10 +50,21 @@ public class FundTransferService {
     userRepository.save(beneficiary);
 
     Transaction transaction = new Transaction();
-    transaction.setBeneficiaryName(beneficiary.getName());
-    transaction.setAmount(dto.getAmount());
-    transaction.setStatus("SUCCESS");
-    transaction.setTransactionDate(LocalDate.now());
+
+transaction.setUserId(sender.getId());
+transaction.setBeneficiaryName(beneficiary.getName());
+transaction.setAmount(dto.getAmount());
+transaction.setStatus("SUCCESS");
+transaction.setTransactionDate(
+        dto.getTransferDate() != null ? dto.getTransferDate() : LocalDate.now()
+);
+
+// ADD THESE TWO LINES HERE
+transaction.setTransactionType(dto.getTransferType());
+transaction.setRemarks(dto.getRemarks());
+
+transaction.setBalance(sender.getBalance());
+transaction.setTransactionMode("DEBIT");
 
 transactionRepository.save(transaction);
 

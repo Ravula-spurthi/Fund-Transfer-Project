@@ -1,11 +1,16 @@
 package com.fundtransfer.dto;
-
+import java.time.LocalDate;
 public class FundTransferDTO {
 
     private Long senderId;
     private Long beneficiaryId;
     private Double amount;
+    private String transferType;
+    private String remarks;
+    private LocalDate transferDate;
 
+public FundTransferDTO() {
+    }
     public Long getSenderId() {
         return senderId;
     }
@@ -28,5 +33,29 @@ public class FundTransferDTO {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getTransferType() {
+        return transferType;
+    }
+
+    public void setTransferType(String transferType) {
+        this.transferType = transferType;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public LocalDate getTransferDate() {
+        return transferDate;
+    }
+
+    public void setTransferDate(LocalDate transferDate) {
+        this.transferDate = transferDate;
     }
 }
