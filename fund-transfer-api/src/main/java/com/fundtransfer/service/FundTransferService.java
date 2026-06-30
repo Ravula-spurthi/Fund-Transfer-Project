@@ -15,59 +15,70 @@ import com.fundtransfer.repository.UserRepository;
 public class FundTransferService {
 
     @Autowired
-    private TransactionRepository transactionRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private TransactionRepository transactionRepository;
 
     public String transferFunds(FundTransferDTO dto) {
 
-    User sender = userRepository.findById(dto.getSenderId())
-            .orElseThrow(() -> new RuntimeException("Sender not found"));
+        User sender = userRepository.findById(dto.getSenderId())
+                .orElseThrow(() -> new RuntimeException("Sender not found"));
 
-    User beneficiary = userRepository.findById(dto.getBeneficiaryId())
-            .orElseThrow(() -> new RuntimeException("Beneficiary not found"));
-    if (sender.getId().equals(beneficiary.getId())) {
-    throw new RuntimeException("Cannot transfer to the same account");
-}
+        User beneficiary = userRepository.findById(dto.getBeneficiaryId())
+                .orElseThrow(() -> new RuntimeException("Beneficiary not found"));
 
-    if (dto.getAmount() <= 0) {
-    throw new RuntimeException("Amount must be greater than 0");
-    }
+        // Debug
+        System.out.println("Sender Balance: " + sender.getBalance());
+        System.out.println("Beneficiary Balance: " + beneficiary.getBalance());
 
-    if (dto.getAmount() > 50000) {
-    throw new RuntimeException("Daily transfer limit exceeded");
-}
+        if (sender.getBalance() == null) {
+            sender.setBalance(0.0);
+        }
 
-    if (sender.getBalance() < dto.getAmount()) {
-    throw new RuntimeException("Insufficient balance");
-    }
+        if (beneficiary.getBalance() == null) {
+            beneficiary.setBalance(0.0);
+        }
 
-    sender.setBalance(sender.getBalance() - dto.getAmount());
-    beneficiary.setBalance(beneficiary.getBalance() + dto.getAmount());
+        if (sender.getId().equals(beneficiary.getId())) {
+            throw new RuntimeException("Cannot transfer to the same account");
+        }
 
-    userRepository.save(sender);
-    userRepository.save(beneficiary);
+        if (dto.getAmount() <= 0) {
+            throw new RuntimeException("Amount must be greater than 0");
+        }
 
-    Transaction transaction = new Transaction();
+        if (dto.getAmount() > 50000) {
+            throw new RuntimeException("Daily transfer limit exceeded");
+        }
 
-transaction.setUserId(sender.getId());
-transaction.setBeneficiaryName(beneficiary.getName());
-transaction.setAmount(dto.getAmount());
-transaction.setStatus("SUCCESS");
-transaction.setTransactionDate(
-        dto.getTransferDate() != null ? dto.getTransferDate() : LocalDate.now()
-);
+        if (sender.getBalance() < dto.getAmount()) {
+            throw new RuntimeException("Insufficient balance");
+        }
 
-// ADD THESE TWO LINES HERE
-transaction.setTransactionType(dto.getTransferType());
-transaction.setRemarks(dto.getRemarks());
+        sender.setBalance(sender.getBalance() - dto.getAmount());
+        beneficiary.setBalance(beneficiary.getBalance() + dto.getAmount());
 
-transaction.setBalance(sender.getBalance());
-transaction.setTransactionMode("DEBIT");
+        userRepository.save(sender);
+        userRepository.save(beneficiary);
 
-transactionRepository.save(transaction);
+        Transaction transaction = new Transaction();
 
-    return "Fund Transfer Successful";
+        transaction.setUserId(sender.getId());
+        transaction.setBeneficiaryName(beneficiary.getName());
+        transaction.setAmount(dto.getAmount());
+        transaction.setStatus("SUCCESS");
+        transaction.setTransactionDate(
+                dto.getTransferDate() != null ? dto.getTransferDate() : LocalDate.now());
+
+        transaction.setTransactionType(dto.getTransferType());
+        transaction.setRemarks(dto.getRemarks());
+
+        transaction.setBalance(sender.getBalance());
+        transaction.setTransactionMode("DEBIT");
+
+        transactionRepository.save(transaction);
+
+        return "Fund Transfer Successful";
     }
 }
