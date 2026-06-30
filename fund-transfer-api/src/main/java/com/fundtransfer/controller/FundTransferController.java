@@ -11,15 +11,15 @@ import com.fundtransfer.dto.FundTransferDTO;
 import com.fundtransfer.service.FundTransferService;
 
 @RestController
-@RequestMapping("/transfer")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api/fund-transfer")
+@CrossOrigin(origins = "*")
 public class FundTransferController {
 
     @Autowired
     private FundTransferService fundTransferService;
 
     @PostMapping
-    public String transfer(@RequestBody FundTransferDTO dto) {
-        return fundTransferService.transferFunds(dto);
+    public String transferMoney(@RequestBody FundTransferDTO request) {
+        return fundTransferService.transferMoney(request);
     }
 }
