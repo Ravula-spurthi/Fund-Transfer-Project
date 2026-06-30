@@ -1,8 +1,13 @@
 export interface Transaction {
-  transactionId: number;
-  fromAccount: string;
-  toAccount: string;
+  id: number;
+  beneficiaryName: string;
   amount: number;
-  date: string;
   status: string;
+  transactionDate: string;
+
+  balance?: number;
+  remarks?: string;
+  transactionMode?: string;
+  transactionType?: string;
+  userId?: number;
 }

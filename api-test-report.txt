@@ -1,0 +1,30 @@
+Fund Transfer Project - API Test Report
+
+1. User APIs
+✓ POST /users - Passed
+✓ GET /users - Passed
+✓ GET /users/{id} - Passed
+✓ PUT /users/{id} - Passed
+✓ DELETE /users/{id} - Passed
+
+2. Beneficiary APIs
+✓ POST /beneficiaries - Passed
+✓ GET /beneficiaries - Passed
+
+3. Transaction APIs
+✓ POST /transactions - Passed
+✓ GET /transactions - Passed
+
+4. Login API
+Pending
+
+5. Fund Transfer API
+Pending
+
+Tested Using:
+Postman
+Spring Boot Backend
+MySQL Database
+
+Result:
+All implemented APIs working successfully.

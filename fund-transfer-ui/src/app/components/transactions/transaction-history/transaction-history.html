@@ -1,11 +1,19 @@
 <div class="transaction-container">
 
   <h2>Transaction History</h2>
+  
 
-  <table>
+  <h3>Total Transactions: {{ transactions.length }}</h3>
+
+  <div *ngIf="transactions.length === 0">
+    No Data Found
+  </div>
+
+  <table *ngIf="transactions.length > 0" border="1">
 
     <thead>
       <tr>
+        <th>ID</th>
         <th>Date</th>
         <th>Beneficiary</th>
         <th>Amount</th>
@@ -15,10 +23,11 @@
 
     <tbody>
       <tr *ngFor="let txn of transactions">
-        <td>{{txn.date}}</td>
-        <td>{{txn.beneficiary}}</td>
-        <td>₹ {{txn.amount}}</td>
-        <td>{{txn.status}}</td>
+        <td>{{ txn.id }}</td>
+        <td>{{ txn.transactionDate }}</td>
+        <td>{{ txn.beneficiaryName }}</td>
+        <td>{{ txn.amount }}</td>
+        <td>{{ txn.status }}</td>
       </tr>
     </tbody>
 

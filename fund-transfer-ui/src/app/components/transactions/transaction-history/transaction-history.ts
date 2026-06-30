@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { Transaction } from '../../../models/transaction';
+import { TransactionService } from '../../../core/services/transaction.service';
 
 @Component({
   selector: 'app-transaction-history',
@@ -8,27 +11,31 @@ import { CommonModule } from '@angular/common';
   templateUrl: './transaction-history.html',
   styleUrl: './transaction-history.css'
 })
-export class TransactionHistory {
+export class TransactionHistory implements OnInit {
 
-  transactions = [
-    {
-      date: '19-06-2026',
-      beneficiary: 'Spurthi',
-      amount: 5000,
-      status: 'Success'
-    },
-    {
-      date: '18-06-2026',
-      beneficiary: 'Pooja',
-      amount: 2000,
-      status: 'Success'
-    },
-    {
-      date: '17-06-2026',
-      beneficiary: 'Bhavana',
-      amount: 1000,
-      status: 'Failed'
-    }
-  ];
+  transactions: Transaction[] = [];
+
+  constructor(
+    private transactionService: TransactionService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+
+    this.transactionService.getTransactions().subscribe({
+
+      next: (data) => {
+        console.log('API Response:', data);
+        this.transactions = data;
+        this.cdr.detectChanges();
+      },
+
+      error: (err) => {
+        console.error(err);
+      }
+
+    });
+
+  }
 
 }
