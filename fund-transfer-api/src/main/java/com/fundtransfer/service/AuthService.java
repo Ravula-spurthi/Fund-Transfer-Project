@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.fundtransfer.dto.ForgotPasswordDTO;
 import com.fundtransfer.dto.LoginResponseDTO;
+import com.fundtransfer.dto.RegisterDTO;
 import com.fundtransfer.entity.User;
 import com.fundtransfer.repository.UserRepository;
 
@@ -54,4 +55,32 @@ public class AuthService {
 
     return "Password Updated Successfully";
  }
+
+ public String register(RegisterDTO registerDTO) {
+
+    if (userRepository.findByEmail(registerDTO.getEmail()).isPresent()) {
+        return "Email already exists";
+    }
+
+    if (userRepository.findByAccountNumber(registerDTO.getAccountNumber()).isPresent()) {
+        return "Account Number already exists";
+    }
+
+    if (userRepository.findByMobile(registerDTO.getMobile()).isPresent()) {
+        return "Mobile Number already exists";
+    }
+
+    User user = new User();
+
+    user.setName(registerDTO.getName());
+    user.setEmail(registerDTO.getEmail());
+    user.setMobile(registerDTO.getMobile());
+    user.setAccountNumber(registerDTO.getAccountNumber());
+    user.setPassword(registerDTO.getPassword());
+    user.setBalance(registerDTO.getBalance());
+
+    userRepository.save(user);
+
+    return "User Registered Successfully";
+}
 }
