@@ -6,15 +6,18 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TransferService {
 
-  private apiUrl = 'http://localhost:8080/transfer';
-
   constructor(private http: HttpClient) {}
+
+  getBeneficiaries() {
+    return this.http.get<any[]>("http://localhost:8080/beneficiaries");
+  }
 
   transferMoney(data: any) {
     return this.http.post(
-      this.apiUrl,
+      "http://localhost:8080/api/fund-transfer",
       data,
       { responseType: 'text' }
     );
   }
+
 }

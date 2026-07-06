@@ -8,7 +8,7 @@ public class BeneficiaryDTO {
     private String ifscCode;
     private String branch;
     private Long userId;
-
+    private String mobileNumber;
     public BeneficiaryDTO() {
     }
 
@@ -58,5 +58,13 @@ public void setBranch(String branch) {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 }

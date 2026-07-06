@@ -1,45 +1,118 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransferService } from '../../../core/services/transfer';
 
 @Component({
   selector: 'app-transfer-money',
   standalone: true,
-  imports: [FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './transfer-money.html',
   styleUrl: './transfer-money.css'
 })
-export class TransferMoney {
+export class TransferMoney implements OnInit {
+
+  beneficiaries: any[] = [];
 
   transferData = {
-  beneficiaryName: '',
-  amount: 0
-};
+
+    fromAccount: sessionStorage.getItem("accountNumber") || "123456789012",
+
+    availableBalance: sessionStorage.getItem("balance") || "25000",
+
+    beneficiaryName: "",
+
+    accountNumber: "",
+
+    ifscCode: "",
+
+    bankName: "",
+
+    branch: "",
+
+    mobileNumber: "",
+
+    amount: 0,
+
+    transferDate: new Date().toISOString().substring(0, 10),
+
+    remarks: "",
+
+    paymentType: "Pay Now",
+
+    scheduleDate: ""
+
+  };
 
   constructor(private transferService: TransferService) {}
 
-  transfer() {
+  ngOnInit(): void {
 
-  this.transferService
-      .transferMoney(this.transferData)
-      .subscribe({
+    this.transferService.getBeneficiaries().subscribe({
 
-        next: (response) => {
-          alert(response);
-        },
+      next: (data: any[]) => {
 
-        error: (error) => {
-  console.log('FULL ERROR:', error);
-  alert(JSON.stringify(error));
+        console.log("Beneficiaries Loaded:", data);
+
+        alert("Loaded " + data.length + " beneficiaries");
+
+        this.beneficiaries = data;
+
+      },
+
+      error: (err) => {
+
+        console.error("Error loading beneficiaries:", err);
+
+        alert("Failed to load beneficiaries");
+
       }
 
-      });
-}
+    });
 
-  resetForm() {
-  this.transferData = {
-    beneficiaryName: '',
-    amount: 0
-  };
-}
+  }
+
+  onBeneficiaryChange(): void {
+
+    const selected = this.beneficiaries.find(
+      b => b.beneficiaryName === this.transferData.beneficiaryName
+    );
+
+    if (selected) {
+
+      this.transferData.accountNumber = selected.accountNumber;
+      this.transferData.ifscCode = selected.ifscCode;
+      this.transferData.bankName = selected.bankName;
+      this.transferData.branch = selected.branch;
+      this.transferData.mobileNumber = selected.mobileNumber;
+
+    }
+
+  }
+
+  transfer(): void {
+
+    alert("Transfer API integration in next phase");
+
+  }
+
+  resetForm(): void {
+
+    this.transferData.beneficiaryName = "";
+    this.transferData.accountNumber = "";
+    this.transferData.ifscCode = "";
+    this.transferData.bankName = "";
+    this.transferData.branch = "";
+    this.transferData.mobileNumber = "";
+    this.transferData.amount = 0;
+    this.transferData.transferDate = new Date().toISOString().substring(0, 10);
+    this.transferData.remarks = "";
+    this.transferData.paymentType = "Pay Now";
+    this.transferData.scheduleDate = "";
+
+  }
+
 }

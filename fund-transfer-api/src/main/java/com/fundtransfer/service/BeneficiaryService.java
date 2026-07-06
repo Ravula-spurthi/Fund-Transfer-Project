@@ -30,36 +30,42 @@ public class BeneficiaryService {
 
         String ifsc = dto.getIfscCode();
 
-if (ifsc == null || !ifsc.matches("^[A-Z]{4}0[A-Z0-9]{6}$")) {
-    throw new RuntimeException("Invalid IFSC Code");
-}
+        if (ifsc == null || !ifsc.matches("^[A-Z]{4}0[A-Z0-9]{6}$")) {
+            throw new RuntimeException("Invalid IFSC Code");
+        }
 
-if(dto.getBranch()==null ||
-dto.getBranch().trim().isEmpty()){
+        if (dto.getBranch() == null ||
+            dto.getBranch().trim().isEmpty()) {
 
-throw new RuntimeException("Branch cannot be empty");
+            throw new RuntimeException("Branch cannot be empty");
+        }
 
-}
+        if (dto.getAccountNumber() == null ||
+            dto.getAccountNumber().length() < 10) {
 
-if(dto.getAccountNumber() == null ||
-   dto.getAccountNumber().length() < 10){
+            throw new RuntimeException("Invalid Account Number");
+        }
 
-    throw new RuntimeException("Invalid Account Number");
-}
+        if (dto.getBankName() == null ||
+            dto.getBankName().trim().isEmpty()) {
 
-if(dto.getBankName() == null ||
-   dto.getBankName().trim().isEmpty()){
+            throw new RuntimeException("Bank Name cannot be empty");
+        }
 
-    throw new RuntimeException("Bank Name cannot be empty");
-}
+        if (dto.getMobileNumber() == null ||
+            dto.getMobileNumber().trim().isEmpty()) {
+
+            throw new RuntimeException("Mobile Number cannot be empty");
+        }
 
         Beneficiary beneficiary = new Beneficiary();
 
         beneficiary.setBeneficiaryName(dto.getBeneficiaryName());
         beneficiary.setAccountNumber(dto.getAccountNumber());
-        beneficiary.setBankName(dto.getBankName());
         beneficiary.setIfscCode(dto.getIfscCode());
+        beneficiary.setBankName(dto.getBankName());
         beneficiary.setBranch(dto.getBranch());
+        beneficiary.setMobileNumber(dto.getMobileNumber());
         beneficiary.setUserId(dto.getUserId());
 
         return repository.save(beneficiary);
@@ -69,11 +75,10 @@ if(dto.getBankName() == null ||
         return repository.findByUserId(userId);
     }
 
-public List<Beneficiary> searchBeneficiary(String name){
+    public List<Beneficiary> searchBeneficiary(String name) {
+        return repository.findByBeneficiaryNameContainingIgnoreCase(name);
+    }
 
-return repository.findByBeneficiaryNameContainingIgnoreCase(name);
-
-}
     public void deleteBeneficiary(Long id) {
         repository.deleteById(id);
     }
