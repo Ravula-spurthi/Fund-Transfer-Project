@@ -1,11 +1,47 @@
-<h2>Create Account</h2>
- 
-<input type="text" placeholder="Full Name">
-<input type="email" placeholder="Email">
-<input type="text" placeholder="Mobile Number">
-<input type="text" placeholder="Account Number">
-<input type="text" placeholder="Username">
-<input type="password" placeholder="Password">
-<input type="password" placeholder="Confirm Password">
- 
-<button>Register</button>
+<div class="signup-container">
+
+    <h2>Create Account</h2>
+
+    <input
+        type="text"
+        placeholder="Full Name"
+        [(ngModel)]="name">
+
+    <input
+        type="email"
+        placeholder="Email"
+        [(ngModel)]="email">
+
+    <input
+        type="text"
+        placeholder="Mobile Number"
+        [(ngModel)]="mobile">
+
+    <input
+        type="text"
+        placeholder="Account Number"
+        [(ngModel)]="accountNumber">
+
+    
+
+    <input
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="password">
+
+    <input
+        type="password"
+        placeholder="Confirm Password"
+        [(ngModel)]="confirmPassword">
+
+    <button (click)="register()">
+        Register
+    </button>
+
+    <br><br>
+
+    <a routerLink="/login">
+        Back to Login
+    </a>
+
+</div>
