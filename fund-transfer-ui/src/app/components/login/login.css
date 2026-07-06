@@ -60,3 +60,32 @@ button{
   justify-content:space-between;
   margin-top:15px;
 }
+.captcha-box{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:10px;
+
+background:#f0f0f0;
+
+margin-bottom:15px;
+
+font-size:18px;
+
+font-weight:bold;
+
+}
+
+.captcha-box button{
+
+width:auto;
+
+padding:6px 12px;
+
+background:#4CAF50;
+
+}

@@ -1,69 +1,146 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
- 
+import { Router, RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
     CommonModule,
-    RouterModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule
   ],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
 export class Login {
- 
-  email: string = '';
-  password: string = '';
- 
+
+  email = '';
+  password = '';
+
+  role = 'user';
+
+  captcha = '';
+  enteredCaptcha = '';
+
   constructor(
-    private router: Router,
-    private http: HttpClient
-  ) {}
- 
+    private http: HttpClient,
+    private router: Router
+  ) {
+    this.generateCaptcha();
+  }
+
+  generateCaptcha() {
+    this.captcha = Math.floor(
+      1000 + Math.random() * 9000
+    ).toString();
+  }
+
+  refreshCaptcha() {
+    this.generateCaptcha();
+    this.enteredCaptcha = '';
+  }
+
   onlogin() {
- 
-    console.log('Email:', this.email);
-    console.log('Password:', this.password);
- 
+
+    if (this.email.trim() == '') {
+      alert("Enter Email");
+      return;
+    }
+
+    if (this.password.trim() == '') {
+      alert("Enter Password");
+      return;
+    }
+
+    if (this.enteredCaptcha != this.captcha) {
+      alert("Invalid CAPTCHA");
+      this.refreshCaptcha();
+      return;
+    }
+
+    if (this.role == "admin") {
+
+      if (this.email == "admin@fund.com"
+          && this.password == "admin123") {
+
+        sessionStorage.setItem("role", "admin");
+
+        alert("Admin Login Successful");
+
+        this.router.navigate(['/dashboard']);
+        return;
+      }
+      else{
+        alert("Invalid Admin Credentials");
+        return;
+      }
+
+    }
+
     const loginData = {
+
       email: this.email,
       password: this.password
+
     };
- 
-    this.http.post(
-      'http://localhost:8080/login',
-      loginData,
-      { responseType: 'text' }
+    console.log(loginData);
+    this.http.post<any>(
+      'http://localhost:8080/api/auth/login',
+      loginData
     ).subscribe({
+
       next: (response) => {
- 
-        console.log('Success:', response);
- 
-        sessionStorage.setItem('isLoggedIn', 'true');
-        sessionStorage.setItem('email', this.email);
- 
-        alert('Login Successful');
- 
+
+        sessionStorage.setItem(
+          'isLoggedIn',
+          'true'
+        );
+
+        sessionStorage.setItem(
+          'email',
+          response.email
+        );
+
+        sessionStorage.setItem(
+          'name',
+          response.name
+        );
+
+        sessionStorage.setItem(
+          'accountNumber',
+          response.accountNumber
+        );
+
+        sessionStorage.setItem(
+          'balance',
+          response.balance
+        );
+
+        sessionStorage.setItem(
+          'role',
+          'user'
+        );
+
+        alert("Login Successful");
+
         this.router.navigate(['/dashboard']);
+
       },
- 
-      error: (error) => {
- 
-        console.log('Error:', error);
- 
-        if (error.error) {
-          alert(error.error);
-        } else {
-          alert('Invalid Credentials');
-        }
+
+      error: (err) => {
+
+        alert("Invalid Email or Password");
+
+        console.log(err);
+
       }
+
     });
+
   }
+
 }
- 

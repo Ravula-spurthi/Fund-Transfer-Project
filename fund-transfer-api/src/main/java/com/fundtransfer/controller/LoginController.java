@@ -21,9 +21,13 @@ public class LoginController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public Object login(@RequestBody LoginDTO loginDTO) {
-        return authService.login(loginDTO.getEmail(), loginDTO.getPassword());
-    }
+public Object login(@RequestBody LoginDTO loginDTO) {
+
+    System.out.println(loginDTO.getEmail());
+    System.out.println(loginDTO.getPassword());
+
+    return authService.login(loginDTO.getEmail(), loginDTO.getPassword());
+}
 
     @PostMapping("/forgot-password")
     public String forgotPassword(@RequestBody ForgotPasswordDTO forgotPasswordDTO) {

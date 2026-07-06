@@ -18,6 +18,8 @@ public class AuthService {
     private UserRepository userRepository;
 
     public Object login(String email, String password) {
+       // System.out.println(email);
+       // System.out.println(password);
 
         Optional<User> optionalUser = userRepository.findByEmail(email);
 

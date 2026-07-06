@@ -1,53 +1,89 @@
 <div class="login-container">
 
-  <div class="login-card">
+<div class="login-card">
 
-    <h1>Fund Transfer System</h1>
+<h1>Fund Transfer System</h1>
 
-    <div class="role-selection">
-      <label>
-        <input type="radio" name="role" checked>
-        User
-      </label>
+<div class="role-selection">
 
-      <label>
-        <input type="radio" name="role">
-        Admin
-      </label>
-    </div>
+<label>
 
-    <input
-      type="text"
-      placeholder="Email / Mobile Number"
-      [(ngModel)]="email">
+<input
+type="radio"
+name="role"
+value="user"
+[(ngModel)]="role">
 
-    <input
-      type="password"
-      placeholder="Password"
-      [(ngModel)]="password">
+User
 
-    <div class="captcha">
-      CAPTCHA: 1234
-    </div>
+</label>
 
-    <input
-      type="text"
-      placeholder="Enter CAPTCHA">
+<label>
 
-    <button (click)="onlogin()">
-      Login
-    </button>
+<input
+type="radio"
+name="role"
+value="admin"
+[(ngModel)]="role">
 
-    <div class="links">
-      <a routerLink="/signup">
-        Sign Up
-      </a>
+Admin
 
-      <a routerLink="/forgot-password">
-        Forgot Password?
-      </a>
-    </div>
+</label>
 
-  </div>
+</div>
+
+<input
+type="email"
+placeholder="Email"
+[(ngModel)]="email">
+
+<input
+type="password"
+placeholder="Password"
+[(ngModel)]="password">
+
+<div class="captcha-box">
+
+<span>{{captcha}}</span>
+
+<button
+type="button"
+(click)="refreshCaptcha()">
+
+Refresh
+
+</button>
+
+</div>
+
+<input
+type="text"
+placeholder="Enter CAPTCHA"
+[(ngModel)]="enteredCaptcha">
+
+<button
+(click)="onlogin()">
+
+Login
+
+</button>
+
+<div class="links">
+
+<a routerLink="/signup">
+
+Sign Up
+
+</a>
+
+<a routerLink="/forgot-password">
+
+Forgot Password?
+
+</a>
+
+</div>
+
+</div>
 
 </div>
