@@ -3,6 +3,7 @@ package com.fundtransfer.dto;
 public class ForgotPasswordDTO {
 
     private String email;
+    private String mobile;
     private String newPassword;
 
     public ForgotPasswordDTO() {
@@ -14,6 +15,14 @@ public class ForgotPasswordDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getNewPassword() {

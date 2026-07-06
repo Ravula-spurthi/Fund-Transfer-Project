@@ -44,19 +44,23 @@ public class AuthService {
 
     public String forgotPassword(ForgotPasswordDTO forgotPasswordDTO) {
 
-    Optional<User> optionalUser = userRepository.findByEmail(forgotPasswordDTO.getEmail());
+    Optional<User> optionalUser =
+            userRepository.findByEmailAndMobile(
+                    forgotPasswordDTO.getEmail(),
+                    forgotPasswordDTO.getMobile());
 
     if (optionalUser.isEmpty()) {
-        return "User Not Found";
+        return "Invalid Email or Mobile Number";
     }
 
     User user = optionalUser.get();
+
     user.setPassword(forgotPasswordDTO.getNewPassword());
 
     userRepository.save(user);
 
     return "Password Updated Successfully";
- }
+}
 
  public String register(RegisterDTO registerDTO) {
 
