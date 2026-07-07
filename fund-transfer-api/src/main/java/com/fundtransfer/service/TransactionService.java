@@ -22,18 +22,28 @@ public class TransactionService {
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
+
     public Transaction getTransactionById(Long id) {
         return transactionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
     }
 
-    // ADD THIS
     public List<Transaction> getTransactionsByUser(Long userId) {
         return transactionRepository.findByUserId(userId);
     }
 
-    public List<Transaction> getStatement(LocalDate fromDate, LocalDate toDate)
-     {
-         return transactionRepository.findByTransactionDateBetween(fromDate, toDate);
-     }
+    public List<Transaction> getStatement(Long userId,
+                                          LocalDate fromDate,
+                                          LocalDate toDate) {
+
+        if (fromDate != null && toDate != null) {
+            return transactionRepository.findByUserIdAndTransactionDateBetween(
+                    userId,
+                    fromDate,
+                    toDate);
+        }
+
+        return transactionRepository.findByUserId(userId);
+    }
+
 }
