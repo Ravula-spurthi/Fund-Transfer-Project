@@ -4,7 +4,11 @@ public class FundTransferDTO {
 
     private String senderAccount;
     private String receiverAccount;
+    private String beneficiaryName;
     private Double amount;
+    private String remarks;
+    private String paymentType;
+    private String scheduleDate;
 
     public FundTransferDTO() {
     }
@@ -25,11 +29,43 @@ public class FundTransferDTO {
         this.receiverAccount = receiverAccount;
     }
 
+    public String getBeneficiaryName() {
+        return beneficiaryName;
+    }
+
+    public void setBeneficiaryName(String beneficiaryName) {
+        this.beneficiaryName = beneficiaryName;
+    }
+
     public Double getAmount() {
         return amount;
     }
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public String getScheduleDate() {
+        return scheduleDate;
+    }
+
+    public void setScheduleDate(String scheduleDate) {
+        this.scheduleDate = scheduleDate;
     }
 }

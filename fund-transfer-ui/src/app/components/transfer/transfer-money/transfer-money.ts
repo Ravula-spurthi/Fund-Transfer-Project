@@ -19,9 +19,9 @@ export class TransferMoney implements OnInit {
 
   transferData = {
 
-    fromAccount: sessionStorage.getItem("accountNumber") || "123456789012",
+    fromAccount: sessionStorage.getItem("accountNumber") || "123456780",
 
-    availableBalance: sessionStorage.getItem("balance") || "25000",
+    availableBalance: sessionStorage.getItem("balance") || "42000",
 
     beneficiaryName: "",
 
@@ -56,8 +56,6 @@ export class TransferMoney implements OnInit {
       next: (data: any[]) => {
 
         console.log("Beneficiaries Loaded:", data);
-
-        alert("Loaded " + data.length + " beneficiaries");
 
         this.beneficiaries = data;
 
@@ -95,7 +93,45 @@ export class TransferMoney implements OnInit {
 
   transfer(): void {
 
-    alert("Transfer API integration in next phase");
+    const request = {
+
+      senderAccount: this.transferData.fromAccount,
+
+      receiverAccount: this.transferData.accountNumber,
+
+      beneficiaryName: this.transferData.beneficiaryName,
+
+      amount: this.transferData.amount,
+
+      remarks: this.transferData.remarks,
+
+      paymentType: this.transferData.paymentType,
+
+      scheduleDate: this.transferData.scheduleDate
+
+    };
+
+    console.log("Transfer Request:", request);
+
+    this.transferService.transferMoney(request).subscribe({
+
+      next: (response: any) => {
+
+        alert(response);
+
+        this.resetForm();
+
+      },
+
+      error: (error) => {
+
+        console.error(error);
+
+        alert("Transfer Failed");
+
+      }
+
+    });
 
   }
 

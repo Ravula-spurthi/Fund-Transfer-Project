@@ -20,6 +20,8 @@ public class FundTransferController {
 
     @PostMapping
     public String transferMoney(@RequestBody FundTransferDTO request) {
-        return fundTransferService.transferMoney(request);
+
+        return fundTransferService.transferFunds(request);
+
     }
 }

@@ -1,12 +1,14 @@
 package com.fundtransfer.service;
 
-import java.util.Optional;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fundtransfer.dto.FundTransferDTO;
+import com.fundtransfer.entity.Transaction;
 import com.fundtransfer.entity.User;
+import com.fundtransfer.repository.TransactionRepository;
 import com.fundtransfer.repository.UserRepository;
 
 @Service
@@ -15,38 +17,59 @@ public class FundTransferService {
     @Autowired
     private UserRepository userRepository;
 
-    public String transferMoney(FundTransferDTO request) {
+    @Autowired
+    private TransactionRepository transactionRepository;
 
-        Optional<User> senderOptional =
-                userRepository.findByAccountNumber(request.getSenderAccount());
+    public String transferFunds(FundTransferDTO dto) {
 
-        Optional<User> receiverOptional =
-                userRepository.findByAccountNumber(request.getReceiverAccount());
+        // Find sender using account number
+        User sender = userRepository.findByAccountNumber(dto.getSenderAccount())
+                .orElseThrow(() -> new RuntimeException("Sender not found"));
 
-        if (senderOptional.isEmpty()) {
-            return "Sender Account Not Found";
+        // Find beneficiary using account number
+        User beneficiary = userRepository.findByAccountNumber(dto.getReceiverAccount())
+                .orElseThrow(() -> new RuntimeException("Beneficiary not found"));
+
+        // Validation: same account
+        if (sender.getAccountNumber().equals(beneficiary.getAccountNumber())) {
+            throw new RuntimeException("Cannot transfer to same account");
         }
 
-        if (receiverOptional.isEmpty()) {
-            return "Receiver Account Not Found";
+        // Validation: amount
+        if (dto.getAmount() == null || dto.getAmount() <= 0) {
+            throw new RuntimeException("Amount must be greater than 0");
         }
 
-        User sender = senderOptional.get();
-        User receiver = receiverOptional.get();
-
-        if (request.getAmount() <= 0) {
-            return "Invalid Amount";
+        // Validation: daily limit
+        if (dto.getAmount() > 50000) {
+            throw new RuntimeException("Daily transfer limit exceeded");
         }
 
-        if (sender.getBalance() < request.getAmount()) {
-            return "Insufficient Balance";
+        // Validation: balance
+        if (sender.getBalance() < dto.getAmount()) {
+            throw new RuntimeException("Insufficient Balance");
         }
 
-        sender.setBalance(sender.getBalance() - request.getAmount());
-        receiver.setBalance(receiver.getBalance() + request.getAmount());
+        // Update balances
+        sender.setBalance(sender.getBalance() - dto.getAmount());
+        beneficiary.setBalance(beneficiary.getBalance() + dto.getAmount());
 
         userRepository.save(sender);
-        userRepository.save(receiver);
+        userRepository.save(beneficiary);
+
+        // Save transaction
+        Transaction transaction = new Transaction();
+        transaction.setUserId(sender.getId());
+        transaction.setBeneficiaryName(beneficiary.getName());
+        transaction.setAmount(dto.getAmount());
+        transaction.setStatus("SUCCESS");
+        transaction.setTransactionDate(LocalDate.now());
+        transaction.setTransactionType("IMPS");
+        transaction.setRemarks(dto.getRemarks());
+        transaction.setBalance(sender.getBalance());
+        transaction.setTransactionMode("DEBIT");
+
+        transactionRepository.save(transaction);
 
         return "Fund Transfer Successful";
     }
