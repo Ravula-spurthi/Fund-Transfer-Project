@@ -6,17 +6,17 @@
 
     <div class="card">
       <h3>Account Number</h3>
-      <p>1234567890</p>
+      <p>{{ dashboard?.accountNumber }}</p>
     </div>
 
     <div class="card">
       <h3>Available Balance</h3>
-      <p>₹ 50,000</p>
+      <p>₹ {{ dashboard?.balance }}</p>
     </div>
 
     <div class="card">
       <h3>Last Transaction</h3>
-      <p>₹ 2,000 Debited</p>
+      <p>{{ dashboard?.lastTransaction }}</p>
     </div>
 
   </div>
