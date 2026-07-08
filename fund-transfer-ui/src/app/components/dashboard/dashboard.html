@@ -2,21 +2,21 @@
 
   <h1>Fund Transfer Dashboard</h1>
 
-  <div class="cards">
+  <div class="cards" *ngIf="dashboard">
 
     <div class="card">
       <h3>Account Number</h3>
-      <p>{{ dashboard?.accountNumber }}</p>
+      <p>{{ dashboard.accountNumber }}</p>
     </div>
 
     <div class="card">
       <h3>Available Balance</h3>
-      <p>₹ {{ dashboard?.balance }}</p>
+      <p>₹ {{ dashboard.balance }}</p>
     </div>
 
     <div class="card">
       <h3>Last Transaction</h3>
-      <p>{{ dashboard?.lastTransaction }}</p>
+      <p>{{ dashboard.lastTransaction }}</p>
     </div>
 
   </div>
