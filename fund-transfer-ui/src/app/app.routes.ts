@@ -87,14 +87,14 @@ export const routes: Routes = [
   {
   path:'set-pin',
   loadComponent:()=>
-  import('./components/transaction-pin/set-transaction-pin/set-transaction-pin')
+  import('./components/set-transaction-pin/set-transaction-pin')
   .then(m=>m.SetTransactionPin)
 },
 
 {
   path:'change-pin',
   loadComponent:()=>
-  import('./components/transaction-pin/change-transaction-pin/change-transaction-pin')
+  import('./components/change-transaction-pin/change-transaction-pin')
   .then(m=>m.ChangeTransactionPin)
 },
 

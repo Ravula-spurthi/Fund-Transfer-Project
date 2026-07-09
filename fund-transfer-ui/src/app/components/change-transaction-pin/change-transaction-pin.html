@@ -1,0 +1,24 @@
+<div class="container">
+
+  <h2>Change Transaction PIN</h2>
+
+  <input
+    type="password"
+    placeholder="Current PIN"
+    [(ngModel)]="oldPin">
+
+  <input
+    type="password"
+    placeholder="New PIN"
+    [(ngModel)]="newPin">
+
+  <input
+    type="password"
+    placeholder="Confirm New PIN"
+    [(ngModel)]="confirmPin">
+
+  <button (click)="changePin()">
+    Change PIN
+  </button>
+
+</div>
