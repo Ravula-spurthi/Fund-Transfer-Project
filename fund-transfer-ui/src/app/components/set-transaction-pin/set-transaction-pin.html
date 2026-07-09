@@ -1,0 +1,25 @@
+<div class="container">
+
+<h2>Set Transaction PIN</h2>
+
+<label>New PIN</label>
+
+<input
+type="password"
+maxlength="4"
+[(ngModel)]="pin">
+
+<label>Confirm PIN</label>
+
+<input
+type="password"
+maxlength="4"
+[(ngModel)]="confirmPin">
+
+<button (click)="savePin()">
+
+Save PIN
+
+</button>
+
+</div>

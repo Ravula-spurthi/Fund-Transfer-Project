@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DashboardService } from '../../core/services/dashboard.service';
-import { Dashboard as DashboardModel } from '../../models/dashboard';
-import {RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +12,7 @@ import {RouterModule } from '@angular/router';
 })
 export class Dashboard implements OnInit {
 
-  dashboard!: DashboardModel;
+  dashboard: any = {};
 
   userName = sessionStorage.getItem('name') || 'Customer';
 
@@ -24,20 +22,28 @@ export class Dashboard implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
     const userId = Number(sessionStorage.getItem('userId')) || 3;
+
     this.dashboardService.getDashboard(userId).subscribe({
+
       next: (data) => {
+
         this.dashboard = data;
 
         sessionStorage.setItem(
           'balance',
           String(data.balance)
         );
+
       },
+
       error: (err) => {
         console.log(err);
       }
+
     });
+
   }
 
   goToBeneficiary() {
@@ -52,12 +58,20 @@ export class Dashboard implements OnInit {
     this.router.navigate(['/transactions']);
   }
 
+  goToStatement() {
+    this.router.navigate(['/statement']);
+  }
+
   goToProfile() {
     this.router.navigate(['/profile']);
   }
 
-  goToStatement() {
-    this.router.navigate(['/statement']);
+  goToSetPin() {
+    this.router.navigate(['/set-pin']);
+  }
+
+  goToChangePin() {
+    this.router.navigate(['/change-pin']);
   }
 
   logout() {
