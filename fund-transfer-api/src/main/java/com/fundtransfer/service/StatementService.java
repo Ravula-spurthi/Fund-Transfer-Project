@@ -21,11 +21,10 @@ public class StatementService {
             LocalDate toDate) {
 
         if (fromDate != null && toDate != null) {
-            return transactionRepository
-                    .findByUserIdAndTransactionDateBetween(
-                            userId,
-                            fromDate,
-                            toDate);
+            return transactionRepository.findByUserIdAndTransactionDateBetween(
+                    userId,
+                    fromDate,
+                    toDate);
         }
 
         return transactionRepository.findByUserId(userId);

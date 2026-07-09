@@ -18,68 +18,57 @@ export class TransferMoney implements OnInit {
   beneficiaries: any[] = [];
 
   transferData = {
-
-    fromAccount: sessionStorage.getItem("accountNumber") || "123456780",
-
-    availableBalance: sessionStorage.getItem("balance") || "42000",
-
-    beneficiaryName: "",
-
-    accountNumber: "",
-
-    ifscCode: "",
-
-    bankName: "",
-
-    branch: "",
-
-    mobileNumber: "",
-
+    fromAccount: sessionStorage.getItem('accountNumber') || '123451234512',
+    availableBalance: sessionStorage.getItem('balance') || '25000',
+    beneficiaryName: '',
+    accountNumber: '',
+    ifscCode: '',
+    bankName: '',
+    branch: '',
+    mobileNumber: '',
     amount: 0,
-
-    transferDate: new Date().toISOString().substring(0, 10),
-
-    remarks: "",
-
-    paymentType: "Pay Now",
-
-    scheduleDate: ""
-
+    transferDate: new Date().toISOString().substring(0,10),
+    remarks: '',
+    paymentType: 'Pay Now',
+    scheduleDate: ''
   };
 
   constructor(private transferService: TransferService) {}
 
-  ngOnInit(): void {
+ ngOnInit(): void {
 
-    this.transferService.getBeneficiaries().subscribe({
+  this.transferService.getBeneficiaries().subscribe({
 
-      next: (data: any[]) => {
+    next: (data: any) => {
 
-        console.log("Beneficiaries Loaded:", data);
+      console.log("API Response:", data);
 
-        this.beneficiaries = data;
+      this.beneficiaries = Array.isArray(data) ? data : [];
 
-      },
+      console.log("Beneficiaries:", this.beneficiaries);
+      console.log("Total:", this.beneficiaries.length);
 
-      error: (err) => {
+    },
 
-        console.error("Error loading beneficiaries:", err);
+    error: (err) => {
 
-        alert("Failed to load beneficiaries");
+      console.error("Error:", err);
 
-      }
+    }
 
-    });
+  });
 
-  }
+}
 
-  onBeneficiaryChange(): void {
+  onBeneficiaryChange() {
 
     const selected = this.beneficiaries.find(
+
       b => b.beneficiaryName === this.transferData.beneficiaryName
+
     );
 
-    if (selected) {
+    if(selected){
 
       this.transferData.accountNumber = selected.accountNumber;
       this.transferData.ifscCode = selected.ifscCode;
@@ -91,41 +80,41 @@ export class TransferMoney implements OnInit {
 
   }
 
-  transfer(): void {
+  transfer(){
 
-    const request = {
+    const request={
 
-      senderAccount: this.transferData.fromAccount,
+      senderAccount:this.transferData.fromAccount,
 
-      receiverAccount: this.transferData.accountNumber,
+      receiverAccount:this.transferData.accountNumber,
 
-      beneficiaryName: this.transferData.beneficiaryName,
+      beneficiaryName:this.transferData.beneficiaryName,
 
-      amount: this.transferData.amount,
+      amount:this.transferData.amount,
 
-      remarks: this.transferData.remarks,
+      remarks:this.transferData.remarks,
 
-      paymentType: this.transferData.paymentType,
+      paymentType:this.transferData.paymentType,
 
-      scheduleDate: this.transferData.scheduleDate
+      scheduleDate:this.transferData.scheduleDate
 
     };
 
-    console.log("Transfer Request:", request);
+    console.log(request);
 
     this.transferService.transferMoney(request).subscribe({
 
-      next: (response: any) => {
+      next:res=>{
 
-        alert(response);
+        alert(res);
 
         this.resetForm();
 
       },
 
-      error: (error) => {
+      error:err=>{
 
-        console.error(error);
+        console.log(err);
 
         alert("Transfer Failed");
 
@@ -135,19 +124,19 @@ export class TransferMoney implements OnInit {
 
   }
 
-  resetForm(): void {
+  resetForm(){
 
-    this.transferData.beneficiaryName = "";
-    this.transferData.accountNumber = "";
-    this.transferData.ifscCode = "";
-    this.transferData.bankName = "";
-    this.transferData.branch = "";
-    this.transferData.mobileNumber = "";
-    this.transferData.amount = 0;
-    this.transferData.transferDate = new Date().toISOString().substring(0, 10);
-    this.transferData.remarks = "";
-    this.transferData.paymentType = "Pay Now";
-    this.transferData.scheduleDate = "";
+    this.transferData.beneficiaryName='';
+    this.transferData.accountNumber='';
+    this.transferData.ifscCode='';
+    this.transferData.bankName='';
+    this.transferData.branch='';
+    this.transferData.mobileNumber='';
+    this.transferData.amount=0;
+    this.transferData.transferDate=new Date().toISOString().substring(0,10);
+    this.transferData.remarks='';
+    this.transferData.paymentType='Pay Now';
+    this.transferData.scheduleDate='';
 
   }
 

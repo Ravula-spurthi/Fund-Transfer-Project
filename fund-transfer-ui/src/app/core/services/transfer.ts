@@ -1,23 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransferService {
 
+  // Backend Base URL
+  private baseUrl = 'http://localhost:8080';
+
   constructor(private http: HttpClient) {}
 
-  getBeneficiaries() {
-    return this.http.get<any[]>("http://localhost:8080/beneficiaries");
+  // Load Beneficiaries
+  getBeneficiaries(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/beneficiaries`);
   }
 
-  transferMoney(data: any) {
+  // Fund Transfer
+  transferMoney(request: any): Observable<any> {
     return this.http.post(
-      "http://localhost:8080/api/fund-transfer",
-      data,
-      { responseType: 'text' }
+      `${this.baseUrl}/api/fund-transfer`,
+      request,
+      {
+        responseType: 'text'
+      }
     );
   }
-
 }

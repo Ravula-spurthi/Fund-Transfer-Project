@@ -1,0 +1,29 @@
+.statement-container{
+    padding:30px;
+}
+
+table{
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th{
+    background:#2196f3;
+    color:white;
+    padding:10px;
+}
+
+td{
+    padding:10px;
+}
+
+button{
+    padding:8px 15px;
+    margin-right:10px;
+    cursor:pointer;
+}
+
+input{
+    padding:6px;
+    margin-right:15px;
+}

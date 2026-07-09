@@ -2,7 +2,21 @@
 
   <h2>Account Statement</h2>
 
-  
+  <div style="margin-bottom:20px;">
+
+    <label>From Date:</label>
+    <input type="date" [(ngModel)]="fromDate">
+
+    &nbsp;&nbsp;
+
+    <label>To Date:</label>
+    <input type="date" [(ngModel)]="toDate">
+
+    &nbsp;&nbsp;
+
+    <button (click)="filterTransactions()">Filter</button>
+
+  </div>
 
   <table border="1" width="100%">
 
@@ -19,17 +33,31 @@
     </thead>
 
     <tbody>
+
       <tr *ngFor="let t of transactions">
         <td>{{ t.transactionDate }}</td>
         <td>{{ t.beneficiaryName }}</td>
-        <td>{{ t.amount }}</td>
+        <td>₹ {{ t.amount }}</td>
         <td>{{ t.status }}</td>
         <td>{{ t.transactionType }}</td>
-        <td>{{ t.balance }}</td>
+        <td>₹ {{ t.balance }}</td>
         <td>{{ t.remarks }}</td>
       </tr>
+
+      <tr *ngIf="transactions.length == 0">
+        <td colspan="7" style="text-align:center;">
+          No Transactions Found
+        </td>
+      </tr>
+
     </tbody>
 
   </table>
+
+  <br>
+
+  <button (click)="downloadPDF()">
+    Download PDF
+  </button>
 
 </div>

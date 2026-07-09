@@ -1,137 +1,147 @@
 <div class="transfer-container">
 
-    <h2>Fund Transfer</h2>
+<h2>Fund Transfer</h2>
 
-    <label>From Account Number</label>
-    <input
-        type="text"
-        [(ngModel)]="transferData.fromAccount"
-        name="fromAccount"
-        readonly>
+<p>Total Beneficiaries : {{beneficiaries.length}}</p>
 
-    <label>Available Balance</label>
-    <input
-        type="text"
-        [(ngModel)]="transferData.availableBalance"
-        name="availableBalance"
-        readonly>
+<label>From Account Number</label>
+<input
+type="text"
+[(ngModel)]="transferData.fromAccount"
+readonly>
 
-    <label>Select Beneficiary</label>
-    <label>Select Beneficiary</label>
+<label>Available Balance</label>
+<input
+type="text"
+[(ngModel)]="transferData.availableBalance"
+readonly>
+
+<<label>Select Beneficiary</label>
+
+<p>Total Beneficiaries: {{ beneficiaries.length }}</p>
+
+<ul>
+  <li *ngFor="let b of beneficiaries">
+    {{ b.beneficiaryName }}
+  </li>
+</ul>
 
 <select
-  [(ngModel)]="transferData.beneficiaryName"
-  name="beneficiary"
-  (change)="onBeneficiaryChange()">
+    [(ngModel)]="transferData.beneficiaryName"
+    name="beneficiary"
+    (change)="onBeneficiaryChange()">
 
-  <option value="">Select Beneficiary</option>
+    <option value="">Select Beneficiary</option>
 
-  <option
-    *ngFor="let beneficiary of beneficiaries"
-    [value]="beneficiary.beneficiaryName">
+    <option
+        *ngFor="let beneficiary of beneficiaries"
+        [value]="beneficiary.beneficiaryName">
 
-    {{ beneficiary.beneficiaryName }}
+        {{ beneficiary.beneficiaryName }}
 
-  </option>
+    </option>
 
 </select>
-    <label>Account Number</label>
-    <input
-        type="text"
-        [(ngModel)]="transferData.accountNumber"
-        name="accountNumber"
-        readonly>
 
-    <label>IFSC Code</label>
-    <input
-        type="text"
-        [(ngModel)]="transferData.ifscCode"
-        name="ifscCode"
-        readonly>
+<label>Account Number</label>
+<input
+type="text"
+[(ngModel)]="transferData.accountNumber"
+readonly>
 
-    <label>Bank Name</label>
-    <input
-        type="text"
-        [(ngModel)]="transferData.bankName"
-        name="bankName"
-        readonly>
+<label>IFSC Code</label>
+<input
+type="text"
+[(ngModel)]="transferData.ifscCode"
+readonly>
 
-    <label>Branch</label>
-    <input
-        type="text"
-        [(ngModel)]="transferData.branch"
-        name="branch"
-        readonly>
+<label>Bank Name</label>
+<input
+type="text"
+[(ngModel)]="transferData.bankName"
+readonly>
 
-    <label>Mobile Number</label>
-    <input
-        type="text"
-        [(ngModel)]="transferData.mobileNumber"
-        name="mobileNumber"
-        readonly>
+<label>Branch</label>
+<input
+type="text"
+[(ngModel)]="transferData.branch"
+readonly>
 
-    <label>Amount</label>
-    <input
-        type="number"
-        [(ngModel)]="transferData.amount"
-        name="amount">
+<label>Mobile Number</label>
+<input
+type="text"
+[(ngModel)]="transferData.mobileNumber"
+readonly>
 
-    <label>Transfer Date</label>
-    <input
-        type="date"
-        [(ngModel)]="transferData.transferDate"
-        name="transferDate">
+<label>Amount</label>
+<input
+type="number"
+[(ngModel)]="transferData.amount">
 
-    <label>Remarks</label>
-    <textarea
-        rows="3"
-        [(ngModel)]="transferData.remarks"
-        name="remarks">
-    </textarea>
+<label>Transfer Date</label>
+<input
+type="date"
+[(ngModel)]="transferData.transferDate">
 
-    <label>
-        <input
-            type="radio"
-            name="paymentType"
-            value="Pay Now"
-            [(ngModel)]="transferData.paymentType">
-        Pay Now
-    </label>
+<label>Remarks</label>
 
-    <label>
-        <input
-            type="radio"
-            name="paymentType"
-            value="Pay Later"
-            [(ngModel)]="transferData.paymentType">
-        Pay Later
-    </label>
+<textarea
+rows="3"
+[(ngModel)]="transferData.remarks">
+</textarea>
 
-    <div *ngIf="transferData.paymentType == 'Pay Later'">
+<label>
 
-        <label>Schedule Date</label>
+<input
+type="radio"
+value="Pay Now"
+name="paymentType"
+[(ngModel)]="transferData.paymentType">
 
-        <input
-            type="date"
-            [(ngModel)]="transferData.scheduleDate"
-            name="scheduleDate">
+Pay Now
 
-    </div>
+</label>
 
-    <div class="buttons">
+<label>
 
-        <button
-            type="button"
-            (click)="transfer()">
-            Transfer
-        </button>
+<input
+type="radio"
+value="Pay Later"
+name="paymentType"
+[(ngModel)]="transferData.paymentType">
 
-        <button
-            type="button"
-            (click)="resetForm()">
-            Reset
-        </button>
+Pay Later
 
-    </div>
+</label>
+
+<div *ngIf="transferData.paymentType=='Pay Later'">
+
+<label>Schedule Date</label>
+
+<input
+type="date"
+[(ngModel)]="transferData.scheduleDate">
+
+</div>
+
+<div class="buttons">
+
+<button
+type="button"
+(click)="transfer()">
+
+Transfer
+
+</button>
+
+<button
+type="button"
+(click)="resetForm()">
+
+Reset
+
+</button>
+
+</div>
 
 </div>
