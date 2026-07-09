@@ -1,16 +1,41 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DashboardService } from '../../core/services/dashboard.service';
+import { Dashboard as DashboardModel } from '../../models/dashboard';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
 
-  constructor(private router: Router) {}
+  dashboard!: DashboardModel;
+
+  constructor(
+    private router: Router,
+    private dashboardService: DashboardService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadDashboard();
+  }
+
+  loadDashboard(): void {
+  this.dashboardService.getDashboard(3).subscribe({
+    next: (data: DashboardModel) => {
+      console.log(data);
+      this.dashboard = data;
+      console.log(this.dashboard);
+    },
+    error: (err: any) => {
+      console.error(err);
+    }
+  });
+}
 
   goToTransfer() {
     this.router.navigate(['/transfer-money']);
@@ -19,16 +44,20 @@ export class Dashboard {
   goToBeneficiary() {
     this.router.navigate(['/add-beneficiary']);
   }
-  goToTransactions(){
+
+  goToTransactions() {
     this.router.navigate(['/transactions']);
   }
+
   goToProfile() {
-  this.router.navigate(['/profile']);
+    this.router.navigate(['/profile']);
   }
+
   goToStatement() {
-  this.router.navigate(['/statement']);
+    this.router.navigate(['/statement']);
   }
+
   logout() {
-  this.router.navigate(['/']);
+    this.router.navigate(['/']);
   }
 }
