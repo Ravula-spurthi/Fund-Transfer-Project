@@ -92,4 +92,23 @@ public class User {
     public void setBalance(Double balance) {
         this.balance = balance;
     }
+
+    private String transactionPin;
+private Boolean pinCreated = false;
+
+public String getTransactionPin() {
+    return transactionPin;
+}
+
+public void setTransactionPin(String transactionPin) {
+    this.transactionPin = transactionPin;
+}
+
+public Boolean getPinCreated() {
+    return pinCreated;
+}
+
+public void setPinCreated(Boolean pinCreated) {
+    this.pinCreated = pinCreated;
+}
 }

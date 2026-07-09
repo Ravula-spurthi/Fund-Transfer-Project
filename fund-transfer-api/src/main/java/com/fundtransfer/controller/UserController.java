@@ -29,4 +29,9 @@ public class UserController {
     public Double getBalance(@PathVariable Long userId){
     return userService.getBalance(userId);
     }
+
+    @GetMapping("/{id}")
+public User getUser(@PathVariable Long id) {
+    return userService.getUserById(id);
+}
 }

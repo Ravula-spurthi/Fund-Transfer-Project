@@ -1,33 +1,75 @@
-<div class="dashboard">
+<div class="dashboard-container">
 
-  <h1>Fund Transfer Dashboard</h1>
+  <div class="sidebar">
 
-  <div class="cards" *ngIf="dashboard">
+    <h2>Fund Transfer</h2>
 
-    <div class="card">
-      <h3>Account Number</h3>
-      <p>{{ dashboard.accountNumber }}</p>
-    </div>
+    <button (click)="goToBeneficiary()">Add Beneficiary</button>
 
-    <div class="card">
-      <h3>Available Balance</h3>
-      <p>₹ {{ dashboard.balance }}</p>
-    </div>
+    <button (click)="goToTransfer()">Fund Transfer</button>
 
-    <div class="card">
-      <h3>Last Transaction</h3>
-      <p>{{ dashboard.lastTransaction }}</p>
-    </div>
+    <button (click)="goToTransactions()">Transactions</button>
+
+    <button (click)="goToStatement()">Statement</button>
+
+    <button (click)="goToProfile()">Profile</button>
+
+    <button routerLink="/set-pin">Set Transaction PIN</button>
+
+    <button routerLink="/change-pin">Change PIN</button>
+
+    <button (click)="logout()">Logout</button>
 
   </div>
 
-  <div class="actions">
-    <button (click)="goToBeneficiary()">Add Beneficiary</button>
-    <button (click)="goToTransfer()">Fund Transfer</button>
-    <button (click)="goToTransactions()">Transactions</button>
-    <button (click)="goToProfile()">Profile</button>
-    <button (click)="goToStatement()">Statement</button>
-    <button (click)="logout()">Logout</button>
+  <div class="content">
+
+    <h1>Welcome {{userName}}</h1>
+
+    <div class="cards">
+
+      <div class="card">
+
+        <h3>Account Number</h3>
+
+        <h2>{{dashboard?.accountNumber}}</h2>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Available Balance</h3>
+
+        <h2>₹ {{dashboard?.balance}}</h2>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Last Transaction</h3>
+
+        <h2>{{dashboard?.lastTransaction}}</h2>
+
+      </div>
+
+    </div>
+
+    <div class="quick-actions">
+
+      <button (click)="goToBeneficiary()">
+        Add Beneficiary
+      </button>
+
+      <button (click)="goToTransfer()">
+        Quick Transfer
+      </button>
+
+      <button (click)="goToTransactions()">
+        View Transactions
+      </button>
+
+    </div>
+
   </div>
 
 </div>

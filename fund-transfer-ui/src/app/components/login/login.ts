@@ -111,6 +111,11 @@ export class Login {
         );
 
         sessionStorage.setItem(
+          'userId',
+          response.id
+        );
+
+        sessionStorage.setItem(
           'accountNumber',
           response.accountNumber
         );
