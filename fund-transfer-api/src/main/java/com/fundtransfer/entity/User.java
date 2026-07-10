@@ -1,4 +1,4 @@
-package com.fundtransfer.entity;
+ package com.fundtransfer.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +33,12 @@ public class User {
     private String password;
 
     private Double balance;
+
+    // Transaction PIN
+    private String transactionPin;
+
+    // Indicates whether the user has created a PIN
+    private Boolean pinCreated = false;
 
     public User() {
     }
@@ -93,22 +99,19 @@ public class User {
         this.balance = balance;
     }
 
-    private String transactionPin;
-private Boolean pinCreated = false;
+    public String getTransactionPin() {
+        return transactionPin;
+    }
 
-public String getTransactionPin() {
-    return transactionPin;
-}
+    public void setTransactionPin(String transactionPin) {
+        this.transactionPin = transactionPin;
+    }
 
-public void setTransactionPin(String transactionPin) {
-    this.transactionPin = transactionPin;
-}
+    public Boolean getPinCreated() {
+        return pinCreated;
+    }
 
-public Boolean getPinCreated() {
-    return pinCreated;
-}
-
-public void setPinCreated(Boolean pinCreated) {
-    this.pinCreated = pinCreated;
-}
+    public void setPinCreated(Boolean pinCreated) {
+        this.pinCreated = pinCreated;
+    }
 }
