@@ -22,30 +22,39 @@ public class FundTransferService {
 
     public String transferFunds(FundTransferDTO dto) {
 
-        // Find sender using account number
-        User sender = userRepository.findByAccountNumber(dto.getSenderAccount())
+        User sender = userRepository
+                .findByAccountNumber(dto.getSenderAccount())
                 .orElseThrow(() -> new RuntimeException("Sender not found"));
 
-        // Find beneficiary using account number
-        User beneficiary = userRepository.findByAccountNumber(dto.getReceiverAccount())
+        User beneficiary = userRepository
+                .findByAccountNumber(dto.getReceiverAccount())
                 .orElseThrow(() -> new RuntimeException("Beneficiary not found"));
 
-        // Validation: same account
-        if (sender.getAccountNumber().equals(beneficiary.getAccountNumber())) {
-            throw new RuntimeException("Cannot transfer to same account");
+        // Verify Transaction PIN
+        if (sender.getTransactionPin() == null) {
+            throw new RuntimeException("Transaction PIN not set");
         }
 
-        // Validation: amount
+        if (!sender.getTransactionPin().equals(dto.getTransactionPin())) {
+            throw new RuntimeException("Invalid Transaction PIN");
+        }
+
+        // Validation: Same account
+        if (sender.getId().equals(beneficiary.getId())) {
+            throw new RuntimeException("Cannot transfer to the same account");
+        }
+
+        // Validation: Amount
         if (dto.getAmount() == null || dto.getAmount() <= 0) {
             throw new RuntimeException("Amount must be greater than 0");
         }
 
-        // Validation: daily limit
+        // Validation: Daily limit
         if (dto.getAmount() > 50000) {
             throw new RuntimeException("Daily transfer limit exceeded");
         }
 
-        // Validation: balance
+        // Validation: Balance
         if (sender.getBalance() < dto.getAmount()) {
             throw new RuntimeException("Insufficient Balance");
         }
@@ -59,12 +68,19 @@ public class FundTransferService {
 
         // Save transaction
         Transaction transaction = new Transaction();
+
         transaction.setUserId(sender.getId());
-        transaction.setBeneficiaryName(beneficiary.getName());
+        transaction.setBeneficiaryName(dto.getBeneficiaryName());
         transaction.setAmount(dto.getAmount());
         transaction.setStatus("SUCCESS");
-        transaction.setTransactionDate(LocalDate.now());
-        transaction.setTransactionType("IMPS");
+
+        if (dto.getScheduleDate() != null && !dto.getScheduleDate().isEmpty()) {
+            transaction.setTransactionDate(LocalDate.parse(dto.getScheduleDate()));
+        } else {
+            transaction.setTransactionDate(LocalDate.now());
+        }
+
+        transaction.setTransactionType(dto.getPaymentType());
         transaction.setRemarks(dto.getRemarks());
         transaction.setBalance(sender.getBalance());
         transaction.setTransactionMode("DEBIT");

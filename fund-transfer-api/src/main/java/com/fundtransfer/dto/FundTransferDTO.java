@@ -9,6 +9,7 @@ public class FundTransferDTO {
     private String remarks;
     private String paymentType;
     private String scheduleDate;
+    private String transactionPin;
 
     public FundTransferDTO() {
     }
@@ -68,4 +69,13 @@ public class FundTransferDTO {
     public void setScheduleDate(String scheduleDate) {
         this.scheduleDate = scheduleDate;
     }
+
+    public String getTransactionPin() {
+        return transactionPin;
+    }
+
+    public void setTransactionPin(String transactionPin) {
+        this.transactionPin = transactionPin;
+    }
+
 }
