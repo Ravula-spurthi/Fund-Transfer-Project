@@ -22,6 +22,16 @@
     placeholder="IFSC Code"
     [(ngModel)]="beneficiary.ifscCode">
 
+  <input
+    type="text"
+    placeholder="Branch"
+    [(ngModel)]="beneficiary.branch">
+
+  <input
+    type="text"
+    placeholder="Mobile Number"
+    [(ngModel)]="beneficiary.mobileNumber">
+
   <button (click)="addBeneficiary()">
     Add Beneficiary
   </button>

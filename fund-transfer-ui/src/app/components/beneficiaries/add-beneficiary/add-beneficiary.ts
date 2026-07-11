@@ -17,7 +17,9 @@ export class AddBeneficiary {
     accountNumber: '',
     bankName: '',
     ifscCode: '',
-    userId: 1
+    branch: '',
+    mobileNumber: '',
+    userId: Number(sessionStorage.getItem('userId')) || 1
   };
 
   constructor(
@@ -27,25 +29,40 @@ export class AddBeneficiary {
 
   addBeneficiary() {
 
+    if (
+      !this.beneficiary.beneficiaryName ||
+      !this.beneficiary.accountNumber ||
+      !this.beneficiary.bankName ||
+      !this.beneficiary.ifscCode ||
+      !this.beneficiary.branch ||
+      !this.beneficiary.mobileNumber
+    ) {
+      alert('Please fill all fields');
+      return;
+    }
+
     this.beneficiaryService
       .addBeneficiary(this.beneficiary)
       .subscribe({
 
         next: () => {
+
           alert('Beneficiary Added Successfully');
+
           this.router.navigate(['/beneficiary-list']);
+
         },
 
         error: (err) => {
-          console.log('ERROR =>', err);
 
-           alert(
-          'Status: ' +
-           err.status +
-          '\nMessage: ' +
-           err.message
-       );
-      }
+          console.log(err);
+
+          alert(err.error);
+
+        }
+
       });
+
   }
+
 }

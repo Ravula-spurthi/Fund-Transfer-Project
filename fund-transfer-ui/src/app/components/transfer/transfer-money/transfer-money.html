@@ -1,32 +1,24 @@
 <div class="transfer-container">
 
-<h2>Fund Transfer</h2>
+  <h2>Fund Transfer</h2>
 
-<p>Total Beneficiaries : {{beneficiaries.length}}</p>
+  <p>Total Beneficiaries : {{ beneficiaries.length }}</p>
 
-<label>From Account Number</label>
-<input
-type="text"
-[(ngModel)]="transferData.fromAccount"
-readonly>
+  <label>From Account Number</label>
+  <input
+    type="text"
+    [(ngModel)]="transferData.fromAccount"
+    readonly>
 
-<label>Available Balance</label>
-<input
-type="text"
-[(ngModel)]="transferData.availableBalance"
-readonly>
+  <label>Available Balance</label>
+  <input
+    type="text"
+    [(ngModel)]="transferData.availableBalance"
+    readonly>
 
-<<label>Select Beneficiary</label>
+  <label>Select Beneficiary</label>
 
-<p>Total Beneficiaries: {{ beneficiaries.length }}</p>
-
-<ul>
-  <li *ngFor="let b of beneficiaries">
-    {{ b.beneficiaryName }}
-  </li>
-</ul>
-
-<select
+  <select
     [(ngModel)]="transferData.beneficiaryName"
     name="beneficiary"
     (change)="onBeneficiaryChange()">
@@ -34,114 +26,119 @@ readonly>
     <option value="">Select Beneficiary</option>
 
     <option
-        *ngFor="let beneficiary of beneficiaries"
-        [value]="beneficiary.beneficiaryName">
+      *ngFor="let beneficiary of beneficiaries"
+      [value]="beneficiary.beneficiaryName">
 
-        {{ beneficiary.beneficiaryName }}
+      {{ beneficiary.beneficiaryName }}
 
     </option>
 
-</select>
+  </select>
 
-<label>Account Number</label>
-<input
-type="text"
-[(ngModel)]="transferData.accountNumber"
-readonly>
+  <label>Account Number</label>
+  <input
+    type="text"
+    [(ngModel)]="transferData.accountNumber"
+    readonly>
 
-<label>IFSC Code</label>
-<input
-type="text"
-[(ngModel)]="transferData.ifscCode"
-readonly>
+  <label>IFSC Code</label>
+  <input
+    type="text"
+    [(ngModel)]="transferData.ifscCode"
+    readonly>
 
-<label>Bank Name</label>
-<input
-type="text"
-[(ngModel)]="transferData.bankName"
-readonly>
+  <label>Bank Name</label>
+  <input
+    type="text"
+    [(ngModel)]="transferData.bankName"
+    readonly>
 
-<label>Branch</label>
-<input
-type="text"
-[(ngModel)]="transferData.branch"
-readonly>
+  <label>Branch</label>
+  <input
+    type="text"
+    [(ngModel)]="transferData.branch"
+    readonly>
 
-<label>Mobile Number</label>
-<input
-type="text"
-[(ngModel)]="transferData.mobileNumber"
-readonly>
+  <label>Mobile Number</label>
+  <input
+    type="text"
+    [(ngModel)]="transferData.mobileNumber"
+    readonly>
 
-<label>Amount</label>
-<input
-type="number"
-[(ngModel)]="transferData.amount">
+  <label>Amount</label>
+  <input
+    type="number"
+    [(ngModel)]="transferData.amount">
 
-<label>Transfer Date</label>
-<input
-type="date"
-[(ngModel)]="transferData.transferDate">
+  <label>Transfer Date</label>
+  <input
+    type="date"
+    [(ngModel)]="transferData.transferDate">
 
-<label>Remarks</label>
+  <label>Remarks</label>
+  <textarea
+    rows="3"
+    [(ngModel)]="transferData.remarks">
+  </textarea>
 
-<textarea
-rows="3"
-[(ngModel)]="transferData.remarks">
-</textarea>
+  <label>Payment Type</label>
 
-<label>
+  <label>
+    <input
+      type="radio"
+      value="Pay Now"
+      name="paymentType"
+      [(ngModel)]="transferData.paymentType">
+    Pay Now
+  </label>
 
-<input
-type="radio"
-value="Pay Now"
-name="paymentType"
-[(ngModel)]="transferData.paymentType">
+  <label>
+    <input
+      type="radio"
+      value="Pay Later"
+      name="paymentType"
+      [(ngModel)]="transferData.paymentType">
+    Pay Later
+  </label>
 
-Pay Now
+  <div *ngIf="transferData.paymentType == 'Pay Later'">
 
-</label>
+    <label>Schedule Date</label>
 
-<label>
+    <input
+      type="date"
+      [(ngModel)]="transferData.scheduleDate">
 
-<input
-type="radio"
-value="Pay Later"
-name="paymentType"
-[(ngModel)]="transferData.paymentType">
+  </div>
 
-Pay Later
+  <!-- Transaction PIN -->
 
-</label>
+  <label>Transaction PIN</label>
 
-<div *ngIf="transferData.paymentType=='Pay Later'">
+  <input
+    type="password"
+    maxlength="4"
+    placeholder="Enter Transaction PIN"
+    [(ngModel)]="transferData.transactionPin">
 
-<label>Schedule Date</label>
+  <div class="buttons">
 
-<input
-type="date"
-[(ngModel)]="transferData.scheduleDate">
+    <button
+      type="button"
+      (click)="transfer()">
 
-</div>
+      Transfer
 
-<div class="buttons">
+    </button>
 
-<button
-type="button"
-(click)="transfer()">
+    <button
+      type="button"
+      (click)="resetForm()">
 
-Transfer
+      Reset
 
-</button>
+    </button>
 
-<button
-type="button"
-(click)="resetForm()">
-
-Reset
-
-</button>
-
-</div>
+  </div>
 
 </div>
