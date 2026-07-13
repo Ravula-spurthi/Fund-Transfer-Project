@@ -5,25 +5,25 @@
 <div class="card">
 
 <p><b>Name</b></p>
-<h3>{{user.name}}</h3>
+<h3>{{user?.name}}</h3>
 
 <p><b>Email</b></p>
-<h3>{{user.email}}</h3>
+<h3>{{user?.email}}</h3>
 
 <p><b>Mobile</b></p>
-<h3>{{user.mobile}}</h3>
+<h3>{{user?.mobile}}</h3>
 
 <p><b>Account Number</b></p>
-<h3>{{user.accountNumber}}</h3>
+<h3>{{user?.accountNumber}}</h3>
 
 <p><b>Available Balance</b></p>
-<h3>₹ {{user.balance}}</h3>
+<h3>₹ {{user?.balance}}</h3>
 
-<button>
+<button type="button" (click)="goToSetPin()">
 Set Transaction PIN
 </button>
 
-<button>
+<button type="button" (click)="goToChangePin()">
 Change PIN
 </button>
 

@@ -16,6 +16,9 @@ export class Dashboard implements OnInit {
 
   userName = sessionStorage.getItem('name') || 'Customer';
 
+  // Balance Visibility
+  showBalance = false;
+
   constructor(
     private router: Router,
     private dashboardService: DashboardService
@@ -39,10 +42,56 @@ export class Dashboard implements OnInit {
       },
 
       error: (err) => {
+
         console.log(err);
+
       }
 
     });
+
+  }
+
+  // View Balance after PIN verification
+  viewBalance() {
+
+    const pin = prompt("Enter Transaction PIN");
+
+    if (!pin) {
+      return;
+    }
+
+    const request = {
+
+      userId: Number(sessionStorage.getItem('userId')),
+
+      transactionPin: pin
+
+    };
+
+    this.dashboardService.getBalance(request).subscribe({
+
+      next: (balance) => {
+
+        this.dashboard.balance = balance;
+
+        this.showBalance = true;
+
+      },
+
+      error: (err) => {
+
+        alert(err.error || "Invalid Transaction PIN");
+
+      }
+
+    });
+
+  }
+
+  // Hide Balance
+  hideBalance() {
+
+    this.showBalance = false;
 
   }
 

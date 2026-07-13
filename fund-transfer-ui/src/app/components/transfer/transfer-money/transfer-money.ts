@@ -37,7 +37,7 @@ export class TransferMoney implements OnInit {
 
     amount: 0,
 
-    transferDate: new Date().toISOString().substring(0, 10),
+    transferDate: new Date().toISOString().substring(0,10),
 
     remarks: '',
 
@@ -49,21 +49,19 @@ export class TransferMoney implements OnInit {
 
   };
 
-  constructor(private transferService: TransferService) {}
+  constructor(private transferService: TransferService){}
 
   ngOnInit(): void {
 
     this.transferService.getBeneficiaries().subscribe({
 
-      next: (data: any) => {
-
-        console.log(data);
+      next:(data:any)=>{
 
         this.beneficiaries = Array.isArray(data) ? data : [];
 
       },
 
-      error: (err) => {
+      error:(err)=>{
 
         console.log(err);
 
@@ -73,17 +71,17 @@ export class TransferMoney implements OnInit {
 
   }
 
-  onBeneficiaryChange() {
+  onBeneficiaryChange(){
 
     const selected = this.beneficiaries.find(
 
-      b => b.beneficiaryName === this.transferData.beneficiaryName
+      b => b.accountNumber === this.transferData.accountNumber
 
     );
 
-    if (selected) {
+    if(selected){
 
-      this.transferData.accountNumber = selected.accountNumber;
+      this.transferData.beneficiaryName = selected.beneficiaryName;
 
       this.transferData.ifscCode = selected.ifscCode;
 
@@ -97,9 +95,9 @@ export class TransferMoney implements OnInit {
 
   }
 
-  transfer() {
+  transfer(){
 
-    if (!this.transferData.beneficiaryName) {
+    if(!this.transferData.accountNumber){
 
       alert("Please select beneficiary");
 
@@ -107,7 +105,7 @@ export class TransferMoney implements OnInit {
 
     }
 
-    if (this.transferData.amount <= 0) {
+    if(this.transferData.amount<=0){
 
       alert("Enter valid amount");
 
@@ -115,7 +113,7 @@ export class TransferMoney implements OnInit {
 
     }
 
-    if (!this.transferData.transactionPin) {
+    if(!this.transferData.transactionPin){
 
       alert("Enter Transaction PIN");
 
@@ -123,31 +121,29 @@ export class TransferMoney implements OnInit {
 
     }
 
-    const request = {
+    const request={
 
-      senderAccount: this.transferData.fromAccount,
+      senderAccount:this.transferData.fromAccount,
 
-      receiverAccount: this.transferData.accountNumber,
+      receiverAccount:this.transferData.accountNumber,
 
-      beneficiaryName: this.transferData.beneficiaryName,
+      beneficiaryName:this.transferData.beneficiaryName,
 
-      amount: this.transferData.amount,
+      amount:this.transferData.amount,
 
-      remarks: this.transferData.remarks,
+      remarks:this.transferData.remarks,
 
-      paymentType: this.transferData.paymentType,
+      paymentType:this.transferData.paymentType,
 
-      scheduleDate: this.transferData.scheduleDate,
+      scheduleDate:this.transferData.scheduleDate,
 
-      transactionPin: this.transferData.transactionPin
+      transactionPin:this.transferData.transactionPin
 
     };
 
-    console.log(request);
-
     this.transferService.transferMoney(request).subscribe({
 
-      next: (res) => {
+      next:(res)=>{
 
         alert(res);
 
@@ -155,7 +151,7 @@ export class TransferMoney implements OnInit {
 
       },
 
-      error: (err) => {
+      error:(err)=>{
 
         console.log(err);
 
@@ -167,32 +163,31 @@ export class TransferMoney implements OnInit {
 
   }
 
-  resetForm() {
+  resetForm(){
 
-    this.transferData.beneficiaryName = '';
+    this.transferData.beneficiaryName='';
 
-    this.transferData.accountNumber = '';
+    this.transferData.accountNumber='';
 
-    this.transferData.ifscCode = '';
+    this.transferData.ifscCode='';
 
-    this.transferData.bankName = '';
+    this.transferData.bankName='';
 
-    this.transferData.branch = '';
+    this.transferData.branch='';
 
-    this.transferData.mobileNumber = '';
+    this.transferData.mobileNumber='';
 
-    this.transferData.amount = 0;
+    this.transferData.amount=0;
 
-    this.transferData.transferDate =
-      new Date().toISOString().substring(0, 10);
+    this.transferData.transferDate=new Date().toISOString().substring(0,10);
 
-    this.transferData.remarks = '';
+    this.transferData.remarks='';
 
-    this.transferData.paymentType = 'Pay Now';
+    this.transferData.paymentType='Pay Now';
 
-    this.transferData.scheduleDate = '';
+    this.transferData.scheduleDate='';
 
-    this.transferData.transactionPin = '';
+    this.transferData.transactionPin='';
 
   }
 

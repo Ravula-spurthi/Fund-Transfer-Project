@@ -16,24 +16,30 @@
     [(ngModel)]="transferData.availableBalance"
     readonly>
 
-  <label>Select Beneficiary</label>
+  <!-- Beneficiary Account Number -->
+  <label>Beneficiary Account Number</label>
 
-  <select
-    [(ngModel)]="transferData.beneficiaryName"
-    name="beneficiary"
-    (change)="onBeneficiaryChange()">
+  <input
+    type="text"
+    list="beneficiaryAccounts"
+    [(ngModel)]="transferData.accountNumber"
+    (input)="onBeneficiaryChange()"
+    placeholder="Enter or Select Account Number">
 
-    <option value="">Select Beneficiary</option>
+  <datalist id="beneficiaryAccounts">
 
     <option
       *ngFor="let beneficiary of beneficiaries"
-      [value]="beneficiary.beneficiaryName">
-
-      {{ beneficiary.beneficiaryName }}
-
+      [value]="beneficiary.accountNumber">
     </option>
 
-  </select>
+  </datalist>
+
+  <label>Beneficiary Name</label>
+  <input
+    type="text"
+    [(ngModel)]="transferData.beneficiaryName"
+    readonly>
 
   <label>Account Number</label>
   <input
@@ -110,8 +116,6 @@
       [(ngModel)]="transferData.scheduleDate">
 
   </div>
-
-  <!-- Transaction PIN -->
 
   <label>Transaction PIN</label>
 

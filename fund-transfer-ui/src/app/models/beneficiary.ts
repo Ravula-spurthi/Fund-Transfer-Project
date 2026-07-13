@@ -1,6 +1,9 @@
 export interface Beneficiary {
-  id: number;
-  name: string;
+  beneficiaryName: string;
   accountNumber: string;
+  ifscCode: string;
   bankName: string;
+  branch: string;
+  mobileNumber: string;
+  userId: number;
 }

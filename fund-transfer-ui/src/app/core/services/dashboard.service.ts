@@ -12,8 +12,17 @@ export class DashboardService {
 
   constructor(private http: HttpClient) { }
 
+  // Load dashboard details
   getDashboard(userId: number): Observable<Dashboard> {
     return this.http.get<Dashboard>(`${this.apiUrl}/${userId}`);
+  }
+
+  // Verify Transaction PIN and return balance
+  getBalance(data: any): Observable<number> {
+    return this.http.post<number>(
+      `${this.apiUrl}/balance`,
+      data
+    );
   }
 
 }

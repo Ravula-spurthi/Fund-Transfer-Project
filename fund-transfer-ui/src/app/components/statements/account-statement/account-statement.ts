@@ -17,10 +17,11 @@ export class AccountStatement implements OnInit {
 
   transactions: any[] = [];
 
-  fromDate: string = '';
-  toDate: string = '';
+  transactionDate: string = '';
 
-  userId = 1;
+  selectAll = false;
+
+  userId = Number(sessionStorage.getItem('userId')) || 1;
 
   constructor(private http: HttpClient) {}
 
@@ -28,6 +29,7 @@ export class AccountStatement implements OnInit {
     this.loadStatement();
   }
 
+  // Load all transactions
   loadStatement() {
 
     this.http.get<any[]>(
@@ -35,69 +37,123 @@ export class AccountStatement implements OnInit {
     ).subscribe({
 
       next: (data) => {
-        this.transactions = data;
+
+        this.transactions = data.map(t => ({
+          ...t,
+          selected: false
+        }));
+
+        this.selectAll = false;
+
       },
 
       error: (err) => {
+
         console.error(err);
+
       }
 
     });
 
   }
 
+  // Filter by selected date
   filterTransactions() {
 
+    if (!this.transactionDate) {
+
+      this.loadStatement();
+
+      return;
+
+    }
+
     this.http.get<any[]>(
-      `http://localhost:8080/statement?userId=${this.userId}&fromDate=${this.fromDate}&toDate=${this.toDate}`
+      `http://localhost:8080/statement?userId=${this.userId}&transactionDate=${this.transactionDate}`
     ).subscribe({
 
       next: (data) => {
-        this.transactions = data;
+
+        this.transactions = data.map(t => ({
+          ...t,
+          selected: false
+        }));
+
+        this.selectAll = false;
+
       },
 
       error: (err) => {
+
         console.error(err);
+
       }
 
     });
 
   }
 
-  downloadPDF() {
+  // Select/Deselect all
+  toggleSelectAll() {
+
+    this.transactions.forEach(t => {
+
+      t.selected = this.selectAll;
+
+    });
+
+  }
+
+  // Download selected transactions
+  downloadSelectedPDF() {
+
+    const selectedTransactions = this.transactions.filter(
+      t => t.selected
+    );
+
+    if (selectedTransactions.length === 0) {
+
+      alert("Please select at least one transaction.");
+
+      return;
+
+    }
 
     const doc = new jsPDF();
 
     doc.setFontSize(18);
-    doc.text('Account Statement', 14, 20);
+
+    doc.text("Account Statement", 14, 20);
 
     autoTable(doc, {
 
       head: [[
-        'Date',
-        'Beneficiary',
-        'Amount',
-        'Status',
-        'Type',
-        'Balance',
-        'Remarks'
+        "Date",
+        "Beneficiary",
+        "Amount",
+        "Status",
+        "Type",
+        "Balance",
+        "Remarks"
       ]],
 
-      body: this.transactions.map(t => [
+      body: selectedTransactions.map(t => [
+
         t.transactionDate,
         t.beneficiaryName,
-        t.amount,
+        "₹ " + t.amount,
         t.status,
         t.transactionType,
-        t.balance,
+        "₹ " + t.balance,
         t.remarks
+
       ]),
 
       startY: 30
 
     });
 
-    doc.save('Account_Statement.pdf');
+    doc.save("Account_Statement.pdf");
 
   }
 

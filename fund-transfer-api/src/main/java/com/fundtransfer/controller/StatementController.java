@@ -27,12 +27,8 @@ public class StatementController {
 
             @RequestParam(required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate fromDate,
+            LocalDate transactionDate) {
 
-            @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate toDate) {
-
-        return statementService.getStatement(userId, fromDate, toDate);
+        return statementService.getStatement(userId, transactionDate);
     }
 }

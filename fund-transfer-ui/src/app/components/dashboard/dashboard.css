@@ -79,25 +79,48 @@
     padding:25px;
     border-radius:10px;
     box-shadow:0 2px 8px rgba(0,0,0,.2);
+    text-align:center;
 
 }
 
 .card h3{
 
     color:gray;
-    margin-bottom:10px;
+    margin-bottom:12px;
 
 }
 
 .card h2{
 
     color:#1565c0;
+    margin-bottom:20px;
+
+}
+
+/* View / Hide Balance Button */
+
+.card button{
+
+    padding:10px 18px;
+    border:none;
+    border-radius:5px;
+    background:#1976d2;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.3s;
+
+}
+
+.card button:hover{
+
+    background:#0d47a1;
 
 }
 
 .quick-actions{
 
-    margin-bottom:30px;
+    margin-top:20px;
 
 }
 
@@ -110,40 +133,12 @@
     border:none;
     border-radius:5px;
     cursor:pointer;
+    transition:.3s;
 
 }
 
 .quick-actions button:hover{
 
     background:#0d47a1;
-
-}
-
-.summary{
-
-    background:white;
-    padding:25px;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,.2);
-
-}
-
-.summary h2{
-
-    color:#1565c0;
-    margin-bottom:20px;
-
-}
-
-.summary table{
-
-    width:100%;
-
-}
-
-.summary td{
-
-    padding:12px;
-    border-bottom:1px solid #ddd;
 
 }

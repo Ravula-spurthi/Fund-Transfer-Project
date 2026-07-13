@@ -2,26 +2,39 @@
 
   <h2>Account Statement</h2>
 
-  <div style="margin-bottom:20px;">
+  <div class="filter-section">
 
-    <label>From Date:</label>
-    <input type="date" [(ngModel)]="fromDate">
+    <label><b>Transaction Date:</b></label>
 
-    &nbsp;&nbsp;
+    <input
+      type="date"
+      [(ngModel)]="transactionDate">
 
-    <label>To Date:</label>
-    <input type="date" [(ngModel)]="toDate">
+    <button (click)="filterTransactions()">
+      Filter
+    </button>
 
-    &nbsp;&nbsp;
-
-    <button (click)="filterTransactions()">Filter</button>
+    <button (click)="loadStatement()">
+      Show All
+    </button>
 
   </div>
+
+  <br>
 
   <table border="1" width="100%">
 
     <thead>
+
       <tr>
+
+        <th>
+          <input
+            type="checkbox"
+            [(ngModel)]="selectAll"
+            (change)="toggleSelectAll()">
+        </th>
+
         <th>Date</th>
         <th>Beneficiary</th>
         <th>Amount</th>
@@ -29,25 +42,47 @@
         <th>Type</th>
         <th>Balance</th>
         <th>Remarks</th>
+
       </tr>
+
     </thead>
 
     <tbody>
 
       <tr *ngFor="let t of transactions">
-        <td>{{ t.transactionDate }}</td>
-        <td>{{ t.beneficiaryName }}</td>
-        <td>₹ {{ t.amount }}</td>
-        <td>{{ t.status }}</td>
-        <td>{{ t.transactionType }}</td>
-        <td>₹ {{ t.balance }}</td>
-        <td>{{ t.remarks }}</td>
+
+        <td>
+
+          <input
+            type="checkbox"
+            [(ngModel)]="t.selected">
+
+        </td>
+
+        <td>{{t.transactionDate}}</td>
+
+        <td>{{t.beneficiaryName}}</td>
+
+        <td>₹ {{t.amount}}</td>
+
+        <td>{{t.status}}</td>
+
+        <td>{{t.transactionType}}</td>
+
+        <td>₹ {{t.balance}}</td>
+
+        <td>{{t.remarks}}</td>
+
       </tr>
 
-      <tr *ngIf="transactions.length == 0">
-        <td colspan="7" style="text-align:center;">
+      <tr *ngIf="transactions.length==0">
+
+        <td colspan="8" style="text-align:center">
+
           No Transactions Found
+
         </td>
+
       </tr>
 
     </tbody>
@@ -56,8 +91,10 @@
 
   <br>
 
-  <button (click)="downloadPDF()">
-    Download PDF
+  <button (click)="downloadSelectedPDF()">
+
+    Download Selected Transactions
+
   </button>
 
 </div>

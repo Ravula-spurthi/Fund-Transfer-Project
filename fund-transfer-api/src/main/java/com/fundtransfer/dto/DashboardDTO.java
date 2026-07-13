@@ -5,16 +5,18 @@ public class DashboardDTO {
     private String name;
     private String accountNumber;
     private Double balance;
-    private String lastTransaction;
+
+    // Used for balance verification
+    private Long userId;
+    private String transactionPin;
 
     public DashboardDTO() {
     }
 
-    public DashboardDTO(String name, String accountNumber, Double balance, String lastTransaction) {
+    public DashboardDTO(String name, String accountNumber, Double balance) {
         this.name = name;
         this.accountNumber = accountNumber;
         this.balance = balance;
-        this.lastTransaction = lastTransaction;
     }
 
     public String getName() {
@@ -41,11 +43,19 @@ public class DashboardDTO {
         this.balance = balance;
     }
 
-    public String getLastTransaction() {
-        return lastTransaction;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setLastTransaction(String lastTransaction) {
-        this.lastTransaction = lastTransaction;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getTransactionPin() {
+        return transactionPin;
+    }
+
+    public void setTransactionPin(String transactionPin) {
+        this.transactionPin = transactionPin;
     }
 }

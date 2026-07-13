@@ -17,16 +17,18 @@ public class StatementService {
 
     public List<Transaction> getStatement(
             Long userId,
-            LocalDate fromDate,
-            LocalDate toDate) {
+            LocalDate transactionDate) {
 
-        if (fromDate != null && toDate != null) {
-            return transactionRepository.findByUserIdAndTransactionDateBetween(
-                    userId,
-                    fromDate,
-                    toDate);
+        // If a date is selected, return transactions only for that date
+        if (transactionDate != null) {
+            return transactionRepository
+                    .findByUserIdAndTransactionDateOrderByTransactionDateDesc(
+                            userId,
+                            transactionDate);
         }
 
-        return transactionRepository.findByUserId(userId);
+        // Otherwise return all transactions
+        return transactionRepository
+                .findByUserIdOrderByTransactionDateDesc(userId);
     }
 }
