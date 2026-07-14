@@ -155,7 +155,7 @@ export class TransferMoney implements OnInit {
 
         console.log(err);
 
-        alert(err.error);
+        alert("Invalid Transaction PIN");
 
       }
 

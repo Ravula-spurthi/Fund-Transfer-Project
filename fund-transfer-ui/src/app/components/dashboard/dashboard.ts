@@ -80,7 +80,7 @@ export class Dashboard implements OnInit {
 
       error: (err) => {
 
-        alert(err.error || "Invalid Transaction PIN");
+        alert("Invalid Transaction PIN");
 
       }
 
