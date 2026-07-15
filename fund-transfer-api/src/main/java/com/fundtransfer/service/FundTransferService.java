@@ -3,7 +3,9 @@ package com.fundtransfer.service;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fundtransfer.dto.FundTransferDTO;
 import com.fundtransfer.entity.Transaction;
@@ -24,49 +26,50 @@ public class FundTransferService {
 
         User sender = userRepository
                 .findByAccountNumber(dto.getSenderAccount())
-                .orElseThrow(() -> new RuntimeException("Sender not found"));
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sender not found"));
 
         User beneficiary = userRepository
                 .findByAccountNumber(dto.getReceiverAccount())
-                .orElseThrow(() -> new RuntimeException("Beneficiary not found"));
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.BAD_REQUEST, "Beneficiary not found"));
 
-        // Verify Transaction PIN
         if (sender.getTransactionPin() == null) {
-            throw new RuntimeException("Transaction PIN not set");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Transaction PIN not set");
         }
 
         if (!sender.getTransactionPin().equals(dto.getTransactionPin())) {
-            throw new RuntimeException("Invalid Transaction PIN");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Invalid Transaction PIN");
         }
 
-        // Validation: Same account
         if (sender.getId().equals(beneficiary.getId())) {
-            throw new RuntimeException("Cannot transfer to the same account");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Cannot transfer to the same account");
         }
 
-        // Validation: Amount
         if (dto.getAmount() == null || dto.getAmount() <= 0) {
-            throw new RuntimeException("Amount must be greater than 0");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Amount must be greater than 0");
         }
 
-        // Validation: Daily limit
         if (dto.getAmount() > 50000) {
-            throw new RuntimeException("Daily transfer limit exceeded");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Daily transfer limit exceeded");
         }
 
-        // Validation: Balance
         if (sender.getBalance() < dto.getAmount()) {
-            throw new RuntimeException("Insufficient Balance");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Insufficient Balance");
         }
 
-        // Update balances
         sender.setBalance(sender.getBalance() - dto.getAmount());
         beneficiary.setBalance(beneficiary.getBalance() + dto.getAmount());
 
         userRepository.save(sender);
         userRepository.save(beneficiary);
 
-        // Save transaction
         Transaction transaction = new Transaction();
 
         transaction.setUserId(sender.getId());
