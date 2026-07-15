@@ -19,18 +19,33 @@ export class BeneficiaryList implements OnInit {
     this.loadBeneficiaries();
   }
 
-  loadBeneficiaries() {
-    this.beneficiaryService.getBeneficiaries()
-      .subscribe(data => {
+  loadBeneficiaries(): void {
+    this.beneficiaryService.getBeneficiaries().subscribe({
+      next: (data) => {
+        console.log("beneficiaries =", data);
         this.beneficiaries = data;
-      });
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 
-  deleteBeneficiary(id: number) {
-    this.beneficiaryService.deleteBeneficiary(id)
-      .subscribe(() => {
-        alert('Beneficiary Deleted');
-        this.loadBeneficiaries();
+  deleteBeneficiary(id: number): void {
+
+    if (confirm("Are you sure you want to delete this beneficiary?")) {
+
+      this.beneficiaryService.deleteBeneficiary(id).subscribe({
+        next: () => {
+          alert("Beneficiary Deleted Successfully");
+          this.loadBeneficiaries();
+        },
+        error: (err) => {
+          console.error(err);
+        }
       });
+
+    }
   }
+
 }

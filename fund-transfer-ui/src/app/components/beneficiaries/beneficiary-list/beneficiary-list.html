@@ -2,7 +2,11 @@
 
   <h2>Beneficiary List</h2>
 
-  <table border="1" width="100%">
+  <p class="record-count">
+    Total Beneficiaries: {{ beneficiaries.length }}
+  </p>
+
+  <table *ngIf="beneficiaries && beneficiaries.length > 0">
 
     <thead>
       <tr>
@@ -17,16 +21,17 @@
 
     <tbody>
 
-      <tr *ngFor="let b of beneficiaries">
+      <tr *ngFor="let b of beneficiaries; let i = index">
 
-        <td>{{b.id}}</td>
-        <td>{{b.beneficiaryName}}</td>
-        <td>{{b.accountNumber}}</td>
-        <td>{{b.bankName}}</td>
-        <td>{{b.ifscCode}}</td>
+        <td>{{ i + 1 }}</td>
+        <td>{{ b['beneficiaryName'] }}</td>
+        <td>{{ b['accountNumber'] }}</td>
+        <td>{{ b['bankName'] }}</td>
+        <td>{{ b['ifscCode'] }}</td>
 
         <td>
-          <button (click)="deleteBeneficiary(b.id)">
+          <button class="delete-btn"
+                  (click)="deleteBeneficiary(b.id)">
             Delete
           </button>
         </td>
@@ -36,5 +41,9 @@
     </tbody>
 
   </table>
+
+  <div class="no-data" *ngIf="beneficiaries.length === 0">
+    No Beneficiaries Found
+  </div>
 
 </div>
