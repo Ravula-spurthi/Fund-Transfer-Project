@@ -8,12 +8,14 @@ export const routes: Routes = [
       import('./components/login/login')
         .then(m => m.Login)
   },
-{
-  path: 'login',
-  loadComponent: () =>
-    import('./components/login/login')
-      .then(m => m.Login)
-},
+
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./components/login/login')
+        .then(m => m.Login)
+  },
+
   {
     path: 'signup',
     loadComponent: () =>
@@ -50,10 +52,10 @@ export const routes: Routes = [
   },
 
   {
-  path: 'transactions',
-  loadComponent: () =>
-    import('./components/transactions/transaction-history/transaction-history')
-      .then(m => m.TransactionHistory)
+    path: 'transactions',
+    loadComponent: () =>
+      import('./components/transactions/transaction-history/transaction-history')
+        .then(m => m.TransactionHistory)
   },
 
   {
@@ -64,17 +66,17 @@ export const routes: Routes = [
   },
 
   {
-  path: 'profile',
-  loadComponent: () =>
-    import('./components/profile/profile-details/profile-details')
-      .then(m => m.ProfileDetails)
+    path: 'profile',
+    loadComponent: () =>
+      import('./components/profile/profile-details/profile-details')
+        .then(m => m.ProfileDetails)
   },
 
   {
-  path: 'statement',
-  loadComponent: () =>
-    import('./components/statements/account-statement/account-statement')
-      .then(m => m.AccountStatement)
+    path: 'statement',
+    loadComponent: () =>
+      import('./components/statements/account-statement/account-statement')
+        .then(m => m.AccountStatement)
   },
 
   {
@@ -85,24 +87,32 @@ export const routes: Routes = [
   },
 
   {
-  path:'set-pin',
-  loadComponent:()=>
-  import('./components/set-transaction-pin/set-transaction-pin')
-  .then(m=>m.SetTransactionPin)
-},
-
-{
-  path:'change-pin',
-  loadComponent:()=>
-  import('./components/change-transaction-pin/change-transaction-pin')
-  .then(m=>m.ChangeTransactionPin)
-},
+    path: 'set-pin',
+    loadComponent: () =>
+      import('./components/set-transaction-pin/set-transaction-pin')
+        .then(m => m.SetTransactionPin)
+  },
 
   {
-  path: '**',
-  loadComponent: () =>
-    import('./components/not-found/not-found')
-      .then(m => m.NotFound)
+    path: 'change-pin',
+    loadComponent: () =>
+      import('./components/change-transaction-pin/change-transaction-pin')
+        .then(m => m.ChangeTransactionPin)
+  },
+
+  // NEW ROUTE
+  {
+    path: 'scheduled-transfer',
+    loadComponent: () =>
+      import('./components/scheduled-transfer/scheduled-transfer')
+        .then(m => m.ScheduledTransfer)
+  },
+
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./components/not-found/not-found')
+        .then(m => m.NotFound)
   }
 
 ];

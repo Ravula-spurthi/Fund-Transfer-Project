@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransferService } from '../../../core/services/transfer';
+import { ScheduledTransferService } from '../../../core/services/scheduled-transfer.service';
 
 @Component({
   selector: 'app-transfer-money',
@@ -37,7 +38,7 @@ export class TransferMoney implements OnInit {
 
     amount: 0,
 
-    transferDate: new Date().toISOString().substring(0,10),
+    transferDate: new Date().toISOString().substring(0, 10),
 
     remarks: '',
 
@@ -49,19 +50,22 @@ export class TransferMoney implements OnInit {
 
   };
 
-  constructor(private transferService: TransferService){}
+  constructor(
+    private transferService: TransferService,
+    private scheduledTransferService: ScheduledTransferService
+  ) { }
 
   ngOnInit(): void {
 
     this.transferService.getBeneficiaries().subscribe({
 
-      next:(data:any)=>{
+      next: (data: any) => {
 
         this.beneficiaries = Array.isArray(data) ? data : [];
 
       },
 
-      error:(err)=>{
+      error: (err) => {
 
         console.log(err);
 
@@ -71,7 +75,7 @@ export class TransferMoney implements OnInit {
 
   }
 
-  onBeneficiaryChange(){
+  onBeneficiaryChange() {
 
     const selected = this.beneficiaries.find(
 
@@ -79,7 +83,7 @@ export class TransferMoney implements OnInit {
 
     );
 
-    if(selected){
+    if (selected) {
 
       this.transferData.beneficiaryName = selected.beneficiaryName;
 
@@ -95,9 +99,9 @@ export class TransferMoney implements OnInit {
 
   }
 
-  transfer(){
+  transfer() {
 
-    if(!this.transferData.accountNumber){
+    if (!this.transferData.accountNumber) {
 
       alert("Please select beneficiary");
 
@@ -105,7 +109,7 @@ export class TransferMoney implements OnInit {
 
     }
 
-    if(this.transferData.amount<=0){
+    if (this.transferData.amount <= 0) {
 
       alert("Enter valid amount");
 
@@ -113,7 +117,7 @@ export class TransferMoney implements OnInit {
 
     }
 
-    if(!this.transferData.transactionPin){
+    if (!this.transferData.transactionPin) {
 
       alert("Enter Transaction PIN");
 
@@ -121,73 +125,103 @@ export class TransferMoney implements OnInit {
 
     }
 
-    const request={
+    const request = {
 
-      senderAccount:this.transferData.fromAccount,
+      senderAccount: this.transferData.fromAccount,
 
-      receiverAccount:this.transferData.accountNumber,
+      receiverAccount: this.transferData.accountNumber,
 
-      beneficiaryName:this.transferData.beneficiaryName,
+      beneficiaryName: this.transferData.beneficiaryName,
 
-      amount:this.transferData.amount,
+      amount: this.transferData.amount,
 
-      remarks:this.transferData.remarks,
+      remarks: this.transferData.remarks,
 
-      paymentType:this.transferData.paymentType,
+      paymentType: this.transferData.paymentType,
 
-      scheduleDate:this.transferData.scheduleDate,
+      scheduleDate: this.transferData.scheduleDate,
 
-      transactionPin:this.transferData.transactionPin
+      transactionPin: this.transferData.transactionPin
 
     };
 
-    this.transferService.transferMoney(request).subscribe({
+    // PAY LATER
+    if (this.transferData.paymentType === "Pay Later") {
 
-      next:(res)=>{
+      this.scheduledTransferService.saveTransfer(request).subscribe({
 
-        alert(res);
+        next: () => {
 
-        this.resetForm();
+          alert("Transfer Scheduled Successfully");
 
-      },
+          this.resetForm();
 
-      error:(err)=>{
+        },
 
-        console.log(err);
+        error: (err) => {
 
-        alert("Invalid Transaction PIN");
+          console.log(err);
 
-      }
+          alert(err.error || "Unable to Schedule Transfer");
 
-    });
+        }
+
+      });
+
+    }
+
+    // PAY NOW
+    else {
+
+      this.transferService.transferMoney(request).subscribe({
+
+        next: (res) => {
+
+          alert(res);
+
+          this.resetForm();
+
+        },
+
+        error: (err) => {
+
+          console.log(err);
+
+          alert(err.error || "Invalid Transaction PIN");
+
+        }
+
+      });
+
+    }
 
   }
 
-  resetForm(){
+  resetForm() {
 
-    this.transferData.beneficiaryName='';
+    this.transferData.beneficiaryName = '';
 
-    this.transferData.accountNumber='';
+    this.transferData.accountNumber = '';
 
-    this.transferData.ifscCode='';
+    this.transferData.ifscCode = '';
 
-    this.transferData.bankName='';
+    this.transferData.bankName = '';
 
-    this.transferData.branch='';
+    this.transferData.branch = '';
 
-    this.transferData.mobileNumber='';
+    this.transferData.mobileNumber = '';
 
-    this.transferData.amount=0;
+    this.transferData.amount = 0;
 
-    this.transferData.transferDate=new Date().toISOString().substring(0,10);
+    this.transferData.transferDate = new Date().toISOString().substring(0, 10);
 
-    this.transferData.remarks='';
+    this.transferData.remarks = '';
 
-    this.transferData.paymentType='Pay Now';
+    this.transferData.paymentType = 'Pay Now';
 
-    this.transferData.scheduleDate='';
+    this.transferData.scheduleDate = '';
 
-    this.transferData.transactionPin='';
+    this.transferData.transactionPin = '';
 
   }
 

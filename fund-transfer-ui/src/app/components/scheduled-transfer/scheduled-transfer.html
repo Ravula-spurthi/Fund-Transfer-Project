@@ -1,0 +1,86 @@
+<div class="container">
+
+  <h2>Scheduled Transfers</h2>
+
+  <p class="count">
+    Total Scheduled Transfers: {{ scheduledTransfers.length }}
+  </p>
+
+  <table *ngIf="scheduledTransfers.length > 0">
+
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Beneficiary</th>
+        <th>Receiver Account</th>
+        <th>Amount</th>
+        <th>Schedule Date</th>
+        <th>Status</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let transfer of scheduledTransfers">
+
+        <td>{{ transfer.id }}</td>
+
+        <td>{{ transfer.beneficiaryName }}</td>
+
+        <td>{{ transfer.receiverAccount }}</td>
+
+        <td>₹ {{ transfer.amount }}</td>
+
+        <td>{{ transfer.scheduleDate }}</td>
+
+        <td>
+          <span
+            [class.pending]="transfer.status=='PENDING'"
+            [class.completed]="transfer.status=='COMPLETED'">
+
+            {{ transfer.status }}
+
+          </span>
+        </td>
+
+        <td>
+
+          <button
+            class="execute-btn"
+            (click)="executeTransfer(transfer.id)"
+            [disabled]="transfer.status=='COMPLETED'">
+
+            Execute
+
+          </button>
+
+        </td>
+
+        <td>
+
+          <button
+            class="delete-btn"
+            (click)="deleteTransfer(transfer.id)">
+
+            Delete
+
+          </button>
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+  <div
+    class="no-data"
+    *ngIf="scheduledTransfers.length==0">
+
+    No Scheduled Transfers Available
+
+  </div>
+
+</div>

@@ -100,12 +100,16 @@ export class Dashboard implements OnInit {
   }
 
   goToTransfer() {
-    this.router.navigate(['/transfer-money']);
-  }
+  this.router.navigate(['/transfer-money']);
+}
 
-  goToTransactions() {
-    this.router.navigate(['/transactions']);
-  }
+goToScheduledTransfer() {
+  this.router.navigate(['/scheduled-transfer']);
+}
+
+goToTransactions() {
+  this.router.navigate(['/transactions']);
+}
 
   goToStatement() {
     this.router.navigate(['/statement']);
