@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { DashboardService } from '../../core/services/dashboard.service';
 
@@ -21,7 +21,8 @@ export class Dashboard implements OnInit {
 
   constructor(
     private router: Router,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -72,13 +73,20 @@ export class Dashboard implements OnInit {
 
       next: (balance) => {
 
+        console.log("Balance =", balance);
+        console.log("Type =", typeof balance);
+
         this.dashboard.balance = balance;
 
         this.showBalance = true;
 
+        this.cdr.detectChanges();
+
       },
 
       error: (err) => {
+
+        console.log(err);
 
         alert("Invalid Transaction PIN");
 
@@ -95,21 +103,24 @@ export class Dashboard implements OnInit {
 
   }
 
+  // Navigation Methods
+
   goToBeneficiary() {
     this.router.navigate(['/add-beneficiary']);
   }
 
   goToTransfer() {
-  this.router.navigate(['/transfer-money']);
-}
+    this.router.navigate(['/transfer-money']);
+  }
 
-goToScheduledTransfer() {
-  this.router.navigate(['/scheduled-transfer']);
-}
+  // NEW METHOD
+  goToScheduledTransfer() {
+    this.router.navigate(['/scheduled-transfer']);
+  }
 
-goToTransactions() {
-  this.router.navigate(['/transactions']);
-}
+  goToTransactions() {
+    this.router.navigate(['/transactions']);
+  }
 
   goToStatement() {
     this.router.navigate(['/statement']);
