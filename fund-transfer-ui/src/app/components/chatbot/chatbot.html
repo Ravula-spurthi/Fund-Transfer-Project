@@ -1,0 +1,57 @@
+<div class="chat-icon" (click)="toggleChat()">
+
+  💬
+
+</div>
+
+<div class="chat-container" *ngIf="showChat">
+
+    <div class="chat-header">
+
+        <span>🤖 AI Bank Assistant</span>
+
+        <button (click)="toggleChat()">✖</button>
+
+    </div>
+
+    <div class="chat-box">
+
+        <div
+            *ngFor="let msg of messages"
+            [ngClass]="msg.sender">
+
+            {{msg.text}}
+
+        </div>
+
+    </div>
+
+    <div class="suggestions">
+
+        <button (click)="askSuggestion('balance')">Balance</button>
+
+        <button (click)="askSuggestion('transfer')">Transfer</button>
+
+        <button (click)="askSuggestion('beneficiary')">Beneficiary</button>
+
+        <button (click)="askSuggestion('statement')">Statement</button>
+
+    </div>
+
+    <div class="input-box">
+
+        <input
+            type="text"
+            [(ngModel)]="userMessage"
+            placeholder="Ask your question..."
+            (keyup.enter)="sendMessage()">
+
+        <button (click)="sendMessage()">
+
+            Send
+
+        </button>
+
+    </div>
+
+</div>

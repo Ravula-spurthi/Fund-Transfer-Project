@@ -138,6 +138,8 @@ export class Dashboard implements OnInit {
     this.router.navigate(['/change-pin']);
   }
 
+  
+
   logout() {
     sessionStorage.clear();
     this.router.navigate(['/']);
