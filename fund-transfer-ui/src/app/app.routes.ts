@@ -98,6 +98,13 @@ export const routes: Routes = [
   .then(m=>m.ChangeTransactionPin)
 },
 
+{
+  path:'chatbot',
+  loadComponent:()=>
+  import('./components/chatbot/chatbot')
+  .then(m=>m.Chatbot)
+},
+
   {
   path: '**',
   loadComponent: () =>
