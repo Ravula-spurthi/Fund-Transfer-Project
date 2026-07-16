@@ -7,7 +7,7 @@ import { ScheduledTransferService } from '../../core/services/scheduled-transfer
   standalone: true,
   imports: [CommonModule],
   templateUrl: './scheduled-transfer.html',
-  styleUrl: './scheduled-transfer.css'
+  styleUrls: ['./scheduled-transfer.css']
 })
 export class ScheduledTransfer implements OnInit {
 
@@ -22,17 +22,15 @@ export class ScheduledTransfer implements OnInit {
   }
 
   loadTransfers() {
-    this.scheduledTransferService.getAllTransfers()
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-          this.scheduledTransfers = data;
-        },
-        error: (err) => {
-          console.log(err);
-        }
-      });
-  }
+  this.scheduledTransferService.getAllTransfers().subscribe({
+    next: (data) => {
+      this.scheduledTransfers = [...data];   // Create a new array reference
+      console.log('Length:', this.scheduledTransfers.length);
+      console.log(this.scheduledTransfers);
+    },
+    error: (err) => console.error(err)
+  });
+}
 
   executeTransfer(id: number) {
 
