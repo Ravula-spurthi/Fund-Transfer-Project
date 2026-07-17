@@ -1,7 +1,6 @@
 <div class="transaction-container">
 
   <h2>Transaction History</h2>
-  
 
   <h3>Total Transactions: {{ transactions.length }}</h3>
 
@@ -18,17 +17,40 @@
         <th>Beneficiary</th>
         <th>Amount</th>
         <th>Status</th>
+        <th>Balance</th>
+        <th>Remarks</th>
+        <th>Transaction Mode</th>
+        <th>Transaction Type</th>
+        <th>User ID</th>
       </tr>
     </thead>
 
     <tbody>
+
       <tr *ngFor="let txn of transactions">
+
         <td>{{ txn.id }}</td>
+
         <td>{{ txn.transactionDate }}</td>
+
         <td>{{ txn.beneficiaryName }}</td>
+
         <td>{{ txn.amount }}</td>
+
         <td>{{ txn.status }}</td>
+
+        <td>{{ txn.balance }}</td>
+
+        <td>{{ txn.remarks }}</td>
+
+        <td>{{ txn.transactionMode }}</td>
+
+        <td>{{ txn.transactionType }}</td>
+
+        <td>{{ txn.userId }}</td>
+
       </tr>
+
     </tbody>
 
   </table>
