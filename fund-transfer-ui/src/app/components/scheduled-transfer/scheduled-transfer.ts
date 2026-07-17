@@ -17,18 +17,26 @@ export class ScheduledTransfer implements OnInit {
     private scheduledTransferService: ScheduledTransferService
   ) {}
 
-  ngOnInit(): void {
-    this.loadTransfers();
-  }
+ ngOnInit(): void {
+  console.log("Component Loaded");
+  this.loadTransfers();
+}
 
   loadTransfers() {
+  console.log("loadTransfers called");
+
   this.scheduledTransferService.getAllTransfers().subscribe({
     next: (data) => {
-      this.scheduledTransfers = [...data];   // Create a new array reference
-      console.log('Length:', this.scheduledTransfers.length);
-      console.log(this.scheduledTransfers);
+      console.log("API Response:", data);
+      console.log("Length:", data.length);
+
+      this.scheduledTransfers = [...data];
+
+      console.log("After Assignment:", this.scheduledTransfers.length);
     },
-    error: (err) => console.error(err)
+    error: (err) => {
+      console.error(err);
+    }
   });
 }
 
