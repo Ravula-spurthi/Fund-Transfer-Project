@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScheduledTransferService } from '../../core/services/scheduled-transfer.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-scheduled-transfer',
@@ -14,8 +15,9 @@ export class ScheduledTransfer implements OnInit {
   scheduledTransfers: any[] = [];
 
   constructor(
-    private scheduledTransferService: ScheduledTransferService
-  ) {}
+  private scheduledTransferService: ScheduledTransferService,
+  private cdr: ChangeDetectorRef
+) {}
 
  ngOnInit(): void {
   console.log("Component Loaded");
@@ -23,16 +25,10 @@ export class ScheduledTransfer implements OnInit {
 }
 
   loadTransfers() {
-  console.log("loadTransfers called");
-
   this.scheduledTransferService.getAllTransfers().subscribe({
     next: (data) => {
-      console.log("API Response:", data);
-      console.log("Length:", data.length);
-
       this.scheduledTransfers = [...data];
-
-      console.log("After Assignment:", this.scheduledTransfers.length);
+      this.cdr.detectChanges();
     },
     error: (err) => {
       console.error(err);
