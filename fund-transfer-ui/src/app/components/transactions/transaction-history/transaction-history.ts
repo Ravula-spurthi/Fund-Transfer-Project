@@ -22,7 +22,11 @@ export class TransactionHistory implements OnInit {
 
   ngOnInit(): void {
 
-    this.transactionService.getTransactions().subscribe({
+    const userId = Number(sessionStorage.getItem('userId'));
+
+    //console.log('Logged In User ID:', userId);
+
+    this.transactionService.getTransactions(userId).subscribe({
 
       next: (data) => {
         console.log('API Response:', data);

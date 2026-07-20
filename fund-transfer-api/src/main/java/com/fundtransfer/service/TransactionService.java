@@ -45,5 +45,4 @@ public class TransactionService {
 
         return transactionRepository.findByUserId(userId);
     }
-
 }
