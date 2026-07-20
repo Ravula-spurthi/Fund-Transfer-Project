@@ -23,23 +23,28 @@ public class BeneficiaryController {
     @Autowired
     private BeneficiaryService beneficiaryService;
 
-    @GetMapping("/beneficiaries")
-    public List<Beneficiary> getAllBeneficiaries() {
-        return beneficiaryService.getBeneficiaries(1L);
+    // Get beneficiaries of logged in user
+    @GetMapping("/beneficiaries/user/{userId}")
+    public List<Beneficiary> getAllBeneficiaries(@PathVariable Long userId) {
+        return beneficiaryService.getBeneficiaries(userId);
     }
 
+    // Search beneficiary
     @GetMapping("/beneficiaries/search")
-public List<Beneficiary> searchBeneficiary(@RequestParam String name) {
-    return beneficiaryService.searchBeneficiary(name);
-}
+    public List<Beneficiary> searchBeneficiary(@RequestParam String name) {
+        return beneficiaryService.searchBeneficiary(name);
+    }
 
+    // Add beneficiary
     @PostMapping("/beneficiaries")
     public Beneficiary addBeneficiary(@RequestBody BeneficiaryDTO dto) {
         return beneficiaryService.addBeneficiary(dto);
     }
 
+    // Delete beneficiary
     @DeleteMapping("/beneficiaries/{id}")
     public void deleteBeneficiary(@PathVariable Long id) {
         beneficiaryService.deleteBeneficiary(id);
     }
+
 }
