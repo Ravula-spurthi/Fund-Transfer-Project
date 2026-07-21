@@ -10,4 +10,6 @@ public interface ScheduledTransferRepository extends JpaRepository<ScheduledTran
 
     List<ScheduledTransfer> findByStatus(String status);
 
+    List<ScheduledTransfer> findByUserId(Long userId);
+
 }

@@ -29,7 +29,7 @@ public class ScheduledTransferService {
         transfer.setPaymentType(dto.getPaymentType());
         transfer.setScheduleDate(LocalDate.parse(dto.getScheduleDate()));
         transfer.setTransactionPin(dto.getTransactionPin());
-
+        transfer.setUserId(dto.getUserId());
         transfer.setStatus("PENDING");
 
         return repository.save(transfer);
@@ -43,6 +43,10 @@ public class ScheduledTransferService {
     // Get Only Pending Transfers
     public List<ScheduledTransfer> getPendingTransfers() {
         return repository.findByStatus("PENDING");
+    }
+
+    public List<ScheduledTransfer> getTransfersByUser(Long userId) {
+        return repository.findByUserId(userId);
     }
 
     // Update Scheduled Transfer

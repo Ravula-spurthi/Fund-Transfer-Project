@@ -10,6 +10,8 @@ public class ScheduledTransferDTO {
     private String paymentType;
     private String scheduleDate;
     private String transactionPin;
+    private Long userId;
+
 
     public ScheduledTransferDTO() {
     }
@@ -76,5 +78,13 @@ public class ScheduledTransferDTO {
 
     public void setTransactionPin(String transactionPin) {
         this.transactionPin = transactionPin;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

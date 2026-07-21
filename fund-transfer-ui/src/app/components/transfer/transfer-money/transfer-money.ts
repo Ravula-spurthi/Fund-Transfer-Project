@@ -57,11 +57,14 @@ export class TransferMoney implements OnInit {
 
   ngOnInit(): void {
 
-    this.transferService.getBeneficiaries().subscribe({
+    const userId = Number(sessionStorage.getItem('userId'));
 
-      next: (data: any) => {
+    this.transferService.getBeneficiaries(userId).subscribe({
 
-        this.beneficiaries = Array.isArray(data) ? data : [];
+      next: (data: any[]) => {
+
+        this.beneficiaries = data;
+        console.log("Beneficiaries:", data);
 
       },
 
@@ -86,13 +89,9 @@ export class TransferMoney implements OnInit {
     if (selected) {
 
       this.transferData.beneficiaryName = selected.beneficiaryName;
-
       this.transferData.ifscCode = selected.ifscCode;
-
       this.transferData.bankName = selected.bankName;
-
       this.transferData.branch = selected.branch;
-
       this.transferData.mobileNumber = selected.mobileNumber;
 
     }
@@ -104,7 +103,6 @@ export class TransferMoney implements OnInit {
     if (!this.transferData.accountNumber) {
 
       alert("Please select beneficiary");
-
       return;
 
     }
@@ -112,7 +110,6 @@ export class TransferMoney implements OnInit {
     if (this.transferData.amount <= 0) {
 
       alert("Enter valid amount");
-
       return;
 
     }
@@ -120,7 +117,6 @@ export class TransferMoney implements OnInit {
     if (!this.transferData.transactionPin) {
 
       alert("Enter Transaction PIN");
-
       return;
 
     }
@@ -141,9 +137,13 @@ export class TransferMoney implements OnInit {
 
       scheduleDate: this.transferData.scheduleDate,
 
-      transactionPin: this.transferData.transactionPin
+      transactionPin: this.transferData.transactionPin,
+
+      userId: Number(sessionStorage.getItem('userId'))
 
     };
+
+    console.log("Transfer Request:", request);
 
     // PAY LATER
     if (this.transferData.paymentType === "Pay Later") {
@@ -153,7 +153,6 @@ export class TransferMoney implements OnInit {
         next: () => {
 
           alert("Transfer Scheduled Successfully");
-
           this.resetForm();
 
         },
@@ -161,7 +160,6 @@ export class TransferMoney implements OnInit {
         error: (err) => {
 
           console.log(err);
-
           alert(err.error || "Unable to Schedule Transfer");
 
         }
@@ -178,7 +176,6 @@ export class TransferMoney implements OnInit {
         next: (res) => {
 
           alert(res);
-
           this.resetForm();
 
         },
@@ -186,7 +183,6 @@ export class TransferMoney implements OnInit {
         error: (err) => {
 
           console.log(err);
-
           alert(err.error || "Invalid Transaction PIN");
 
         }
@@ -200,27 +196,16 @@ export class TransferMoney implements OnInit {
   resetForm() {
 
     this.transferData.beneficiaryName = '';
-
     this.transferData.accountNumber = '';
-
     this.transferData.ifscCode = '';
-
     this.transferData.bankName = '';
-
     this.transferData.branch = '';
-
     this.transferData.mobileNumber = '';
-
     this.transferData.amount = 0;
-
     this.transferData.transferDate = new Date().toISOString().substring(0, 10);
-
     this.transferData.remarks = '';
-
     this.transferData.paymentType = 'Pay Now';
-
     this.transferData.scheduleDate = '';
-
     this.transferData.transactionPin = '';
 
   }
