@@ -106,8 +106,8 @@ export class Dashboard implements OnInit {
   // Navigation Methods
 
   goToBeneficiary() {
-    this.router.navigate(['/add-beneficiary']);
-  }
+  this.router.navigate(['/beneficiary-list']);
+}
 
   goToTransfer() {
     this.router.navigate(['/transfer-money']);
