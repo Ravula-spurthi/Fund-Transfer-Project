@@ -13,8 +13,8 @@ export class TransferService {
   constructor(private http: HttpClient) {}
 
   // Load Beneficiaries
-  getBeneficiaries(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/beneficiaries`);
+  getBeneficiaries(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/beneficiaries/user/${userId}`);
   }
 
   // Fund Transfer

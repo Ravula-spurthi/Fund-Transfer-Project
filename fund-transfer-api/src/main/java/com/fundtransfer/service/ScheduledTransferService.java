@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.fundtransfer.dto.ScheduledTransferDTO;
 import com.fundtransfer.entity.ScheduledTransfer;
+import com.fundtransfer.entity.User;
 import com.fundtransfer.repository.ScheduledTransferRepository;
+import com.fundtransfer.repository.UserRepository;
 
 @Service
 public class ScheduledTransferService {
@@ -16,8 +18,46 @@ public class ScheduledTransferService {
     @Autowired
     private ScheduledTransferRepository repository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private TransactionPinService transactionPinService;
+
     // Save Pay Later Transfer
     public ScheduledTransfer saveTransfer(ScheduledTransferDTO dto) {
+
+        User sender = userRepository
+                .findByAccountNumber(dto.getSenderAccount())
+                .orElseThrow(() -> new RuntimeException("Sender not found"));
+
+        User beneficiary = userRepository
+                .findByAccountNumber(dto.getReceiverAccount())
+                .orElseThrow(() -> new RuntimeException("Beneficiary not found"));
+
+        if (sender.getId().equals(beneficiary.getId())) {
+            throw new RuntimeException("Cannot transfer to the same account");
+        }
+
+        if (dto.getAmount() == null || dto.getAmount() <= 0) {
+            throw new RuntimeException("Amount must be greater than 0");
+        }
+
+        if (dto.getAmount() > 50000) {
+            throw new RuntimeException("Daily transfer limit exceeded");
+        }
+
+        if (sender.getBalance() < dto.getAmount()) {
+            throw new RuntimeException("Insufficient balance");
+        }
+
+        boolean validPin = transactionPinService.verifyPin(
+                sender.getId(),
+                dto.getTransactionPin());
+
+        if (!validPin) {
+            throw new RuntimeException("Invalid Transaction PIN");
+        }
 
         ScheduledTransfer transfer = new ScheduledTransfer();
 
@@ -29,7 +69,7 @@ public class ScheduledTransferService {
         transfer.setPaymentType(dto.getPaymentType());
         transfer.setScheduleDate(LocalDate.parse(dto.getScheduleDate()));
         transfer.setTransactionPin(dto.getTransactionPin());
-
+        transfer.setUserId(dto.getUserId());
         transfer.setStatus("PENDING");
 
         return repository.save(transfer);
@@ -40,9 +80,14 @@ public class ScheduledTransferService {
         return repository.findAll();
     }
 
-    // Get Only Pending Transfers
+    // Get Pending Scheduled Transfers
     public List<ScheduledTransfer> getPendingTransfers() {
         return repository.findByStatus("PENDING");
+    }
+
+    // Get Logged-in User Transfers
+    public List<ScheduledTransfer> getTransfersByUser(Long userId) {
+        return repository.findByUserId(userId);
     }
 
     // Update Scheduled Transfer

@@ -11,8 +11,8 @@ export class ScheduledTransferService {
 
   constructor(private http: HttpClient) {}
 
-  getAllTransfers(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getAllTransfers(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/user/${userId}`);
   }
 
   saveTransfer(data: any): Observable<any> {

@@ -152,6 +152,7 @@ export class Dashboard implements OnInit, AfterViewInit {
       return;
     }
 
+<<<<<<< HEAD
     const context = this.monthlyChart.nativeElement.getContext('2d');
     if (!context) {
       this.pendingChartData = { labels, values };
@@ -205,6 +206,11 @@ export class Dashboard implements OnInit, AfterViewInit {
   goToBeneficiary(): void {
     this.router.navigate(['/add-beneficiary']);
   }
+=======
+  goToBeneficiary() {
+  this.router.navigate(['/beneficiary-list']);
+}
+>>>>>>> 00975106c91753255d8b01489de6196ecb9b56c0
 
   goToTransfer(): void {
     this.router.navigate(['/transfer']);

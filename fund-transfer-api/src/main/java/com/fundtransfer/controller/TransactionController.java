@@ -32,14 +32,11 @@ public class TransactionController {
         return transactionService.getTransactionById(id);
     }
 
-    // Get transactions for a particular user
+    // Get transactions of a particular user
     @GetMapping("/transactions/user/{id}")
     public List<Transaction> getTransactionsByUser(@PathVariable Long id) {
         return transactionService.getTransactionsByUser(id);
     }
-
-    // Statement API
-    
 
     // Save transaction
     @PostMapping("/transactions")

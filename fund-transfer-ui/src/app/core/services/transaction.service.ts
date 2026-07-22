@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 import { Transaction } from '../../models/transaction';
 
 @Injectable({
@@ -12,8 +13,9 @@ export class TransactionService {
 
   constructor(private http: HttpClient) {}
 
-  getTransactions(): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(this.apiUrl);
+  getTransactions(userId: number): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(
+      `${this.apiUrl}/user/${userId}`
+    );
   }
-
 }
