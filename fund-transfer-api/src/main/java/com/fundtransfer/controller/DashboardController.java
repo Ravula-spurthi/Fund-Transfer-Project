@@ -1,9 +1,18 @@
-package com.fundtransfer.controller;
+ package com.fundtransfer.controller;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fundtransfer.dto.DashboardDTO;
+import com.fundtransfer.dto.MonthlyTransactionDTO;
 import com.fundtransfer.service.DashboardService;
 
 @RestController
@@ -30,5 +39,18 @@ public class DashboardController {
         );
 
     }
+
+    // Monthly Transactions
+    @GetMapping("/monthly-transactions/{userId}")
+    public List<MonthlyTransactionDTO> getMonthlyTransactions(
+            @PathVariable Long userId) {
+
+        return dashboardService.getMonthlyTransactions(userId);
+
+    }
+    @GetMapping("/test")
+public String test() {
+    return "Dashboard Controller Working";
+}
 
 }

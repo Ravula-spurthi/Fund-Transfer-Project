@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Dashboard } from '../../models/dashboard';
@@ -10,18 +10,25 @@ export class DashboardService {
 
   private apiUrl = 'http://localhost:8080/dashboard';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // Load dashboard details
+  // Dashboard
   getDashboard(userId: number): Observable<Dashboard> {
     return this.http.get<Dashboard>(`${this.apiUrl}/${userId}`);
   }
 
-  // Verify Transaction PIN and return balance
+  // Balance
   getBalance(data: any): Observable<number> {
     return this.http.post<number>(
       `${this.apiUrl}/balance`,
       data
+    );
+  }
+
+  // Monthly Transactions Chart
+  getMonthlyTransactions(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/monthly-transactions/${userId}`
     );
   }
 

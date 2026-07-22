@@ -16,9 +16,9 @@
               Scheduled Transfers
            </button>
 
-<button (click)="goToTransactions()">
-    Transactions
-</button>
+        <button (click)="goToTransactions()">
+            Transactions
+        </button>
 
         <button (click)="goToStatement()">
             Statement
@@ -35,8 +35,6 @@
         <button (click)="goToChangePin()">
             Change Transaction PIN
         </button>
-
-       
 
         <button (click)="logout()">
             Logout
@@ -96,6 +94,26 @@
 
         </div>
 
+        <div class="card chart-card">
+            <h3>Monthly Transactions</h3>
+
+            <div class="chart-wrapper">
+                <canvas #monthlyChart class="monthly-chart-canvas"></canvas>
+
+                <div class="chart-status" *ngIf="monthlyChartLoading">
+                    Loading monthly transaction chart...
+                </div>
+
+                <div class="chart-status error" *ngIf="!monthlyChartLoading && monthlyChartError">
+                    {{ monthlyChartError }}
+                </div>
+
+                <div class="chart-status" *ngIf="!monthlyChartLoading && !monthlyChartError && !monthlyChartInstance?.data?.labels?.length">
+                    No monthly transaction data available.
+                </div>
+            </div>
+        </div>
+
         <!-- Quick Actions -->
 
         <div class="quick-actions">
@@ -112,7 +130,6 @@
                 View Transactions
             </button>
 
-           
         </div>
 
     </div>

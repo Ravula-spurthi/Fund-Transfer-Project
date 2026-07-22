@@ -142,3 +142,20 @@
     background:#0d47a1;
 
 }
+
+.chart-card {
+    overflow: hidden;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 280px;
+    min-height: 280px;
+    width: 100%;
+}
+
+.monthly-chart-canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
