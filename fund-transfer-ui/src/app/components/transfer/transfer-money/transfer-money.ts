@@ -53,7 +53,7 @@ export class TransferMoney implements OnInit {
   constructor(
     private transferService: TransferService,
     private scheduledTransferService: ScheduledTransferService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
 
@@ -81,9 +81,7 @@ export class TransferMoney implements OnInit {
   onBeneficiaryChange() {
 
     const selected = this.beneficiaries.find(
-
       b => b.accountNumber === this.transferData.accountNumber
-
     );
 
     if (selected) {
@@ -159,8 +157,26 @@ export class TransferMoney implements OnInit {
 
         error: (err) => {
 
-          console.log(err);
-          alert(err.error || "Unable to Schedule Transfer");
+          console.log("Pay Later Error:", err);
+          console.log("Backend Response:", err.error);
+
+          if (typeof err.error === 'string') {
+
+            alert(err.error);
+
+          } else if (err.error?.message) {
+
+            alert(err.error.message);
+
+          } else if (err.error?.error) {
+
+            alert(err.error.error);
+
+          } else {
+
+            alert(JSON.stringify(err.error));
+
+          }
 
         }
 
@@ -182,8 +198,26 @@ export class TransferMoney implements OnInit {
 
         error: (err) => {
 
-          console.log(err);
-          alert(err.error || "Invalid Transaction PIN");
+          console.log("Pay Now Error:", err);
+          console.log("Backend Response:", err.error);
+
+          if (typeof err.error === 'string') {
+
+            alert(err.error);
+
+          } else if (err.error?.message) {
+
+            alert(err.error.message);
+
+          } else if (err.error?.error) {
+
+            alert(err.error.error);
+
+          } else {
+
+            alert(JSON.stringify(err.error));
+
+          }
 
         }
 
