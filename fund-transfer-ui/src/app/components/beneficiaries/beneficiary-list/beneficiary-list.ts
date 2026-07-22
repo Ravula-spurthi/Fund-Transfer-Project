@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { BeneficiaryService } from '../../../core/services/beneficiary.service';
 
@@ -16,13 +17,15 @@ export class BeneficiaryList implements OnInit {
   beneficiaries: any[] = [];
 
   constructor(
-    private beneficiaryService: BeneficiaryService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  private beneficiaryService: BeneficiaryService,
+  private cdr: ChangeDetectorRef,
+  private router: Router
+) {}
 
   ngOnInit(): void {
     this.loadBeneficiaries();
   }
+
 
   loadBeneficiaries(): void {
 
@@ -51,6 +54,10 @@ export class BeneficiaryList implements OnInit {
     });
 
   }
+
+  goToAddBeneficiary(): void {
+  this.router.navigate(['/add-beneficiary']);
+}
 
   deleteBeneficiary(id: number): void {
 
