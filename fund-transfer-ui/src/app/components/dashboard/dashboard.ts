@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { DashboardService } from '../../core/services/dashboard.service';
 
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
@@ -10,7 +10,7 @@ Chart.register(...registerables);
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
@@ -58,7 +58,7 @@ export class Dashboard implements OnInit, AfterViewInit {
   };
 
   constructor(
-    private router: Router,
+    public router: Router,
     private dashboardService: DashboardService
   ) {}
 
@@ -203,35 +203,35 @@ export class Dashboard implements OnInit, AfterViewInit {
   }
 
   goToBeneficiary(): void {
-    this.router.navigate(['/beneficiary-list']);
+    this.router.navigate(['/dashboard/beneficiary-list']);
   }
 
   goToTransfer(): void {
-    this.router.navigate(['/transfer-money']);
+    this.router.navigate(['/dashboard/transfer-money']);
   }
 
   goToScheduledTransfer(): void {
-    this.router.navigate(['/scheduled-transfer']);
+    this.router.navigate(['/dashboard/scheduled-transfer']);
   }
 
   goToTransactions(): void {
-    this.router.navigate(['/transactions']);
+    this.router.navigate(['/dashboard/transactions']);
   }
 
   goToStatement(): void {
-    this.router.navigate(['/statement']);
+    this.router.navigate(['/dashboard/statement']);
   }
 
   goToProfile(): void {
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/dashboard/profile']);
   }
 
   goToSetPin(): void {
-    this.router.navigate(['/set-pin']);
+    this.router.navigate(['/dashboard/set-pin']);
   }
 
   goToChangePin(): void {
-    this.router.navigate(['/change-pin']);
+    this.router.navigate(['/dashboard/change-pin']);
   }
 
   logout(): void {
