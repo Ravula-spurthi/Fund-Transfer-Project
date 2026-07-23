@@ -45,95 +45,97 @@
     </div>
 
     <div class="main-content">
+        <ng-container *ngIf="router.url === '/dashboard' || router.url === '/dashboard/'">
+            <h1>Welcome {{userName}}</h1>
 
-        <h1>Welcome {{userName}}</h1>
+            <div class="cards">
 
-        <div class="cards">
+                <!-- Account Number -->
 
-            <!-- Account Number -->
+                <div class="card">
 
-            <div class="card">
+                    <h3>Account Number</h3>
 
-                <h3>Account Number</h3>
+                    <h2>{{dashboard.accountNumber}}</h2>
 
-                <h2>{{dashboard.accountNumber}}</h2>
+                </div>
+
+                <!-- Available Balance -->
+
+                <div class="card">
+
+                    <h3>Available Balance</h3>
+
+                    <h2 *ngIf="showBalance">
+                        ₹ {{dashboard.balance}}
+                    </h2>
+
+                    <h2 *ngIf="!showBalance">
+                        ********
+                    </h2>
+
+                    <br>
+
+                    <button
+                        *ngIf="!showBalance"
+                        (click)="viewBalance()">
+
+                        View Balance
+
+                    </button>
+
+                    <button
+                        *ngIf="showBalance"
+                        (click)="hideBalance()">
+
+                        Hide Balance
+
+                    </button>
+
+                </div>
 
             </div>
 
-            <!-- Available Balance -->
+            <div class="card chart-card">
+                <h3>Monthly Transactions</h3>
 
-            <div class="card">
+                <div class="chart-wrapper">
+                    <canvas #monthlyChart class="monthly-chart-canvas"></canvas>
 
-                <h3>Available Balance</h3>
+                    <div class="chart-status" *ngIf="monthlyChartLoading">
+                        Loading monthly transaction chart...
+                    </div>
 
-                <h2 *ngIf="showBalance">
-                    ₹ {{dashboard.balance}}
-                </h2>
+                    <div class="chart-status error" *ngIf="!monthlyChartLoading && monthlyChartError">
+                        {{ monthlyChartError }}
+                    </div>
 
-                <h2 *ngIf="!showBalance">
-                    ********
-                </h2>
+                    <div class="chart-status" *ngIf="!monthlyChartLoading && !monthlyChartError && !monthlyChartInstance?.data?.labels?.length">
+                        No monthly transaction data available.
+                    </div>
+                </div>
+            </div>
 
-                <br>
+            <!-- Quick Actions -->
 
-                <button
-                    *ngIf="!showBalance"
-                    (click)="viewBalance()">
+            <div class="quick-actions">
 
-                    View Balance
-
+                <button (click)="goToBeneficiary()">
+                    Add Beneficiary
                 </button>
 
-                <button
-                    *ngIf="showBalance"
-                    (click)="hideBalance()">
+                <button (click)="goToTransfer()">
+                    Quick Transfer
+                </button>
 
-                    Hide Balance
-
+                <button (click)="goToTransactions()">
+                    View Transactions
                 </button>
 
             </div>
+        </ng-container>
 
-        </div>
-
-        <div class="card chart-card">
-            <h3>Monthly Transactions</h3>
-
-            <div class="chart-wrapper">
-                <canvas #monthlyChart class="monthly-chart-canvas"></canvas>
-
-                <div class="chart-status" *ngIf="monthlyChartLoading">
-                    Loading monthly transaction chart...
-                </div>
-
-                <div class="chart-status error" *ngIf="!monthlyChartLoading && monthlyChartError">
-                    {{ monthlyChartError }}
-                </div>
-
-                <div class="chart-status" *ngIf="!monthlyChartLoading && !monthlyChartError && !monthlyChartInstance?.data?.labels?.length">
-                    No monthly transaction data available.
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Actions -->
-
-        <div class="quick-actions">
-
-            <button (click)="goToBeneficiary()">
-                Add Beneficiary
-            </button>
-
-            <button (click)="goToTransfer()">
-                Quick Transfer
-            </button>
-
-            <button (click)="goToTransactions()">
-                View Transactions
-            </button>
-
-        </div>
-
+        <router-outlet></router-outlet>
     </div>
 
 </div>
