@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.fundtransfer.dto.ScheduledTransferDTO;
 import com.fundtransfer.entity.ScheduledTransfer;
+import com.fundtransfer.entity.Transaction;
 import com.fundtransfer.entity.User;
 import com.fundtransfer.repository.ScheduledTransferRepository;
+import com.fundtransfer.repository.TransactionRepository;
 import com.fundtransfer.repository.UserRepository;
-
 @Service
 public class ScheduledTransferService {
 
@@ -23,6 +24,9 @@ public class ScheduledTransferService {
 
     @Autowired
     private TransactionPinService transactionPinService;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     // Save Pay Later Transfer
     public ScheduledTransfer saveTransfer(ScheduledTransferDTO dto) {
@@ -112,16 +116,62 @@ public class ScheduledTransferService {
         repository.deleteById(id);
     }
 
-    // Execute Scheduled Transfer
-    public ScheduledTransfer executeTransfer(Long id) {
+   // Execute Scheduled Transfer
+public ScheduledTransfer executeTransfer(Long id) {
 
-        ScheduledTransfer transfer = repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Transfer Not Found"));
+    ScheduledTransfer transfer = repository.findById(id)
+            .orElseThrow(() ->
+                    new RuntimeException("Transfer Not Found"));
 
-        transfer.setStatus("COMPLETED");
-
-        return repository.save(transfer);
+    if ("COMPLETED".equalsIgnoreCase(transfer.getStatus())) {
+        throw new RuntimeException("Transfer already executed");
     }
 
+    User sender = userRepository
+            .findByAccountNumber(transfer.getSenderAccount())
+            .orElseThrow(() ->
+                    new RuntimeException("Sender not found"));
+
+    User beneficiary = userRepository
+            .findByAccountNumber(transfer.getReceiverAccount())
+            .orElseThrow(() ->
+                    new RuntimeException("Beneficiary not found"));
+
+    if (sender.getBalance() < transfer.getAmount()) {
+        throw new RuntimeException("Insufficient balance");
+    }
+
+    // Debit Sender
+    sender.setBalance(sender.getBalance() - transfer.getAmount());
+
+    // Credit Beneficiary
+    beneficiary.setBalance(
+            beneficiary.getBalance() + transfer.getAmount());
+
+    userRepository.save(sender);
+    userRepository.save(beneficiary);
+
+    // Create Transaction History
+    Transaction transaction = new Transaction();
+
+    transaction.setUserId(sender.getId());
+    transaction.setBeneficiaryName(
+            transfer.getBeneficiaryName());
+    transaction.setAmount(
+            transfer.getAmount());
+    transaction.setStatus("SUCCESS");
+    transaction.setTransactionDate(LocalDate.now());
+    transaction.setTransactionType("Pay Later");
+    transaction.setRemarks(
+            transfer.getRemarks());
+    transaction.setBalance(sender.getBalance());
+    transaction.setTransactionMode("DEBIT");
+
+    transactionRepository.save(transaction);
+
+    // Update Scheduled Transfer Status
+    transfer.setStatus("COMPLETED");
+
+    return repository.save(transfer);
+}
 }
