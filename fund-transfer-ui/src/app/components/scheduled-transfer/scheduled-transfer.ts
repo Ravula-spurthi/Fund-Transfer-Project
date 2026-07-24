@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { ScheduledTransferService } from '../../core/services/scheduled-transfer.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class ScheduledTransfer implements OnInit {
 
   constructor(
     private scheduledTransferService: ScheduledTransferService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -72,6 +74,14 @@ export class ScheduledTransfer implements OnInit {
     }
 
   }
+
+  goBack(): void {
+
+    this.router.navigate([
+        '/dashboard/beneficiary-list'
+    ]);
+
+}
 
   deleteTransfer(id: number): void {
 

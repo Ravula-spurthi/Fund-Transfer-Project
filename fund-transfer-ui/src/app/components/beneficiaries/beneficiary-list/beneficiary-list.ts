@@ -55,8 +55,12 @@ export class BeneficiaryList implements OnInit {
 
   }
 
+  goToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+}
+
   goToAddBeneficiary(): void {
-  this.router.navigate(['/add-beneficiary']);
+  this.router.navigate(['/dashboard/add-beneficiary']);
 }
 
   deleteBeneficiary(id: number): void {

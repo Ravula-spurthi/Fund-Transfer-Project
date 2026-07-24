@@ -27,3 +27,21 @@ button{
   border-radius:5px;
   cursor:pointer;
 }
+
+.back-btn {
+    background: white;
+    color: #0d6efd;
+    border: 1px solid #0d6efd;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background: #0d6efd;
+    color: white;
+}

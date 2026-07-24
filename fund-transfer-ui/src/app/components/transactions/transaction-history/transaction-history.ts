@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 import { Transaction } from '../../../models/transaction';
 import { TransactionService } from '../../../core/services/transaction.service';
@@ -17,8 +18,13 @@ export class TransactionHistory implements OnInit {
 
   constructor(
     private transactionService: TransactionService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
+
+  goBack(): void {
+    this.router.navigate(['/dashboard']);
+  }
 
   ngOnInit(): void {
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -23,7 +24,10 @@ export class AccountStatement implements OnInit {
 
   userId = Number(sessionStorage.getItem('userId')) || 1;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadStatement();
@@ -103,6 +107,14 @@ export class AccountStatement implements OnInit {
     });
 
   }
+
+  goBack(): void {
+
+this.router.navigate([
+'/dashboard'
+]);
+
+}
 
   // Download selected transactions
   downloadSelectedPDF() {

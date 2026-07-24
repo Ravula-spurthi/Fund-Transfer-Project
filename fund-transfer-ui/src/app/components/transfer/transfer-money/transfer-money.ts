@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TransferService } from '../../../core/services/transfer';
 import { ScheduledTransferService } from '../../../core/services/scheduled-transfer.service';
 
@@ -52,8 +53,13 @@ export class TransferMoney implements OnInit {
 
   constructor(
     private transferService: TransferService,
-    private scheduledTransferService: ScheduledTransferService
+    private scheduledTransferService: ScheduledTransferService,
+    private router: Router
   ) {}
+
+  goBack(): void {
+    this.router.navigate(['/dashboard']);
+  }
 
   ngOnInit(): void {
 

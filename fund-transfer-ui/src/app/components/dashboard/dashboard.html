@@ -2,7 +2,7 @@
 
     <div class="sidebar">
 
-        <h2>Fund Transfer</h2>
+        <h2 (click)="goHome()" style="cursor: pointer">Fund Transfer</h2>
 
         <button (click)="goToBeneficiary()">
             Add Beneficiary
@@ -103,7 +103,7 @@
                     <canvas #monthlyChart class="monthly-chart-canvas"></canvas>
 
                     <div class="chart-status" *ngIf="monthlyChartLoading">
-                        Loading monthly transaction chart...
+                         monthly transaction chart...
                     </div>
 
                     <div class="chart-status error" *ngIf="!monthlyChartLoading && monthlyChartError">
