@@ -234,6 +234,10 @@ export class Dashboard implements OnInit, AfterViewInit {
     this.router.navigate(['/dashboard/change-pin']);
   }
 
+  goHome(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
   logout(): void {
     sessionStorage.clear();
     this.router.navigate(['/login']);

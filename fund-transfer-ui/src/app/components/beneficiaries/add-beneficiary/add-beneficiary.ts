@@ -27,6 +27,14 @@ export class AddBeneficiary {
     private router: Router
   ) {}
 
+  goBack(): void {
+
+    this.router.navigate([
+        '/dashboard/beneficiary-list'
+    ]);
+
+}
+
   addBeneficiary() {
 
     if (
@@ -49,7 +57,7 @@ export class AddBeneficiary {
 
           alert('Beneficiary Added Successfully');
 
-          this.router.navigate(['/beneficiary-list']);
+          this.router.navigate(['/dashboard/beneficiary-list']);
 
         },
 

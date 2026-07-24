@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -15,7 +16,11 @@ export class ChangeTransactionPin {
   newPin = '';
   confirmPin = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
+
+  goBack(): void {
+    this.router.navigate(['/dashboard/profile']);
+  }
 
   changePin() {
 
@@ -37,6 +42,7 @@ export class ChangeTransactionPin {
     ).subscribe({
       next: (res) => {
         alert(res);
+        this.router.navigate(['/dashboard/profile']);
       },
       error: () => {
         alert('Unable to change PIN');

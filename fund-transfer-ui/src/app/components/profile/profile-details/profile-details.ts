@@ -65,11 +65,19 @@ export class ProfileDetails implements OnInit {
   }
 
   goToSetPin() {
-    this.router.navigate(['/set-pin']);
+    this.router.navigate(['/dashboard/set-pin']);
   }
 
   goToChangePin() {
-    this.router.navigate(['/change-pin']);
+    this.router.navigate(['/dashboard/change-pin']);
   }
+
+  goBack(): void {
+
+this.router.navigate([
+'/dashboard'
+]);
+
+}
 
 }
