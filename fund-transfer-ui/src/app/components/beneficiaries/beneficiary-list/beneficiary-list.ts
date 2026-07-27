@@ -62,7 +62,14 @@ export class BeneficiaryList implements OnInit {
   goToAddBeneficiary(): void {
   this.router.navigate(['/dashboard/add-beneficiary']);
 }
+editBeneficiary(id: number): void {
 
+  this.router.navigate([
+    '/dashboard/edit-beneficiary',
+    id
+  ]);
+
+}
   deleteBeneficiary(id: number): void {
 
     if (confirm("Are you sure you want to delete this beneficiary?")) {

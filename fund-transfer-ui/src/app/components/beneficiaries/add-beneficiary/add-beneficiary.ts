@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BeneficiaryService } from '../../../core/services/beneficiary.service';
-
+import { ChangeDetectorRef } from '@angular/core';
 @Component({
   selector: 'app-add-beneficiary',
   standalone: true,
@@ -10,7 +10,7 @@ import { BeneficiaryService } from '../../../core/services/beneficiary.service';
   templateUrl: './add-beneficiary.html',
   styleUrl: './add-beneficiary.css'
 })
-export class AddBeneficiary {
+export class AddBeneficiary implements OnInit {
 
   beneficiary = {
     beneficiaryName: '',
@@ -22,18 +22,57 @@ export class AddBeneficiary {
     userId: Number(sessionStorage.getItem('userId')) || 1
   };
 
+  isEdit = false;
+  beneficiaryId!: number;
+
   constructor(
-    private beneficiaryService: BeneficiaryService,
-    private router: Router
-  ) {}
+  private beneficiaryService: BeneficiaryService,
+  private router: Router,
+  private route: ActivatedRoute,
+  private cdr: ChangeDetectorRef
+) {}
+
+  ngOnInit(): void {
+
+  const id = this.route.snapshot.paramMap.get('id');
+
+  console.log("Route ID:", id);
+
+  if (id) {
+
+    this.isEdit = true;
+    this.beneficiaryId = Number(id);
+
+    this.beneficiaryService.getBeneficiaryById(this.beneficiaryId)
+      .subscribe({
+
+        next: (data) => {
+
+  this.beneficiary = { ...data };
+
+  this.cdr.detectChanges();
+
+},
+
+        error: (err) => {
+
+          console.log("Backend Error:", err);
+
+        }
+
+      });
+
+  }
+
+}
 
   goBack(): void {
 
     this.router.navigate([
-        '/dashboard/beneficiary-list'
+      '/dashboard/beneficiary-list'
     ]);
 
-}
+  }
 
   addBeneficiary() {
 
@@ -45,31 +84,46 @@ export class AddBeneficiary {
       !this.beneficiary.branch ||
       !this.beneficiary.mobileNumber
     ) {
+
       alert('Please fill all fields');
       return;
+
     }
 
-    this.beneficiaryService
-      .addBeneficiary(this.beneficiary)
-      .subscribe({
+    const request = this.isEdit
+      ? this.beneficiaryService.updateBeneficiary(
+          this.beneficiaryId,
+          this.beneficiary
+        )
+      : this.beneficiaryService.addBeneficiary(
+          this.beneficiary
+        );
 
-        next: () => {
+    request.subscribe({
 
-          alert('Beneficiary Added Successfully');
+      next: () => {
 
-          this.router.navigate(['/dashboard/beneficiary-list']);
+        alert(
+          this.isEdit
+            ? 'Beneficiary Updated Successfully'
+            : 'Beneficiary Added Successfully'
+        );
 
-        },
+        this.router.navigate([
+          '/dashboard/beneficiary-list'
+        ]);
 
-        error: (err) => {
+      },
 
-          console.log(err);
+      error: (err) => {
 
-          alert(err.error);
+        console.log(err);
 
-        }
+        alert(err.error);
 
-      });
+      }
+
+    });
 
   }
 
