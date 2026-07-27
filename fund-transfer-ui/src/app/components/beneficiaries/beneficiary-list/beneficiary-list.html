@@ -55,15 +55,19 @@
 
         <td>
 
-          <button
-            class="delete-btn"
-            (click)="deleteBeneficiary(b.id)">
+  <button
+    class="edit-btn"
+    (click)="editBeneficiary(b.id)">
+    Edit
+  </button>
 
-            Delete
+  <button
+    class="delete-btn"
+    (click)="deleteBeneficiary(b.id)">
+    Delete
+  </button>
 
-          </button>
-
-        </td>
+</td>
 
       </tr>
 

@@ -7,7 +7,7 @@
 
 </button>
 
-  <h2>Add Beneficiary</h2>
+  <h2>{{ isEdit ? 'Edit Beneficiary' : 'Add Beneficiary' }}</h2>
 
   <input
     type="text"
@@ -40,7 +40,7 @@
     [(ngModel)]="beneficiary.mobileNumber">
 
   <button (click)="addBeneficiary()">
-    Add Beneficiary
-  </button>
+  {{ isEdit ? 'Update Beneficiary' : 'Add Beneficiary' }}
+</button>
 
 </div>
