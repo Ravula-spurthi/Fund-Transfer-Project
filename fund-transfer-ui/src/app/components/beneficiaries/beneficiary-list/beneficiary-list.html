@@ -20,7 +20,21 @@
   <p class="record-count">
     Total Beneficiaries: {{ beneficiaries.length }}
   </p>
+<div class="search-container">
 
+  <input
+    type="text"
+    placeholder="Search Beneficiary..."
+    [(ngModel)]="searchText"
+    (input)="searchBeneficiary()">
+
+  <button
+    class="clear-btn"
+    (click)="clearSearch()">
+    Clear
+  </button>
+
+</div>
   <table *ngIf="beneficiaries.length > 0">
 
     <thead>

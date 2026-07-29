@@ -14,7 +14,11 @@ export class BeneficiaryService {
   getBeneficiaries(userId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/user/${userId}`);
   }
-
+searchBeneficiary(userId: number, name: string): Observable<any[]> {
+  return this.http.get<any[]>(
+    `${this.apiUrl}/search?userId=${userId}&name=${name}`
+  );
+}
   addBeneficiary(data: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, data);
   }

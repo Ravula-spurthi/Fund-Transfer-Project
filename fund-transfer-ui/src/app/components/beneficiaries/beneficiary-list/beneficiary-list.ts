@@ -2,20 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { FormsModule } from '@angular/forms';
 import { BeneficiaryService } from '../../../core/services/beneficiary.service';
 
 @Component({
   selector: 'app-beneficiary-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './beneficiary-list.html',
   styleUrl: './beneficiary-list.css'
 })
 export class BeneficiaryList implements OnInit {
 
   beneficiaries: any[] = [];
-
+searchText = '';
   constructor(
   private beneficiaryService: BeneficiaryService,
   private cdr: ChangeDetectorRef,
@@ -54,7 +54,43 @@ export class BeneficiaryList implements OnInit {
     });
 
   }
+searchBeneficiary(): void {
 
+  const userId = Number(sessionStorage.getItem('userId'));
+
+  if (this.searchText.trim() === '') {
+    this.loadBeneficiaries();
+    return;
+  }
+
+  this.beneficiaryService
+    .searchBeneficiary(userId, this.searchText)
+    .subscribe({
+
+      next: (data) => {
+
+        this.beneficiaries = data;
+
+        this.cdr.detectChanges();
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+      }
+
+    });
+
+}
+clearSearch(): void {
+
+  this.searchText = '';
+
+  this.loadBeneficiaries();
+
+}
   goToDashboard(): void {
     this.router.navigate(['/dashboard']);
 }
