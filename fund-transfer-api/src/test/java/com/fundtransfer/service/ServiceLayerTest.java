@@ -9,9 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,12 +21,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.fundtransfer.dto.BeneficiaryDTO;
 import com.fundtransfer.dto.ChangeTransactionPinDTO;
 import com.fundtransfer.dto.ForgotPasswordDTO;
+import com.fundtransfer.dto.FundTransferDTO;
 import com.fundtransfer.dto.LoginResponseDTO;
 import com.fundtransfer.dto.RegisterDTO;
 import com.fundtransfer.dto.SetTransactionPinDTO;
 import com.fundtransfer.entity.Beneficiary;
+import com.fundtransfer.entity.Transaction;
 import com.fundtransfer.entity.User;
 import com.fundtransfer.repository.BeneficiaryRepository;
+import com.fundtransfer.repository.TransactionRepository;
 import com.fundtransfer.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,6 +42,9 @@ class ServiceLayerTest {
     private BeneficiaryRepository beneficiaryRepository;
 
     @Mock
+    private TransactionRepository transactionRepository;
+
+    @Mock
     private TransactionPinService transactionPinService;
 
     @InjectMocks
@@ -47,6 +55,9 @@ class ServiceLayerTest {
 
     @InjectMocks
     private DashboardService dashboardService;
+
+    @InjectMocks
+    private FundTransferService fundTransferService;
 
     @InjectMocks
     private TransactionPinService transactionPinServiceImpl;
@@ -178,6 +189,47 @@ class ServiceLayerTest {
         assertEquals("Carol", result.getName());
         assertEquals("2000000001", result.getAccountNumber());
         assertEquals(4200.0, result.getBalance());
+    }
+
+    @Test
+    void transferFundsCreatesDebitAndCreditTransactionEntries() {
+        User sender = new User();
+        sender.setId(1L);
+        sender.setName("Alice");
+        sender.setAccountNumber("1000000001");
+        sender.setBalance(1000.0);
+
+        User beneficiary = new User();
+        beneficiary.setId(2L);
+        beneficiary.setName("Bob");
+        beneficiary.setAccountNumber("1000000002");
+        beneficiary.setBalance(500.0);
+
+        FundTransferDTO dto = new FundTransferDTO();
+        dto.setSenderAccount("1000000001");
+        dto.setReceiverAccount("1000000002");
+        dto.setBeneficiaryName("Bob");
+        dto.setAmount(200.0);
+        dto.setPaymentType("IMPS");
+        dto.setRemarks("Rent payment");
+
+        when(userRepository.findByAccountNumber("1000000001")).thenReturn(Optional.of(sender));
+        when(userRepository.findByAccountNumber("1000000002")).thenReturn(Optional.of(beneficiary));
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(transactionRepository.save(any(Transaction.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        String result = fundTransferService.transferFunds(dto);
+
+        assertEquals("Fund Transfer Successful", result);
+        assertEquals(800.0, sender.getBalance());
+        assertEquals(700.0, beneficiary.getBalance());
+
+        ArgumentCaptor<Transaction> captor = ArgumentCaptor.forClass(Transaction.class);
+        verify(transactionRepository, times(2)).save(captor.capture());
+
+        List<Transaction> savedTransactions = captor.getAllValues();
+        assertTrue(savedTransactions.stream().anyMatch(t -> "DEBIT".equals(t.getTransactionMode()) && t.getUserId().equals(1L)));
+        assertTrue(savedTransactions.stream().anyMatch(t -> "CREDIT".equals(t.getTransactionMode()) && t.getUserId().equals(2L)));
     }
 
     @Test
