@@ -102,3 +102,21 @@ tbody tr:hover{
     background: #0d6efd;
     color: white;
 }
+.search-container {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  align-items: center;
+}
+
+.search-container input {
+  width: 280px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.clear-btn {
+  padding: 8px 15px;
+  cursor: pointer;
+}

@@ -11,6 +11,9 @@ public interface BeneficiaryRepository extends JpaRepository<Beneficiary, Long> 
 
     List<Beneficiary> findByUserId(Long userId);
 List<Beneficiary> findByBeneficiaryNameContainingIgnoreCase(String beneficiaryName);
+List<Beneficiary> findByUserIdAndBeneficiaryNameContainingIgnoreCase(
+        Long userId,
+        String beneficiaryName);
     Optional<Beneficiary> findByUserIdAndAccountNumber(Long userId, String accountNumber);
 
 }

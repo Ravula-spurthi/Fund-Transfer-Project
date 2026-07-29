@@ -81,7 +81,9 @@ public Beneficiary getBeneficiaryById(Long id) {
     public List<Beneficiary> searchBeneficiary(String name) {
         return repository.findByBeneficiaryNameContainingIgnoreCase(name);
     }
-
+public List<Beneficiary> searchBeneficiary(Long userId, String name) {
+    return repository.findByUserIdAndBeneficiaryNameContainingIgnoreCase(userId, name);
+}
     public void deleteBeneficiary(Long id) {
         repository.deleteById(id);
     }
