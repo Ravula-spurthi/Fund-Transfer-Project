@@ -41,11 +41,13 @@ public class AuthFilter implements Filter {
             httpResponse.setHeader("Access-Control-Allow-Headers", "Authorization,Content-Type");
         }
 
-        if (path.startsWith("/api/auth/") || "OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
-            httpResponse.setStatus(HttpStatus.OK.value());
-            chain.doFilter(request, response);
-            return;
-        }
+        if (path.equals("/statement") ||
+    path.startsWith("/api/users/") ||
+    path.equals("/admin/login")) {
+
+    chain.doFilter(request, response);
+    return;
+}
 
         if (path.equals("/statement") || path.startsWith("/api/users/")) {
             chain.doFilter(request, response);
