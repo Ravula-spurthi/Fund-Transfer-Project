@@ -16,6 +16,8 @@ import com.fundtransfer.dto.BeneficiaryDTO;
 import com.fundtransfer.entity.Beneficiary;
 import com.fundtransfer.service.BeneficiaryService;
 
+import org.springframework.web.bind.annotation.PutMapping;
+
 @RestController
 @CrossOrigin(origins = "*")
 public class BeneficiaryController {
@@ -29,6 +31,10 @@ public class BeneficiaryController {
         return beneficiaryService.getBeneficiaries(userId);
     }
 
+@GetMapping("/beneficiaries/{id}")
+public Beneficiary getBeneficiaryById(@PathVariable Long id) {
+    return beneficiaryService.getBeneficiaryById(id);
+}
     // Search beneficiary
     @GetMapping("/beneficiaries/search")
     public List<Beneficiary> searchBeneficiary(@RequestParam String name) {
@@ -46,5 +52,13 @@ public class BeneficiaryController {
     public void deleteBeneficiary(@PathVariable Long id) {
         beneficiaryService.deleteBeneficiary(id);
     }
+
+    @PutMapping("/beneficiaries/{id}")
+public Beneficiary updateBeneficiary(
+        @PathVariable Long id,
+        @RequestBody BeneficiaryDTO dto) {
+
+    return beneficiaryService.updateBeneficiary(id, dto);
+}
 
 }

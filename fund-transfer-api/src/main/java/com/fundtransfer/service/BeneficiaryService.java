@@ -75,6 +75,9 @@ public class BeneficiaryService {
         return repository.findByUserId(userId);
     }
 
+public Beneficiary getBeneficiaryById(Long id) {
+    return repository.findById(id).orElse(null);
+}
     public List<Beneficiary> searchBeneficiary(String name) {
         return repository.findByBeneficiaryNameContainingIgnoreCase(name);
     }
@@ -82,4 +85,19 @@ public class BeneficiaryService {
     public void deleteBeneficiary(Long id) {
         repository.deleteById(id);
     }
+
+    public Beneficiary updateBeneficiary(Long id, BeneficiaryDTO dto) {
+
+    Beneficiary beneficiary = repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Beneficiary not found"));
+
+    beneficiary.setBeneficiaryName(dto.getBeneficiaryName());
+    beneficiary.setAccountNumber(dto.getAccountNumber());
+    beneficiary.setBankName(dto.getBankName());
+    beneficiary.setIfscCode(dto.getIfscCode());
+    beneficiary.setBranch(dto.getBranch());
+    beneficiary.setMobileNumber(dto.getMobileNumber());
+
+    return repository.save(beneficiary);
+}
 }

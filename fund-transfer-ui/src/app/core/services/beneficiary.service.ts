@@ -23,4 +23,12 @@ export class BeneficiaryService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
+  getBeneficiaryById(id: number): Observable<any> {
+  return this.http.get(`${this.apiUrl}/${id}`);
+}
+
+updateBeneficiary(id: number, data: any): Observable<any> {
+  return this.http.put(`${this.apiUrl}/${id}`, data);
+}
+
 }

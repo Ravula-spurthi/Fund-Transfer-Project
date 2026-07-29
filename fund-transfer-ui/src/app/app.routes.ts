@@ -44,6 +44,13 @@ export const routes: Routes = [
       },
 
       {
+  path: 'edit-beneficiary/:id',
+  loadComponent: () =>
+    import('./components/beneficiaries/add-beneficiary/add-beneficiary')
+      .then(m => m.AddBeneficiary)
+},
+
+      {
         path: 'beneficiary-list',
         loadComponent: () =>
           import('./components/beneficiaries/beneficiary-list/beneficiary-list')
