@@ -5,6 +5,11 @@ import { Router } from '@angular/router';
 import { Transaction } from '../../../models/transaction';
 import { TransactionService } from '../../../core/services/transaction.service';
 
+interface TransactionViewModel extends Transaction {
+  direction: 'DEBIT' | 'CREDIT' | 'UNKNOWN';
+  displayAmount: string;
+}
+
 @Component({
   selector: 'app-transaction-history',
   standalone: true,
@@ -14,7 +19,7 @@ import { TransactionService } from '../../../core/services/transaction.service';
 })
 export class TransactionHistory implements OnInit {
 
-  transactions: Transaction[] = [];
+  transactions: TransactionViewModel[] = [];
 
   constructor(
     private transactionService: TransactionService,
@@ -36,7 +41,7 @@ export class TransactionHistory implements OnInit {
 
       next: (data) => {
         console.log('API Response:', data);
-        this.transactions = data;
+        this.transactions = (data || []).map((txn) => this.mapTransaction(txn));
         this.cdr.detectChanges();
       },
 
@@ -46,6 +51,22 @@ export class TransactionHistory implements OnInit {
 
     });
 
+  }
+
+  private mapTransaction(txn: Transaction): TransactionViewModel {
+    const mode = (txn.transactionMode || '').toUpperCase();
+    const userId = Number(sessionStorage.getItem('userId'));
+    const direction = mode === 'CREDIT' ? 'CREDIT' : mode === 'DEBIT' ? 'DEBIT' : 'UNKNOWN';
+
+    return {
+      ...txn,
+      direction,
+      displayAmount: direction === 'CREDIT'
+        ? `+ ₹${txn.amount}`
+        : direction === 'DEBIT'
+          ? `- ₹${txn.amount}`
+          : `₹${txn.amount}`
+    };
   }
 
 }

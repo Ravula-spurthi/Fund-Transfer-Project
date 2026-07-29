@@ -52,25 +52,39 @@ public class FundTransferService {
         userRepository.save(sender);
         userRepository.save(beneficiary);
 
-        Transaction transaction = new Transaction();
+        Transaction debitTransaction = new Transaction();
 
-        transaction.setUserId(sender.getId());
-        transaction.setBeneficiaryName(dto.getBeneficiaryName());
-        transaction.setAmount(dto.getAmount());
-        transaction.setStatus("SUCCESS");
+        debitTransaction.setUserId(sender.getId());
+        debitTransaction.setBeneficiaryName(dto.getBeneficiaryName());
+        debitTransaction.setAmount(dto.getAmount());
+        debitTransaction.setStatus("SUCCESS");
 
         if (dto.getScheduleDate() != null && !dto.getScheduleDate().isEmpty()) {
-            transaction.setTransactionDate(LocalDate.parse(dto.getScheduleDate()));
+            debitTransaction.setTransactionDate(LocalDate.parse(dto.getScheduleDate()));
         } else {
-            transaction.setTransactionDate(LocalDate.now());
+            debitTransaction.setTransactionDate(LocalDate.now());
         }
 
-        transaction.setTransactionType(dto.getPaymentType());
-        transaction.setRemarks(dto.getRemarks());
-        transaction.setBalance(sender.getBalance());
-        transaction.setTransactionMode("DEBIT");
+        debitTransaction.setTransactionType(dto.getPaymentType());
+        debitTransaction.setRemarks(dto.getRemarks());
+        debitTransaction.setBalance(sender.getBalance());
+        debitTransaction.setTransactionMode("DEBIT");
 
-        transactionRepository.save(transaction);
+        transactionRepository.save(debitTransaction);
+
+        Transaction creditTransaction = new Transaction();
+
+        creditTransaction.setUserId(beneficiary.getId());
+        creditTransaction.setBeneficiaryName(sender.getName());
+        creditTransaction.setAmount(dto.getAmount());
+        creditTransaction.setStatus("SUCCESS");
+        creditTransaction.setTransactionDate(LocalDate.now());
+        creditTransaction.setTransactionType(dto.getPaymentType());
+        creditTransaction.setRemarks(dto.getRemarks());
+        creditTransaction.setBalance(beneficiary.getBalance());
+        creditTransaction.setTransactionMode("CREDIT");
+
+        transactionRepository.save(creditTransaction);
 
         return "Fund Transfer Successful";
     }

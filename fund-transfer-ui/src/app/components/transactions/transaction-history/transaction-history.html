@@ -24,6 +24,7 @@ class="back-btn"
         <th>Date</th>
         <th>Beneficiary</th>
         <th>Amount</th>
+        <th>Direction</th>
         <th>Status</th>
         <th>Balance</th>
         <th>Remarks</th>
@@ -43,7 +44,9 @@ class="back-btn"
 
         <td>{{ txn.beneficiaryName }}</td>
 
-        <td>{{ txn.amount }}</td>
+        <td>{{ txn.displayAmount }}</td>
+
+        <td>{{ txn.direction }}</td>
 
         <td>{{ txn.status }}</td>
 
