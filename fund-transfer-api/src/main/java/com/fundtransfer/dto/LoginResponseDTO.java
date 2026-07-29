@@ -7,16 +7,18 @@ public class LoginResponseDTO {
     private String email;
     private String accountNumber;
     private Double balance;
+    private String token;
 
     public LoginResponseDTO() {
     }
 
-    public LoginResponseDTO(Long id, String name, String email, String accountNumber, Double balance) {
+    public LoginResponseDTO(Long id, String name, String email, String accountNumber, Double balance, String token) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.accountNumber = accountNumber;
         this.balance = balance;
+        this.token = token;
     }
 
     public Long getId() {
@@ -57,5 +59,13 @@ public class LoginResponseDTO {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
