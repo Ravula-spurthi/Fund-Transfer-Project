@@ -17,6 +17,9 @@ public class AuthService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TokenService tokenService;
+
     public Object login(String email, String password) {
        // System.out.println(email);
        // System.out.println(password);
@@ -33,12 +36,15 @@ public class AuthService {
             return "Invalid Password";
         }
 
+        String token = tokenService.generateToken(user.getId(), user.getEmail());
+
         return new LoginResponseDTO(
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
                 user.getAccountNumber(),
-                user.getBalance()
+                user.getBalance(),
+                token
         );
     }
 

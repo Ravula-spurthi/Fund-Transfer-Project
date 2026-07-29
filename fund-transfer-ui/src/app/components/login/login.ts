@@ -130,6 +130,10 @@ export class Login {
           'user'
         );
 
+        if (response.token) {
+          sessionStorage.setItem('authToken', response.token);
+        }
+
         alert("Login Successful");
 
         this.router.navigate(['/dashboard']);

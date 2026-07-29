@@ -39,6 +39,9 @@ class ServiceLayerTest {
     @Mock
     private TransactionPinService transactionPinService;
 
+    @Mock
+    private TokenService tokenService;
+
     @InjectMocks
     private AuthService authService;
 
@@ -83,6 +86,7 @@ class ServiceLayerTest {
         user.setBalance(2500.0);
 
         when(userRepository.findByEmail("alice@example.com")).thenReturn(Optional.of(user));
+        when(tokenService.generateToken(10L, "alice@example.com")).thenReturn("Bearer test-token");
 
         Object result = authService.login("alice@example.com", "secret");
 
