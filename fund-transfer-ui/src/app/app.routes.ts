@@ -30,12 +30,27 @@ export const routes: Routes = [
         .then(m => m.ForgotPassword)
   },
 
+  // **********************
+  // ADMIN DASHBOARD ROUTE
+  // **********************
+  {
+    path: 'admin-dashboard',
+    loadComponent: () =>
+      import('./components/admin-dashboard/admin-dashboard')
+        .then(m => m.AdminDashboard)
+  },
+
+  // **********************
+  // USER DASHBOARD ROUTE
+  // **********************
   {
     path: 'dashboard',
     loadComponent: () =>
       import('./components/dashboard/dashboard')
         .then(m => m.Dashboard),
+
     children: [
+
       {
         path: 'add-beneficiary',
         loadComponent: () =>
@@ -44,11 +59,11 @@ export const routes: Routes = [
       },
 
       {
-  path: 'edit-beneficiary/:id',
-  loadComponent: () =>
-    import('./components/beneficiaries/add-beneficiary/add-beneficiary')
-      .then(m => m.AddBeneficiary)
-},
+        path: 'edit-beneficiary/:id',
+        loadComponent: () =>
+          import('./components/beneficiaries/add-beneficiary/add-beneficiary')
+            .then(m => m.AddBeneficiary)
+      },
 
       {
         path: 'beneficiary-list',
@@ -119,6 +134,7 @@ export const routes: Routes = [
           import('./components/scheduled-transfer/scheduled-transfer')
             .then(m => m.ScheduledTransfer)
       }
+
     ]
   },
 

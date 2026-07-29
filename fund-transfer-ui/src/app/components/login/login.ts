@@ -64,22 +64,41 @@ export class Login {
 
     if (this.role == "admin") {
 
-      if (this.email == "admin@fund.com"
-          && this.password == "admin123") {
+  const adminData = {
+    email: this.email,
+    password: this.password
+  };
 
-        sessionStorage.setItem("role", "admin");
+  this.http.post<any>(
+    "http://localhost:8080/admin/login",
+    adminData
+  ).subscribe({
 
-        alert("Admin Login Successful");
+    next: (response) => {
 
-        this.router.navigate(['/dashboard']);
-        return;
-      }
-      else{
-        alert("Invalid Admin Credentials");
-        return;
-      }
+      sessionStorage.setItem("role", "admin");
+      sessionStorage.setItem("adminId", response.id);
+      sessionStorage.setItem("adminName", response.name);
+      sessionStorage.setItem("adminEmail", response.email);
+
+      alert("Admin Login Successful");
+
+      this.router.navigate(['/admin-dashboard']);
+
+    },
+
+    error: (err) => {
+
+      alert("Invalid Admin Credentials");
+      console.log(err);
 
     }
+
+  });
+
+  return;
+
+}
 
     const loginData = {
 
