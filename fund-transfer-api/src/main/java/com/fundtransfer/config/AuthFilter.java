@@ -69,12 +69,12 @@ public class AuthFilter implements Filter {
     return;
 }
 
-        if (path.equals("/statement")
-        || path.startsWith("/api/users/")
-        || path.equals("/api/auth/login")
+        if (path.equals("/api/auth/login")
         || path.equals("/api/auth/register")
         || path.equals("/api/auth/forgot-password")
-        || path.equals("/admin/login")) {
+        || path.equals("/admin/login")
+        || path.startsWith("/admin/users")
+        || path.startsWith("/api/users")) {
 
     chain.doFilter(request, response);
     return;

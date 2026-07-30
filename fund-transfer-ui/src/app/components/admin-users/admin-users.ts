@@ -18,6 +18,10 @@ export class AdminUsers implements OnInit {
   filteredUsers: User[] = [];
   searchText: string = '';
 
+  // Popup variables
+  selectedUser: User | null = null;
+  showViewPopup: boolean = false;
+
   constructor(private adminService: AdminService) {}
 
   ngOnInit(): void {
@@ -25,13 +29,16 @@ export class AdminUsers implements OnInit {
   }
 
   loadUsers(): void {
+    console.log("Loading users...");
+
     this.adminService.getAllUsers().subscribe({
       next: (data) => {
+        console.log("Users received:", data);
         this.users = data;
         this.filteredUsers = data;
       },
       error: (err) => {
-        console.error('Error loading users', err);
+        console.error("Error loading users", err);
       }
     });
   }
@@ -45,7 +52,18 @@ export class AdminUsers implements OnInit {
       user.email.toLowerCase().includes(text) ||
       user.accountNumber.includes(text)
     );
+  }
 
+  // View User
+  viewUser(user: User): void {
+    this.selectedUser = user;
+    this.showViewPopup = true;
+  }
+
+  // Close Popup
+  closePopup(): void {
+    this.showViewPopup = false;
+    this.selectedUser = null;
   }
 
 }
