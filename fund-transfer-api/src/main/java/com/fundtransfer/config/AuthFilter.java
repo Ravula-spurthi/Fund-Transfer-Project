@@ -30,12 +30,8 @@ public class AuthFilter implements Filter {
             ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-
-        HttpServletRequest httpRequest =
-                (HttpServletRequest) request;
-
-        HttpServletResponse httpResponse =
-                (HttpServletResponse) response;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String path = httpRequest.getRequestURI();
         String authHeader =
@@ -44,6 +40,7 @@ public class AuthFilter implements Filter {
         // CORS
         String origin = httpRequest.getHeader("Origin");
 
+        // CORS Headers
         if (origin != null) {
 
             httpResponse.setHeader(
@@ -64,23 +61,26 @@ public class AuthFilter implements Filter {
 
         }
 
-        if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
-            httpResponse.setStatus(HttpServletResponse.SC_OK);
-            return;
-        }
-
-        // PUBLIC APIs
-        if (path.endsWith("/api/auth/login")
-        || path.endsWith("/api/auth/register")
-        || path.endsWith("/api/auth/forgot-password")
-        || path.endsWith("/admin/login")) {
+        if (path.equals("/statement") ||
+    path.startsWith("/api/users/") ||
+    path.equals("/admin/login")) {
 
     chain.doFilter(request, response);
     return;
 }
 
-        // All remaining APIs require token
+        if (path.equals("/statement")
+        || path.startsWith("/api/users/")
+        || path.equals("/api/auth/login")
+        || path.equals("/api/auth/register")
+        || path.equals("/api/auth/forgot-password")
+        || path.equals("/admin/login")) {
 
+    chain.doFilter(request, response);
+    return;
+}
+
+        // Validate JWT Token
         if (!tokenService.isValidToken(authHeader)) {
 
             httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
