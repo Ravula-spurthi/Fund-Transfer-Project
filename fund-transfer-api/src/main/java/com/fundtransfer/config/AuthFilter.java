@@ -27,6 +27,7 @@ public class AuthFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
@@ -34,6 +35,7 @@ public class AuthFilter implements Filter {
         String path = httpRequest.getRequestURI();
         String origin = httpRequest.getHeader("Origin");
 
+        // CORS Headers
         if (origin != null) {
             httpResponse.setHeader("Access-Control-Allow-Origin", origin);
             httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
@@ -41,19 +43,18 @@ public class AuthFilter implements Filter {
             httpResponse.setHeader("Access-Control-Allow-Headers", "Authorization,Content-Type");
         }
 
-        if (path.equals("/statement") ||
-    path.startsWith("/api/users/") ||
-    path.equals("/admin/login")) {
+        // Allow public APIs without token
+        if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())
+                || path.equals("/statement")
+                || path.startsWith("/api/users/")
+                || path.startsWith("/api/auth/")
+                || path.startsWith("/admin/")) {
 
-    chain.doFilter(request, response);
-    return;
-}
-
-        if (path.equals("/statement") || path.startsWith("/api/users/")) {
             chain.doFilter(request, response);
             return;
         }
 
+        // Validate JWT Token
         if (!tokenService.isValidToken(authHeader)) {
             httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
             httpResponse.setCharacterEncoding("UTF-8");
