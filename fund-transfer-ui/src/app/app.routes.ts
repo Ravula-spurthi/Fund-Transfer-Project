@@ -31,14 +31,24 @@ export const routes: Routes = [
   },
 
   // **********************
-  // ADMIN DASHBOARD ROUTE
-  // **********************
-  {
-    path: 'admin-dashboard',
-    loadComponent: () =>
-      import('./components/admin-dashboard/admin-dashboard')
-        .then(m => m.AdminDashboard)
-  },
+// ADMIN DASHBOARD ROUTE
+// **********************
+{
+  path: 'admin-dashboard',
+  loadComponent: () =>
+    import('./components/admin-dashboard/admin-dashboard')
+      .then(m => m.AdminDashboard)
+},
+
+// **********************
+// ADMIN USERS ROUTE
+// **********************
+{
+  path: 'admin/users',
+  loadComponent: () =>
+    import('./components/admin-users/admin-users')
+      .then(m => m.AdminUsers)
+},
 
   // **********************
   // USER DASHBOARD ROUTE

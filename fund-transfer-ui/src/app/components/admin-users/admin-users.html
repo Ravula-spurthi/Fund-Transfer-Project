@@ -1,0 +1,39 @@
+<div class="container">
+
+  <h2>Manage Users</h2>
+
+  <div class="search-box">
+    <input
+      type="text"
+      placeholder="Search by Name, Email or Account Number"
+      [(ngModel)]="searchText"
+      (input)="searchUsers()">
+  </div>
+
+  <table border="1">
+
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Account Number</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let user of filteredUsers">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.mobile }}</td>
+        <td>{{ user.accountNumber }}</td>
+        <td>{{ user.balance }}</td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</div>
