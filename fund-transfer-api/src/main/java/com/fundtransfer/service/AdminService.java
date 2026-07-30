@@ -14,12 +14,15 @@ public class AdminService {
     @Autowired
     private AdminRepository adminRepository;
 
-    public Optional<Admin> login(String email, String password) {
+    public Optional<Admin> login(String email,
+                                 String password) {
 
-        Optional<Admin> admin = adminRepository.findByEmail(email);
+        Optional<Admin> admin =
+                adminRepository.findByEmail(email);
 
-        if (admin.isPresent() &&
-                admin.get().getPassword().equals(password)) {
+        if (admin.isPresent()
+                && admin.get().getPassword().equals(password)) {
+
             return admin;
         }
 

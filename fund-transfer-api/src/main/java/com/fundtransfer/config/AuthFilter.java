@@ -25,40 +25,71 @@ public class AuthFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilter(
+            ServletRequest request,
+            ServletResponse response,
+            FilterChain chain)
             throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        String authHeader = httpRequest.getHeader("Authorization");
+        HttpServletRequest httpRequest =
+                (HttpServletRequest) request;
+
+        HttpServletResponse httpResponse =
+                (HttpServletResponse) response;
+
         String path = httpRequest.getRequestURI();
+        String authHeader =
+                httpRequest.getHeader("Authorization");
+
+        // CORS
         String origin = httpRequest.getHeader("Origin");
 
         if (origin != null) {
-            httpResponse.setHeader("Access-Control-Allow-Origin", origin);
-            httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
-            httpResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-            httpResponse.setHeader("Access-Control-Allow-Headers", "Authorization,Content-Type");
+
+            httpResponse.setHeader(
+                    "Access-Control-Allow-Origin",
+                    origin);
+
+            httpResponse.setHeader(
+                    "Access-Control-Allow-Credentials",
+                    "true");
+
+            httpResponse.setHeader(
+                    "Access-Control-Allow-Methods",
+                    "GET,POST,PUT,DELETE,OPTIONS");
+
+            httpResponse.setHeader(
+                    "Access-Control-Allow-Headers",
+                    "Authorization,Content-Type");
+
         }
 
-        if (path.equals("/statement") ||
-    path.startsWith("/api/users/") ||
-    path.equals("/admin/login")) {
+        if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
+            httpResponse.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+
+        // PUBLIC APIs
+        if (path.endsWith("/api/auth/login")
+        || path.endsWith("/api/auth/register")
+        || path.endsWith("/api/auth/forgot-password")
+        || path.endsWith("/admin/login")) {
 
     chain.doFilter(request, response);
     return;
 }
 
-        if (path.equals("/statement") || path.startsWith("/api/users/")) {
-            chain.doFilter(request, response);
-            return;
-        }
+        // All remaining APIs require token
 
         if (!tokenService.isValidToken(authHeader)) {
+
             httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-            httpResponse.setCharacterEncoding("UTF-8");
             httpResponse.setContentType("application/json");
-            httpResponse.getWriter().write("{\"message\":\"Unauthorized\"}");
+            httpResponse.setCharacterEncoding("UTF-8");
+
+            httpResponse.getWriter()
+                    .write("{\"message\":\"Unauthorized\"}");
+
             return;
         }
 

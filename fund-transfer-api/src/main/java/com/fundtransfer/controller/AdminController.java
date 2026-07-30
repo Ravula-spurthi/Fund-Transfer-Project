@@ -22,17 +22,24 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+   
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
 
-        Optional<Admin> admin = adminService.login(
-                loginDTO.getEmail(),
-                loginDTO.getPassword());
+    System.out.println("Admin Login API Called");
 
-        if (admin.isPresent()) {
-            return ResponseEntity.ok(admin.get());
-        }
+    Optional<Admin> admin =
+            adminService.login(
+                    loginDTO.getEmail(),
+                    loginDTO.getPassword());
 
-        return ResponseEntity.badRequest().body("Invalid Admin Credentials");
+    if (admin.isPresent()) {
+
+        return ResponseEntity.ok(admin.get());
+
     }
+
+    return ResponseEntity.badRequest()
+            .body("Invalid Admin Credentials");
+}
 }
