@@ -61,6 +61,12 @@ public class AuthFilter implements Filter {
 
         }
 
+        // Allow browser preflight request
+if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
+    httpResponse.setStatus(HttpServletResponse.SC_OK);
+    return;
+}
+
         if (path.equals("/statement") ||
     path.startsWith("/api/users/") ||
     path.equals("/admin/login")) {
@@ -74,7 +80,8 @@ public class AuthFilter implements Filter {
         || path.equals("/api/auth/forgot-password")
         || path.equals("/admin/login")
         || path.startsWith("/admin/users")
-        || path.startsWith("/api/users")) {
+        || path.startsWith("/api/users")
+        || path.startsWith("/transactions")) {
 
     chain.doFilter(request, response);
     return;
