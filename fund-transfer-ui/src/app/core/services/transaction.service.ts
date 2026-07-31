@@ -18,4 +18,8 @@ export class TransactionService {
       `${this.apiUrl}/user/${userId}`
     );
   }
+
+  getAllTransactions(): Observable<Transaction[]> {
+  return this.http.get<Transaction[]>(this.apiUrl);
+}
 }

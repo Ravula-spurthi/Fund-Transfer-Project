@@ -1,0 +1,44 @@
+.transaction-container {
+  width: 90%;
+  margin: 30px auto;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #4a90e2;
+  color: white;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.back-btn {
+    background: white;
+    color: #0d6efd;
+    border: 1px solid #0d6efd;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background: #0d6efd;
+    color: white;
+}
