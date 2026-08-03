@@ -22,6 +22,17 @@ export class AdminUsers implements OnInit {
   selectedUser: User | null = null;
   showViewPopup: boolean = false;
 
+  showEditPopup = false;
+
+editUserData: User = {
+  id: 0,
+  name: '',
+  email: '',
+  mobile: '',
+  accountNumber: '',
+  balance: 0
+};
+
   constructor(private adminService: AdminService) {}
 
   ngOnInit(): void {
@@ -59,6 +70,70 @@ export class AdminUsers implements OnInit {
     this.selectedUser = user;
     this.showViewPopup = true;
   }
+
+  editUser(user: User): void {
+
+  this.editUserData = { ...user };
+
+  this.showEditPopup = true;
+
+}
+
+saveUser(): void {
+
+  this.adminService.updateUser(this.editUserData).subscribe({
+
+    next: () => {
+
+      alert("User Updated Successfully");
+
+      this.showEditPopup = false;
+
+      this.loadUsers();
+
+    },
+
+    error: (err) => {
+
+      console.log(err);
+
+      alert("Update Failed");
+
+    }
+
+  });
+
+}
+
+deleteUser(id: number): void {
+
+  if (!confirm("Delete this user?")) {
+
+    return;
+
+  }
+
+  this.adminService.deleteUser(id).subscribe({
+
+  next: (message) => {
+
+    alert(message);
+
+    this.loadUsers();
+
+  },
+
+  error: (err) => {
+
+    console.error(err);
+
+    alert("Delete Failed");
+
+  }
+
+});
+
+}
 
   // Close Popup
   closePopup(): void {
