@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
+import { FormsModule } from '@angular/forms';
 import { Transaction } from '../../models/transaction';
 import { TransactionService } from '../../core/services/transaction.service';
 
@@ -13,13 +13,16 @@ interface TransactionViewModel extends Transaction {
 @Component({
   selector: 'app-admin-transactions',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-transactions.html',
   styleUrl: './admin-transactions.css'
 })
 export class AdminTransactions implements OnInit {
 
   transactions: TransactionViewModel[] = [];
+  filteredTransactions: TransactionViewModel[] = [];
+
+searchText: string = '';
 
   constructor(
     private transactionService: TransactionService,
@@ -38,6 +41,7 @@ export class AdminTransactions implements OnInit {
       next: (data) => {
 
         this.transactions = (data || []).map(txn => this.mapTransaction(txn));
+        this.filteredTransactions = [...this.transactions];
 
         this.cdr.detectChanges();
 
@@ -81,5 +85,40 @@ export class AdminTransactions implements OnInit {
     };
 
   }
+
+  searchTransactions(): void {
+
+  const search = this.searchText.toLowerCase().trim();
+
+  if (!search) {
+
+    this.filteredTransactions = [...this.transactions];
+
+    return;
+
+  }
+
+  this.filteredTransactions = this.transactions.filter(txn =>
+
+    (txn.beneficiaryName || '')
+      .toLowerCase()
+      .includes(search)
+
+    ||
+
+    (txn.status || '')
+      .toLowerCase()
+      .includes(search)
+
+    ||
+
+    (txn.transactionDate || '')
+      .toString()
+      .toLowerCase()
+      .includes(search)
+
+  );
+
+}
 
 }
