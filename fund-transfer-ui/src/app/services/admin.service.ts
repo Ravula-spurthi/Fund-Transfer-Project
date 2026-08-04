@@ -16,4 +16,8 @@ export class AdminService {
     return this.http.get<User[]>(`${this.apiUrl}/users`);
   }
 
+  getUsersWithBeneficiaries(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/users-with-beneficiaries`);
+  }
+
 }

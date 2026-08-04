@@ -55,6 +55,11 @@ export const routes: Routes = [
     import('./components/admin-transactions/admin-transactions')
       .then(m => m.AdminTransactions)
 },
+{
+  path: 'admin/beneficiaries',
+  loadComponent: () =>
+    import('./components/manage-beneficiaries/manage-beneficiaries').then(m => m.ManageBeneficiaries)
+},
 
   // **********************
   // USER DASHBOARD ROUTE
