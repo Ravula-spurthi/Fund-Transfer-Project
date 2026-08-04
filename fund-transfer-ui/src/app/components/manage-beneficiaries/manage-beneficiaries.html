@@ -1,0 +1,32 @@
+<div class="admin-container">
+  <h2>Manage Beneficiaries</h2>
+
+  <div *ngIf="loading">Loading users...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <table class="table table-bordered" *ngIf="!loading && usersWithBeneficiaries.length">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Email</th>
+        <th>Beneficiaries</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of usersWithBeneficiaries">
+        <td>{{ user.name || '-' }}</td>
+        <td>{{ user.email || '-' }}</td>
+        <td>
+          <ul *ngIf="user.beneficiaries?.length; else noBeneficiaries">
+            <li *ngFor="let b of user.beneficiaries">
+              {{ b.beneficiaryName || 'Beneficiary' }} - {{ b.bankName || '-' }} ({{ b.accountNumber || '-' }})
+            </li>
+          </ul>
+          <ng-template #noBeneficiaries>
+            <span>No beneficiaries</span>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
