@@ -3,14 +3,40 @@
   <h2>Manage Users</h2>
 
   <div class="search-box">
+
     <input
       type="text"
       placeholder="Search by Name, Email or Account Number"
       [(ngModel)]="searchText"
       (input)="searchUsers()">
+
+    <button
+      class="clear-btn"
+      (click)="clearSearch()">
+      Clear
+    </button>
+
   </div>
 
-  <table border="1">
+  <div
+    class="loading"
+    *ngIf="loading">
+
+    Loading users...
+
+  </div>
+
+  <div
+    class="no-data"
+    *ngIf="!loading && filteredUsers.length==0">
+
+    No Users Found
+
+  </div>
+
+  <table
+    border="1"
+    *ngIf="!loading && filteredUsers.length>0">
 
     <thead>
 
@@ -33,10 +59,15 @@
       <tr *ngFor="let user of filteredUsers">
 
         <td>{{ user.id }}</td>
+
         <td>{{ user.name }}</td>
+
         <td>{{ user.email }}</td>
+
         <td>{{ user.mobile }}</td>
+
         <td>{{ user.accountNumber }}</td>
+
         <td>{{ user.balance }}</td>
 
         <td>
@@ -44,15 +75,25 @@
           <button
             class="view-btn"
             (click)="viewUser(user)">
+
             View
+
           </button>
 
-          <button class="edit-btn">
+          <button
+            class="edit-btn"
+            (click)="editUser(user)">
+
             Edit
+
           </button>
 
-          <button class="delete-btn">
+          <button
+            class="delete-btn"
+            (click)="deleteUser(user.id)">
+
             Delete
+
           </button>
 
         </td>
@@ -65,7 +106,7 @@
 
 </div>
 
-<!-- View Popup -->
+<!-- View User Popup -->
 
 <div
   class="popup-overlay"
@@ -85,12 +126,76 @@
 
     <p><strong>Account Number :</strong> {{selectedUser?.accountNumber}}</p>
 
-    <p><strong>Balance :</strong> {{selectedUser?.balance}}</p>
+    <p><strong>Balance :</strong> ₹{{selectedUser?.balance}}</p>
 
     <button
       class="close-btn"
       (click)="closePopup()">
+
       Close
+
+    </button>
+
+  </div>
+
+</div>
+
+<!-- Edit User Popup -->
+
+<div
+  class="popup-overlay"
+  *ngIf="showEditPopup">
+
+  <div class="popup">
+
+    <h2>Edit User</h2>
+
+    <label>Name</label>
+
+    <input
+      type="text"
+      [(ngModel)]="editUserData.name">
+
+    <label>Email</label>
+
+    <input
+      type="email"
+      [(ngModel)]="editUserData.email">
+
+    <label>Mobile</label>
+
+    <input
+      type="text"
+      [(ngModel)]="editUserData.mobile">
+
+    <label>Account Number</label>
+
+    <input
+      type="text"
+      [(ngModel)]="editUserData.accountNumber">
+
+    <label>Balance</label>
+
+    <input
+      type="number"
+      [(ngModel)]="editUserData.balance">
+
+    <br><br>
+
+    <button
+      class="view-btn"
+      (click)="saveUser()">
+
+      Save
+
+    </button>
+
+    <button
+      class="delete-btn"
+      (click)="showEditPopup=false">
+
+      Cancel
+
     </button>
 
   </div>

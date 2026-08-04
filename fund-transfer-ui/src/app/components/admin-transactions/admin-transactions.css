@@ -42,3 +42,24 @@ td {
     background: #0d6efd;
     color: white;
 }
+.search-box{
+
+    text-align:center;
+
+    margin:20px 0;
+
+}
+
+.search-box input{
+
+    width:350px;
+
+    padding:10px;
+
+    border-radius:5px;
+
+    border:1px solid #ccc;
+
+    font-size:15px;
+
+}

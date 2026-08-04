@@ -16,11 +16,26 @@ export class AdminUsers implements OnInit {
 
   users: User[] = [];
   filteredUsers: User[] = [];
+
   searchText: string = '';
 
-  // Popup variables
+  loading = true;
+
+  // View Popup
   selectedUser: User | null = null;
-  showViewPopup: boolean = false;
+  showViewPopup = false;
+
+  // Edit Popup
+  showEditPopup = false;
+
+  editUserData: User = {
+    id: 0,
+    name: '',
+    email: '',
+    mobile: '',
+    accountNumber: '',
+    balance: 0
+  };
 
   constructor(private adminService: AdminService) {}
 
@@ -29,18 +44,31 @@ export class AdminUsers implements OnInit {
   }
 
   loadUsers(): void {
-    console.log("Loading users...");
+
+    this.loading = true;
 
     this.adminService.getAllUsers().subscribe({
+
       next: (data) => {
-        console.log("Users received:", data);
+
         this.users = data;
-        this.filteredUsers = data;
+
+        this.filteredUsers = [...data];
+
+        this.loading = false;
+
       },
+
       error: (err) => {
-        console.error("Error loading users", err);
+
+        console.error(err);
+
+        this.loading = false;
+
       }
+
     });
+
   }
 
   searchUsers(): void {
@@ -48,22 +76,109 @@ export class AdminUsers implements OnInit {
     const text = this.searchText.toLowerCase();
 
     this.filteredUsers = this.users.filter(user =>
+
       user.name.toLowerCase().includes(text) ||
+
       user.email.toLowerCase().includes(text) ||
+
       user.accountNumber.includes(text)
+
     );
+
+  }
+
+  clearSearch(): void {
+
+    this.searchText = '';
+
+    this.filteredUsers = [...this.users];
+
   }
 
   // View User
+
   viewUser(user: User): void {
+
     this.selectedUser = user;
+
     this.showViewPopup = true;
+
   }
 
-  // Close Popup
   closePopup(): void {
+
     this.showViewPopup = false;
+
     this.selectedUser = null;
+
+  }
+
+  // Edit User
+
+  editUser(user: User): void {
+
+    this.editUserData = { ...user };
+
+    this.showEditPopup = true;
+
+  }
+
+  saveUser(): void {
+
+    this.adminService.updateUser(this.editUserData).subscribe({
+
+      next: () => {
+
+        alert("User Updated Successfully");
+
+        this.showEditPopup = false;
+
+        this.loadUsers();
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+        alert("Update Failed");
+
+      }
+
+    });
+
+  }
+
+  // Delete User
+
+  deleteUser(id: number): void {
+
+    if (!confirm("Are you sure you want to delete this user?")) {
+
+      return;
+
+    }
+
+    this.adminService.deleteUser(id).subscribe({
+
+      next: (message) => {
+
+        alert(message);
+
+        this.loadUsers();
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+        alert("Delete Failed");
+
+      }
+
+    });
+
   }
 
 }
