@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -33,7 +33,10 @@ editUserData: User = {
   balance: 0
 };
 
-  constructor(private adminService: AdminService) {}
+  constructor(
+    private adminService: AdminService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -45,23 +48,31 @@ editUserData: User = {
     this.adminService.getAllUsers().subscribe({
       next: (data) => {
         console.log("Users received:", data);
-        this.users = data;
-        this.filteredUsers = data;
+        const users = Array.isArray(data) ? data : [];
+        this.users = users;
+        this.searchUsers();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("Error loading users", err);
+        this.users = [];
+        this.filteredUsers = [];
       }
     });
   }
 
   searchUsers(): void {
+    const text = this.searchText?.toLowerCase().trim() ?? '';
 
-    const text = this.searchText.toLowerCase();
+    if (!text) {
+      this.filteredUsers = [...this.users];
+      return;
+    }
 
     this.filteredUsers = this.users.filter(user =>
-      user.name.toLowerCase().includes(text) ||
-      user.email.toLowerCase().includes(text) ||
-      user.accountNumber.includes(text)
+      (user.name ?? '').toLowerCase().includes(text) ||
+      (user.email ?? '').toLowerCase().includes(text) ||
+      (user.accountNumber ?? '').toLowerCase().includes(text)
     );
   }
 
