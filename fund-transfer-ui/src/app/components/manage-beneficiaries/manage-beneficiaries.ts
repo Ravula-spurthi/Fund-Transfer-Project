@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { AdminService } from '../../services/admin.service';
 
 @Component({
@@ -13,11 +15,26 @@ import { AdminService } from '../../services/admin.service';
 export class ManageBeneficiaries implements OnInit {
 
   usersWithBeneficiaries: any[] = [];
+
+  filteredUsers: any[] = [];
+
+  selectedUser: any = null;
+
+  beneficiaries: any[] = [];
+
+  selectedBeneficiary: any = null;
+
   loading = true;
+
   error = '';
+
+  searchText = '';
+
+  showPopup = false;
 
   constructor(
     private adminService: AdminService,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -28,15 +45,14 @@ export class ManageBeneficiaries implements OnInit {
   loadUsers(): void {
 
     this.loading = true;
-    this.error = '';
 
     this.adminService.getUsersWithBeneficiaries().subscribe({
 
       next: (data: any[]) => {
 
-        console.log(data);
-
         this.usersWithBeneficiaries = data;
+
+        this.filteredUsers = [...data];
 
         this.loading = false;
 
@@ -48,15 +64,63 @@ export class ManageBeneficiaries implements OnInit {
 
         console.error(err);
 
-        this.error = 'Failed to load users.';
+        this.error = "Unable to load users.";
 
         this.loading = false;
-
-        this.cdr.detectChanges();
 
       }
 
     });
+
+  }
+
+  searchUsers(): void {
+
+    const text = this.searchText.toLowerCase();
+
+    this.filteredUsers = this.usersWithBeneficiaries.filter(user =>
+
+      user.name.toLowerCase().includes(text) ||
+
+      user.email.toLowerCase().includes(text) ||
+
+      user.accountNumber.includes(text)
+
+    );
+
+  }
+
+  selectUser(): void {
+
+    if (this.selectedUser) {
+
+      this.beneficiaries = this.selectedUser.beneficiaries;
+
+    } else {
+
+      this.beneficiaries = [];
+
+    }
+
+  }
+
+  viewBeneficiary(beneficiary: any): void {
+
+    this.selectedBeneficiary = beneficiary;
+
+    this.showPopup = true;
+
+  }
+
+  closePopup(): void {
+
+    this.showPopup = false;
+
+  }
+
+  goBack(): void {
+
+    this.router.navigate(['/admin-dashboard']);
 
   }
 
