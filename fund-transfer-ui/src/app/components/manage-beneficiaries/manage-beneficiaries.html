@@ -1,32 +1,274 @@
 <div class="admin-container">
-  <h2>Manage Beneficiaries</h2>
 
-  <div *ngIf="loading">Loading users...</div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <!-- Back Button -->
 
-  <table class="table table-bordered" *ngIf="!loading && usersWithBeneficiaries.length">
-    <thead>
-      <tr>
-        <th>User</th>
-        <th>Email</th>
-        <th>Beneficiaries</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of usersWithBeneficiaries">
-        <td>{{ user.name || '-' }}</td>
-        <td>{{ user.email || '-' }}</td>
-        <td>
-          <ul *ngIf="user.beneficiaries?.length; else noBeneficiaries">
-            <li *ngFor="let b of user.beneficiaries">
-              {{ b.beneficiaryName || 'Beneficiary' }} - {{ b.bankName || '-' }} ({{ b.accountNumber || '-' }})
-            </li>
-          </ul>
-          <ng-template #noBeneficiaries>
-            <span>No beneficiaries</span>
-          </ng-template>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <button class="back-btn" (click)="goBack()">
+        ← Back to Dashboard
+    </button>
+
+    <h2>Manage Beneficiaries</h2>
+
+    <!-- Loading -->
+
+    <div *ngIf="loading" class="loading">
+        ⏳ Loading Users...
+    </div>
+
+    <!-- Error -->
+
+    <div *ngIf="error" class="error">
+        {{error}}
+    </div>
+
+    <div *ngIf="!loading">
+
+        <!-- Search -->
+
+        <div class="search-card">
+
+            <label>
+                Search User
+            </label>
+
+            <input
+                type="text"
+                placeholder="Search by Name / Email / Account Number"
+                [(ngModel)]="searchText"
+                (input)="searchUsers()">
+
+        </div>
+
+        <!-- Select User -->
+
+        <div class="select-card">
+
+            <label>
+
+                Select User
+
+            </label>
+
+            <select
+                [(ngModel)]="selectedUser"
+                (change)="selectUser()">
+
+                <option [ngValue]="null">
+
+                    -- Choose User --
+
+                </option>
+
+                <option
+                    *ngFor="let user of filteredUsers"
+                    [ngValue]="user">
+
+                    {{user.name}}
+                    -
+                    {{user.accountNumber}}
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- Selected User -->
+
+        <div
+            class="summary-card"
+            *ngIf="selectedUser">
+
+            <div>
+
+                <h3>
+
+                    {{selectedUser.name}}
+
+                </h3>
+
+                <p>
+
+                    {{selectedUser.email}}
+
+                </p>
+
+            </div>
+
+            <div class="count">
+
+                {{beneficiaries.length}}
+
+                Beneficiaries
+
+            </div>
+
+        </div>
+
+        <!-- Table -->
+
+        <div
+            class="table-container"
+            *ngIf="selectedUser">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Name</th>
+
+                        <th>Bank</th>
+
+                        <th>Account Number</th>
+
+                        <th>IFSC</th>
+
+                        <th>Mobile</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr
+                        *ngFor="let b of beneficiaries">
+
+                        <td>
+
+                            {{b.beneficiaryName}}
+
+                        </td>
+
+                        <td>
+
+                            {{b.bankName}}
+
+                        </td>
+
+                        <td>
+
+                            ******{{b.accountNumber.slice(-4)}}
+
+                        </td>
+
+                        <td>
+
+                            {{b.ifscCode}}
+
+                        </td>
+
+                        <td>
+
+                            {{b.mobileNumber}}
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="view-btn"
+                                (click)="viewBeneficiary(b)">
+
+                                View
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+            <div
+                class="no-data"
+                *ngIf="beneficiaries.length==0">
+
+                📄 No Beneficiaries Found
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Popup -->
+
+<div
+    class="popup-overlay"
+    *ngIf="showPopup">
+
+    <div class="popup">
+
+        <h2>
+
+            Beneficiary Details
+
+        </h2>
+
+        <p>
+
+            <strong>Name :</strong>
+
+            {{selectedBeneficiary?.beneficiaryName}}
+
+        </p>
+
+        <p>
+
+            <strong>Bank :</strong>
+
+            {{selectedBeneficiary?.bankName}}
+
+        </p>
+
+        <p>
+
+            <strong>Account Number :</strong>
+
+            {{selectedBeneficiary?.accountNumber}}
+
+        </p>
+
+        <p>
+
+            <strong>IFSC :</strong>
+
+            {{selectedBeneficiary?.ifscCode}}
+
+        </p>
+
+        <p>
+
+            <strong>Branch :</strong>
+
+            {{selectedBeneficiary?.branch}}
+
+        </p>
+
+        <p>
+
+            <strong>Mobile :</strong>
+
+            {{selectedBeneficiary?.mobileNumber}}
+
+        </p>
+
+        <button
+            class="close-btn"
+            (click)="closePopup()">
+
+            Close
+
+        </button>
+
+    </div>
+
 </div>

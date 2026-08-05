@@ -53,26 +53,25 @@ export class AdminUsers implements OnInit {
     this.adminService.getAllUsers().subscribe({
 
       next: (data) => {
+
         console.log("Users received:", data);
-        const users = Array.isArray(data) ? data : [];
-        this.users = users;
+
+        this.users = Array.isArray(data) ? data : [];
+
         this.searchUsers();
-        this.cdr.detectChanges();
-
-        this.users = data;
-
-        this.filteredUsers = [...data];
 
         this.loading = false;
+
+        this.cdr.detectChanges();
 
       },
 
       error: (err) => {
+
         console.error("Error loading users", err);
+
         this.users = [];
         this.filteredUsers = [];
-
-        console.error(err);
 
         this.loading = false;
 
@@ -83,23 +82,24 @@ export class AdminUsers implements OnInit {
   }
 
   searchUsers(): void {
+
     const text = this.searchText?.toLowerCase().trim() ?? '';
 
     if (!text) {
+
       this.filteredUsers = [...this.users];
+
       return;
+
     }
 
     this.filteredUsers = this.users.filter(user =>
+
       (user.name ?? '').toLowerCase().includes(text) ||
+
       (user.email ?? '').toLowerCase().includes(text) ||
+
       (user.accountNumber ?? '').toLowerCase().includes(text)
-
-      user.name.toLowerCase().includes(text) ||
-
-      user.email.toLowerCase().includes(text) ||
-
-      user.accountNumber.includes(text)
 
     );
 
