@@ -17,14 +17,33 @@ public class Transaction {
     private Long id;
 
     private Long userId;
+
     private String beneficiaryName;
+
     private Double amount;
+
     private String status;
+
     private LocalDate transactionDate;
+
+    // DEBIT / CREDIT
     private String transactionType;
+
     private String remarks;
+
     private Double balance;
+
+    // Optional (can be used later for IMPS/NEFT/RTGS)
     private String transactionMode;
+
+    // New Fields
+    private String senderName;
+
+    private String receiverName;
+
+    private String fromAccount;
+
+    private String toAccount;
 
     public Transaction() {
     }
@@ -107,5 +126,37 @@ public class Transaction {
 
     public void setTransactionMode(String transactionMode) {
         this.transactionMode = transactionMode;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
+    public String getFromAccount() {
+        return fromAccount;
+    }
+
+    public void setFromAccount(String fromAccount) {
+        this.fromAccount = fromAccount;
+    }
+
+    public String getToAccount() {
+        return toAccount;
+    }
+
+    public void setToAccount(String toAccount) {
+        this.toAccount = toAccount;
     }
 }

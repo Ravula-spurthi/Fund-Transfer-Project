@@ -46,43 +46,78 @@ public class FundTransferService {
             throw new RuntimeException("Insufficient balance");
         }
 
+        // Update balances
         sender.setBalance(sender.getBalance() - dto.getAmount());
         beneficiary.setBalance(beneficiary.getBalance() + dto.getAmount());
 
         userRepository.save(sender);
         userRepository.save(beneficiary);
 
+        LocalDate transactionDate;
+
+        if (dto.getScheduleDate() != null && !dto.getScheduleDate().isEmpty()) {
+            transactionDate = LocalDate.parse(dto.getScheduleDate());
+        } else {
+            transactionDate = LocalDate.now();
+        }
+
+        // ==========================
+        // Sender Transaction (DEBIT)
+        // ==========================
+
         Transaction debitTransaction = new Transaction();
 
         debitTransaction.setUserId(sender.getId());
-        debitTransaction.setBeneficiaryName(dto.getBeneficiaryName());
+        debitTransaction.setSenderName(sender.getName());
+        debitTransaction.setReceiverName(beneficiary.getName());
+
+        debitTransaction.setFromAccount(sender.getAccountNumber());
+        debitTransaction.setToAccount(beneficiary.getAccountNumber());
+
+        debitTransaction.setBeneficiaryName(beneficiary.getName());
+
         debitTransaction.setAmount(dto.getAmount());
         debitTransaction.setStatus("SUCCESS");
+        debitTransaction.setTransactionDate(transactionDate);
 
-        if (dto.getScheduleDate() != null && !dto.getScheduleDate().isEmpty()) {
-            debitTransaction.setTransactionDate(LocalDate.parse(dto.getScheduleDate()));
-        } else {
-            debitTransaction.setTransactionDate(LocalDate.now());
-        }
+        // Direction
+        debitTransaction.setTransactionType("DEBIT");
 
-        debitTransaction.setTransactionType(dto.getPaymentType());
+        // Payment Type (Pay Now / Pay Later)
+        debitTransaction.setTransactionMode(dto.getPaymentType());
+
         debitTransaction.setRemarks(dto.getRemarks());
         debitTransaction.setBalance(sender.getBalance());
-        debitTransaction.setTransactionMode("DEBIT");
 
         transactionRepository.save(debitTransaction);
+
+        // ==========================
+        // Receiver Transaction (CREDIT)
+        // ==========================
 
         Transaction creditTransaction = new Transaction();
 
         creditTransaction.setUserId(beneficiary.getId());
+        creditTransaction.setSenderName(sender.getName());
+        creditTransaction.setReceiverName(beneficiary.getName());
+
+        creditTransaction.setFromAccount(sender.getAccountNumber());
+        creditTransaction.setToAccount(beneficiary.getAccountNumber());
+
         creditTransaction.setBeneficiaryName(sender.getName());
+
         creditTransaction.setAmount(dto.getAmount());
         creditTransaction.setStatus("SUCCESS");
-        creditTransaction.setTransactionDate(LocalDate.now());
-        creditTransaction.setTransactionType(dto.getPaymentType());
+        creditTransaction.setTransactionDate(transactionDate);
+
+        // Direction
+        creditTransaction.setTransactionType("CREDIT");
+
+        // Payment Type (Pay Now / Pay Later)
+        creditTransaction.setTransactionMode(dto.getPaymentType());
+
         creditTransaction.setRemarks(dto.getRemarks());
         creditTransaction.setBalance(beneficiary.getBalance());
-        creditTransaction.setTransactionMode("CREDIT");
 
         transactionRepository.save(creditTransaction);
 

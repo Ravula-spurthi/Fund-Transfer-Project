@@ -2,8 +2,12 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 import { Transaction } from '../../models/transaction';
+import { User } from '../../models/user';
+
 import { TransactionService } from '../../core/services/transaction.service';
+import { AdminService } from '../../services/admin.service';
 
 interface TransactionViewModel extends Transaction {
   direction: 'DEBIT' | 'CREDIT' | 'UNKNOWN';
@@ -22,10 +26,14 @@ export class AdminTransactions implements OnInit {
   transactions: TransactionViewModel[] = [];
   filteredTransactions: TransactionViewModel[] = [];
 
-searchText: string = '';
+  users: User[] = [];
+
+  selectedUser = '';
+  selectedRange = 'ALL';
 
   constructor(
     private transactionService: TransactionService,
+    private adminService: AdminService,
     private cdr: ChangeDetectorRef,
     private router: Router
   ) {}
@@ -35,6 +43,21 @@ searchText: string = '';
   }
 
   ngOnInit(): void {
+
+    this.loadTransactions();
+
+    this.adminService.getAllUsers().subscribe({
+      next: (data) => {
+        this.users = data;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+
+  }
+
+  loadTransactions(): void {
 
     this.transactionService.getAllTransactions().subscribe({
 
@@ -48,9 +71,7 @@ searchText: string = '';
       },
 
       error: (err) => {
-
         console.error(err);
-
       }
 
     });
@@ -59,12 +80,12 @@ searchText: string = '';
 
   private mapTransaction(txn: Transaction): TransactionViewModel {
 
-    const mode = (txn.transactionMode || '').toUpperCase();
+    const type = (txn.transactionType || '').toUpperCase();
 
     const direction =
-      mode === 'CREDIT'
+      type === 'CREDIT'
         ? 'CREDIT'
-        : mode === 'DEBIT'
+        : type === 'DEBIT'
         ? 'DEBIT'
         : 'UNKNOWN';
 
@@ -75,7 +96,6 @@ searchText: string = '';
       direction,
 
       displayAmount:
-
         direction === 'CREDIT'
           ? `+ ₹${txn.amount}`
           : direction === 'DEBIT'
@@ -86,39 +106,68 @@ searchText: string = '';
 
   }
 
-  searchTransactions(): void {
+  applyFilters(): void {
 
-  const search = this.searchText.toLowerCase().trim();
+    if (this.selectedUser !== '') {
 
-  if (!search) {
+      this.transactionService.searchTransactions(this.selectedUser)
+        .subscribe(data => {
 
-    this.filteredTransactions = [...this.transactions];
+          this.transactions = data.map(t => this.mapTransaction(t));
+          this.filteredTransactions = [...this.transactions];
 
-    return;
+        });
+
+      return;
+
+    }
+
+    if (this.selectedRange === 'ALL') {
+
+      this.loadTransactions();
+      return;
+
+    }
+
+    const today = new Date();
+    const from = new Date();
+
+    switch (this.selectedRange) {
+
+      case '7':
+        from.setDate(today.getDate() - 7);
+        break;
+
+      case '30':
+        from.setMonth(today.getMonth() - 1);
+        break;
+
+      case '90':
+        from.setMonth(today.getMonth() - 3);
+        break;
+
+      case '180':
+        from.setMonth(today.getMonth() - 6);
+        break;
+
+      case '365':
+        from.setFullYear(today.getFullYear() - 1);
+        break;
+
+    }
+
+    this.transactionService
+      .filterTransactions(
+        from.toISOString().substring(0, 10),
+        today.toISOString().substring(0, 10)
+      )
+      .subscribe(data => {
+
+        this.transactions = data.map(t => this.mapTransaction(t));
+        this.filteredTransactions = [...this.transactions];
+
+      });
 
   }
-
-  this.filteredTransactions = this.transactions.filter(txn =>
-
-    (txn.beneficiaryName || '')
-      .toLowerCase()
-      .includes(search)
-
-    ||
-
-    (txn.status || '')
-      .toLowerCase()
-      .includes(search)
-
-    ||
-
-    (txn.transactionDate || '')
-      .toString()
-      .toLowerCase()
-      .includes(search)
-
-  );
-
-}
 
 }
