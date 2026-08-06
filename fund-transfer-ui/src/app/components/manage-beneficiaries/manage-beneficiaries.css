@@ -484,3 +484,335 @@ td{
 }
 
 }
+
+/* ====================================== */
+/* Summary Section */
+/* ====================================== */
+
+.summary-container{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    background:#fff;
+
+    border:1px solid #ddd;
+
+    border-radius:12px;
+
+    padding:18px 30px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+}
+
+.summary-box{
+
+    flex:1;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.summary-icon{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    border:2px solid #1565c0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:28px;
+
+    color:#1565c0;
+
+}
+
+.summary-text{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.summary-text span{
+
+    color:#666;
+
+    font-size:14px;
+
+}
+
+.summary-text h3{
+
+    margin:3px 0 0;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    color:#222;
+
+}
+
+.divider{
+
+    width:1px;
+
+    height:55px;
+
+    background:#ddd;
+
+}
+
+/* ====================================== */
+/* Action Buttons */
+/* ====================================== */
+
+.edit-btn{
+
+    background:#ff9800;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.edit-btn:hover{
+
+    background:#ef6c00;
+
+}
+
+.delete-btn{
+
+    background:#d32f2f;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.delete-btn:hover{
+
+    background:#b71c1c;
+
+}
+
+/* ====================================== */
+/* Pagination */
+/* ====================================== */
+
+.pagination{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-top:25px;
+
+}
+
+.pagination button{
+
+    padding:10px 16px;
+
+    border:none;
+
+    border-radius:6px;
+
+    background:#1565c0;
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+.pagination button.active{
+
+    background:#2e7d32;
+
+}
+
+.pagination button:disabled{
+
+    background:#bdbdbd;
+
+    cursor:not-allowed;
+
+}
+
+/* ====================================== */
+/* Popup Inputs */
+/* ====================================== */
+
+.popup input{
+
+    width:100%;
+
+    padding:10px;
+
+    margin-top:6px;
+
+    margin-bottom:15px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+    font-size:14px;
+
+}
+
+.popup label{
+
+    display:block;
+
+    margin-top:8px;
+
+    margin-bottom:5px;
+
+    font-weight:bold;
+
+    color:#333;
+
+}
+
+/* ====================================== */
+/* Popup Buttons */
+/* ====================================== */
+
+.popup-buttons{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:20px;
+
+}
+
+.save-btn{
+
+    flex:1;
+
+    background:#2e7d32;
+
+    color:white;
+
+    border:none;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+.save-btn:hover{
+
+    background:#1b5e20;
+
+}
+
+.cancel-btn{
+
+    flex:1;
+
+    background:#757575;
+
+    color:white;
+
+    border:none;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+.cancel-btn:hover{
+
+    background:#424242;
+
+}
+
+/* ====================================== */
+/* Responsive */
+/* ====================================== */
+
+@media (max-width:768px){
+
+    .summary-container{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+    .divider{
+
+        display:none;
+
+    }
+
+    .summary-box{
+
+        width:100%;
+
+    }
+
+    .popup-buttons{
+
+        flex-direction:column;
+
+    }
+
+}
