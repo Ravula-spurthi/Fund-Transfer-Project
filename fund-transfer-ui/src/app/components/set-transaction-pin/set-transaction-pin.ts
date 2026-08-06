@@ -42,8 +42,9 @@ export class SetTransactionPin {
         alert(res);
         this.router.navigate(['/dashboard/profile']);
       },
-      error: () => {
-        alert("Unable to save PIN");
+      error: (err) => {
+        const message = typeof err?.error === 'string' ? err.error : 'Unable to save PIN';
+        alert(message);
       }
     });
 

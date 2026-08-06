@@ -82,6 +82,19 @@ class AuthFilterTest {
 
         authFilter.doFilter(request, response, (req, res) -> chainCalled.set(true));
 
+        assertFalse(chainCalled.get());
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
+
+    @Test
+    void shouldAllowTransactionPinRequestsWithoutToken() throws Exception {
+        AuthFilter authFilter = new AuthFilter(new TokenService());
+        MockHttpServletRequest request = new MockHttpServletRequest("POST", "/transaction-pin/change");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        AtomicBoolean chainCalled = new AtomicBoolean(false);
+
+        authFilter.doFilter(request, response, (req, res) -> chainCalled.set(true));
+
         assertTrue(chainCalled.get());
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
