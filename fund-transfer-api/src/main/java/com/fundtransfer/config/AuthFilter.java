@@ -81,7 +81,8 @@ if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
         || path.equals("/admin/login")
         || path.startsWith("/admin/users")
         || path.startsWith("/api/users")
-        || path.startsWith("/transactions")) {
+        || path.startsWith("/transactions")
+        || path.startsWith("/transaction-pin")) {
 
     chain.doFilter(request, response);
     return;

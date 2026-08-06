@@ -44,8 +44,9 @@ export class ChangeTransactionPin {
         alert(res);
         this.router.navigate(['/dashboard/profile']);
       },
-      error: () => {
-        alert('Unable to change PIN');
+      error: (err) => {
+        const message = typeof err?.error === 'string' ? err.error : 'Unable to change PIN';
+        alert(message);
       }
     });
 
