@@ -1,44 +1,149 @@
 <div class="admin-container">
 
+    <!-- ========================= -->
     <!-- Back Button -->
+    <!-- ========================= -->
 
-    <button class="back-btn" (click)="goBack()">
+    <button class="back-btn"
+            (click)="goBack()">
+
         ← Back to Dashboard
+
     </button>
 
-    <h2>Manage Beneficiaries</h2>
+    <h2>
 
+        Manage Beneficiaries
+
+    </h2>
+
+    <!-- ========================= -->
     <!-- Loading -->
+    <!-- ========================= -->
 
-    <div *ngIf="loading" class="loading">
-        ⏳ Loading Users...
+    <div
+        class="loading"
+        *ngIf="loading">
+
+        ⏳ Loading Beneficiaries...
+
     </div>
 
+    <!-- ========================= -->
     <!-- Error -->
+    <!-- ========================= -->
 
-    <div *ngIf="error" class="error">
+    <div
+        class="error"
+        *ngIf="error">
+
         {{error}}
+
     </div>
 
     <div *ngIf="!loading">
 
-        <!-- Search -->
+        <!-- ========================= -->
+        <!-- Summary Cards -->
+        <!-- ========================= -->
+
+        <!-- Summary -->
+
+<div class="summary-container">
+
+    <div class="summary-box">
+
+        <div class="summary-icon">
+            👥
+        </div>
+
+        <div class="summary-text">
+
+            <span>Total Users</span>
+
+            <h3>{{ usersWithBeneficiaries.length }}</h3>
+
+        </div>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="summary-box">
+
+        <div class="summary-icon">
+            💳
+        </div>
+
+        <div class="summary-text">
+
+            <span>Total Beneficiaries</span>
+
+            <h3>
+
+                {{
+                usersWithBeneficiaries.reduce(
+                (count,u)=>count+u.beneficiaries.length,
+                0
+                )
+                }}
+
+            </h3>
+
+        </div>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="summary-box">
+
+        <div class="summary-icon">
+            👤
+        </div>
+
+        <div class="summary-text">
+
+            <span>Selected User</span>
+
+            <h3>
+
+                {{ selectedUser ? selectedUser.beneficiaries.length : 0 }}
+
+            </h3>
+
+        </div>
+
+    </div>
+
+</div>
+        <!-- ========================= -->
+        <!-- User Search -->
+        <!-- ========================= -->
 
         <div class="search-card">
 
             <label>
+
                 Search User
+
             </label>
 
             <input
+
                 type="text"
-                placeholder="Search by Name / Email / Account Number"
-                [(ngModel)]="searchText"
-                (input)="searchUsers()">
+
+                [(ngModel)]="userSearch"
+
+                (input)="searchUsers()"
+
+                placeholder="Search by Name, Email or Account Number">
 
         </div>
 
-        <!-- Select User -->
+        <!-- ========================= -->
+        <!-- User Dropdown -->
+        <!-- ========================= -->
 
         <div class="select-card">
 
@@ -49,21 +154,27 @@
             </label>
 
             <select
+
                 [(ngModel)]="selectedUser"
+
                 (change)="selectUser()">
 
                 <option [ngValue]="null">
 
-                    -- Choose User --
+                    Select User
 
                 </option>
 
                 <option
+
                     *ngFor="let user of filteredUsers"
+
                     [ngValue]="user">
 
                     {{user.name}}
+
                     -
+
                     {{user.accountNumber}}
 
                 </option>
@@ -72,42 +183,64 @@
 
         </div>
 
-        <!-- Selected User -->
+        <!-- ========================= -->
+        <!-- Beneficiary Search -->
+        <!-- ========================= -->
 
         <div
-            class="summary-card"
+            class="search-card"
             *ngIf="selectedUser">
 
-            <div>
+            <label>
 
-                <h3>
+                Search Beneficiary
 
-                    {{selectedUser.name}}
+            </label>
 
-                </h3>
+            <input
 
-                <p>
+                type="text"
 
-                    {{selectedUser.email}}
+                [(ngModel)]="beneficiarySearch"
 
-                </p>
+                (input)="searchBeneficiaries()"
 
-            </div>
-
-            <div class="count">
-
-                {{beneficiaries.length}}
-
-                Beneficiaries
-
-            </div>
+                placeholder="Search by Name, Bank, IFSC or Account Number">
 
         </div>
 
-        <!-- Table -->
+        <!-- ========================= -->
+        <!-- Selected User Info -->
+        <!-- ========================= -->
 
         <div
+
+            class="selected-user"
+
+            *ngIf="selectedUser">
+
+            <h3>
+
+                {{selectedUser.name}}
+
+            </h3>
+
+            <p>
+
+                {{selectedUser.email}}
+
+            </p>
+
+        </div>
+
+        <!-- ========================= -->
+        <!-- Beneficiary Table -->
+        <!-- ========================= -->
+
+        <div
+
             class="table-container"
+
             *ngIf="selectedUser">
 
             <table>
@@ -126,7 +259,11 @@
 
                         <th>Mobile</th>
 
-                        <th>Action</th>
+                        <th width="240">
+
+                            Actions
+
+                        </th>
 
                     </tr>
 
@@ -135,45 +272,68 @@
                 <tbody>
 
                     <tr
-                        *ngFor="let b of beneficiaries">
+
+                        *ngFor="let beneficiary of paginatedBeneficiaries">
 
                         <td>
 
-                            {{b.beneficiaryName}}
+                            {{beneficiary.beneficiaryName}}
 
                         </td>
 
                         <td>
 
-                            {{b.bankName}}
+                            {{beneficiary.bankName}}
 
                         </td>
 
                         <td>
 
-                            ******{{b.accountNumber.slice(-4)}}
+                            ******{{beneficiary.accountNumber.slice(-4)}}
 
                         </td>
 
                         <td>
 
-                            {{b.ifscCode}}
+                            {{beneficiary.ifscCode}}
 
                         </td>
 
                         <td>
 
-                            {{b.mobileNumber}}
+                            {{beneficiary.mobileNumber}}
 
                         </td>
 
                         <td>
 
                             <button
+
                                 class="view-btn"
-                                (click)="viewBeneficiary(b)">
+
+                                (click)="viewBeneficiary(beneficiary)">
 
                                 View
+
+                            </button>
+
+                            <button
+
+                                class="edit-btn"
+
+                                (click)="openEditPopup(beneficiary)">
+
+                                Edit
+
+                            </button>
+
+                            <button
+
+                                class="delete-btn"
+
+                                (click)="deleteBeneficiary(beneficiary)">
+
+                                Delete
 
                             </button>
 
@@ -186,8 +346,10 @@
             </table>
 
             <div
+
                 class="no-data"
-                *ngIf="beneficiaries.length==0">
+
+                *ngIf="filteredBeneficiaries.length==0">
 
                 📄 No Beneficiaries Found
 
@@ -195,11 +357,53 @@
 
         </div>
 
+        <!-- ========================= -->
+        <!-- Pagination -->
+        <!-- ========================= -->
+
+        <div
+            class="pagination"
+            *ngIf="selectedUser && filteredBeneficiaries.length > pageSize">
+
+            <button
+                (click)="previousPage()"
+                [disabled]="currentPage == 1">
+
+                Previous
+
+            </button>
+
+            <button
+
+                *ngFor="let page of getPageNumbers()"
+
+                [class.active]="page == currentPage"
+
+                (click)="goToPage(page)">
+
+                {{page}}
+
+            </button>
+
+            <button
+
+                (click)="nextPage()"
+
+                [disabled]="currentPage == totalPages">
+
+                Next
+
+            </button>
+
+        </div>
+
     </div>
 
 </div>
 
-<!-- Popup -->
+<!-- ====================================== -->
+<!-- View Beneficiary Popup -->
+<!-- ====================================== -->
 
 <div
     class="popup-overlay"
@@ -268,6 +472,106 @@
             Close
 
         </button>
+
+    </div>
+
+</div>
+
+<!-- ====================================== -->
+<!-- Edit Beneficiary Popup -->
+<!-- ====================================== -->
+
+<div
+    class="popup-overlay"
+    *ngIf="showEditPopup">
+
+    <div class="popup">
+
+        <h2>
+
+            Edit Beneficiary
+
+        </h2>
+
+        <label>
+
+            Beneficiary Name
+
+        </label>
+
+        <input
+            type="text"
+            [(ngModel)]="editBeneficiary.beneficiaryName">
+
+        <label>
+
+            Bank Name
+
+        </label>
+
+        <input
+            type="text"
+            [(ngModel)]="editBeneficiary.bankName">
+
+        <label>
+
+            Account Number
+
+        </label>
+
+        <input
+            type="text"
+            [(ngModel)]="editBeneficiary.accountNumber">
+
+        <label>
+
+            IFSC Code
+
+        </label>
+
+        <input
+            type="text"
+            [(ngModel)]="editBeneficiary.ifscCode">
+
+        <label>
+
+            Branch
+
+        </label>
+
+        <input
+            type="text"
+            [(ngModel)]="editBeneficiary.branch">
+
+        <label>
+
+            Mobile Number
+
+        </label>
+
+        <input
+            type="text"
+            [(ngModel)]="editBeneficiary.mobileNumber">
+
+        <div class="popup-buttons">
+
+            <button
+                class="save-btn"
+                (click)="saveBeneficiary()">
+
+                Save
+
+            </button>
+
+            <button
+                class="cancel-btn"
+                (click)="closeEditPopup()">
+
+                Cancel
+
+            </button>
+
+        </div>
 
     </div>
 
