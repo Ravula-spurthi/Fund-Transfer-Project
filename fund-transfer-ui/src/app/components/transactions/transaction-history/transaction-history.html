@@ -10,7 +10,16 @@ class="back-btn"
 
   <h2>Transaction History</h2>
 
-  <h3>Total Transactions: {{ transactions.length }}</h3>
+  <h3>Total Transactions: {{ filteredTransactions.length }}</h3>
+  <div class="search-box">
+
+  <input
+      type="text"
+      placeholder="Search by Beneficiary, Date or Status"
+      [(ngModel)]="searchText"
+      (input)="searchTransactions()">
+
+</div>
 
   <div *ngIf="transactions.length === 0">
     No Data Found
@@ -36,7 +45,7 @@ class="back-btn"
 
     <tbody>
 
-      <tr *ngFor="let txn of transactions">
+      <tr *ngFor="let txn of filteredTransactions">
 
         <td>{{ txn.id }}</td>
 
