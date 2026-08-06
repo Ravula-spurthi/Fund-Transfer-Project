@@ -9,7 +9,7 @@ import com.fundtransfer.entity.Transaction;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    // Existing methods
+    // User Transactions
     List<Transaction> findByUserId(Long userId);
 
     List<Transaction> findByUserIdAndTransactionDateBetween(
@@ -17,13 +17,24 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             LocalDate fromDate,
             LocalDate toDate);
 
-    // Statement page
     List<Transaction> findByUserIdOrderByTransactionDateDesc(Long userId);
 
     List<Transaction> findByUserIdAndTransactionDateOrderByTransactionDateDesc(
             Long userId,
             LocalDate transactionDate);
 
-    // NEW - Monthly Chart
     List<Transaction> findByUserIdOrderByTransactionDateAsc(Long userId);
+
+    // ==========================
+    // ADMIN FILTERS
+    // ==========================
+
+    List<Transaction> findBySenderNameContainingIgnoreCaseOrReceiverNameContainingIgnoreCase(
+            String senderName,
+            String receiverName);
+
+    List<Transaction> findByTransactionDateBetween(
+            LocalDate fromDate,
+            LocalDate toDate);
+
 }

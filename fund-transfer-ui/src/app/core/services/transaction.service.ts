@@ -13,13 +13,49 @@ export class TransactionService {
 
   constructor(private http: HttpClient) {}
 
+  // ==========================
+  // USER TRANSACTIONS
+  // ==========================
   getTransactions(userId: number): Observable<Transaction[]> {
+
     return this.http.get<Transaction[]>(
       `${this.apiUrl}/user/${userId}`
     );
+
   }
 
+  // ==========================
+  // ADMIN - ALL TRANSACTIONS
+  // ==========================
   getAllTransactions(): Observable<Transaction[]> {
-  return this.http.get<Transaction[]>(this.apiUrl);
-}
+
+    return this.http.get<Transaction[]>(this.apiUrl);
+
+  }
+
+  // ==========================
+  // ADMIN - SEARCH USER
+  // ==========================
+  searchTransactions(user: string): Observable<Transaction[]> {
+
+    return this.http.get<Transaction[]>(
+      `${this.apiUrl}/search?user=${user}`
+    );
+
+  }
+
+  // ==========================
+  // ADMIN - DATE FILTER
+  // ==========================
+  filterTransactions(
+    from: string,
+    to: string
+  ): Observable<Transaction[]> {
+
+    return this.http.get<Transaction[]>(
+      `${this.apiUrl}/filter?from=${from}&to=${to}`
+    );
+
+  }
+
 }

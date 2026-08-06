@@ -1,5 +1,7 @@
 package com.fundtransfer.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,12 +28,18 @@ public class UserController {
     }
 
     @GetMapping("/balance/{userId}")
-    public Double getBalance(@PathVariable Long userId){
-    return userService.getBalance(userId);
+    public Double getBalance(@PathVariable Long userId) {
+        return userService.getBalance(userId);
     }
 
     @GetMapping("/{id}")
-public User getUser(@PathVariable Long id) {
-    return userService.getUserById(id);
-}
+    public User getUser(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    // NEW API - Get all users for Admin dropdown
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
 }
